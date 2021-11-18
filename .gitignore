@@ -1,0 +1,8 @@
+/target
+Cargo.lock
+/build
+!/build/bitgeom.pdf
+_minted*
+*~
+*bbl
+*blg
