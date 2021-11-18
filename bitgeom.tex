@@ -29,6 +29,7 @@
   \floatplacement{figure}{H}
   \usepackage{tikz}
   \usepackage{svg}
+  \usepackage{calc} % for inkscape pdf tex
   \usepackage{metalogo}
   \usepackage{csquotes}
   \usepackage[compact,nostruts,medium]{titlesec}
@@ -119,6 +120,13 @@ The source code is available here
 \tableofcontents
 \chapter{Introduction}
 The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a pixel in memory will be \texttt{u8} instead of 1 bit.
+
+We will work on the cartesian grid representing the framebuffer that will show us the pixels. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.
+\begin{center}
+\input{cartesian_grid.pdf_tex}
+\end{center}
+
+We will represent points as pairs of signed integers. When actually drawing them though, negative values and values outside the window's geometry will be ignored (clipped).
 
 \begin{minted}{rust}
 pub type Point = (i64, i64);
@@ -473,7 +481,15 @@ The result:
 
 \includegraphics{figures/ch11-2.png}
 
-We didn't mention in the beginning that the rotation has to be relative to a \emph{point} and the given transformation is relative to the \emph{origin}, in this case the upper left corner $(0,0)$. Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.
+We didn't mention in the beginning that the rotation has to be relative to a \emph{point} and the given transformation is relative to the \emph{origin}, in this case the upper left corner $(0,0)$. So \texttt{dmr} was rotated relative to the origin:
+\begin{center}
+  \def\svgscale{0.6}
+\input{cartesian_grid_dmr_1.pdf_tex}
+  \def\svgscale{0.6}
+\input{cartesian_grid_dmr_2.pdf_tex}
+\end{center}
+
+Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.
 
 If we have a list of $n$ points, the centroid is calculated as:
 
@@ -483,6 +499,29 @@ $$ y_c = \frac{1}{n}\sum_{i=0}^{n} y_i $$
 Since in this case we have a rectangle, the centroid has coordinates of half the width and half the height.
 
 By subtracting the centroid from each point before we apply the transformation and then adding it back after we get what we want:
+
+Here's it visually: First subtract the center point.
+
+\begin{center}
+  \def\svgscale{0.6}
+\input{cartesian_grid_dmr_3.pdf_tex}
+\end{center}
+
+Then, rotate.
+
+\begin{center}
+  \def\svgscale{0.6}
+\input{cartesian_grid_dmr_4.pdf_tex}
+\end{center}
+
+And subtract back to the original position.
+
+\begin{center}
+  \def\svgscale{0.6}
+\input{cartesian_grid_dmr_5.pdf_tex}
+\end{center}
+
+In code:
 
 \begin{minted}{rust}
 let center_point = ((DMR_WIDTH/2) as i64, (DMR_HEIGHT/2) as i64);
@@ -500,9 +539,7 @@ for y in 0..DMR_HEIGHT {
 }
 \end{minted}
 
-The result:
-
-\includegraphics{figures/ch11-3.png}
+The result: \includegraphics{figures/ch11-3.png}
 
 \chapter{Rotation of a \bitmap{} by parallel recusive subdivision}
 \chapter{Magnification}
