@@ -125,67 +125,118 @@ impl Image {
         }
     }
 
-    pub fn plot_line_width(&mut self, (mut x0, mut y0): (i64, i64), (x1, y1): (i64, i64), wd: f64) {
-        //eprintln!(
-        //    "plot_line_width: ({}, {}), ({}, {}) width = {}",
-        //    x0, y0, x1, y1, wd
-        //);
+    pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64), wd: f64) {
         /* Bresenham's line algorithm */
-        let dx = (x1 - x0).abs();
-        let sx = if x0 < x1 { 1 } else { -1 };
-        let dy = (y1 - y0).abs();
-        let sy = if y0 < y1 { 1 } else { -1 };
-        let mut err = dx - dy;
-        /* error value e_xy */
-        let mut e2: i64;
-        let mut x2: i64;
-        let mut y2: i64;
-        let ed: f64 = if (dx + dy) == 0 {
-            1.0
-        } else {
-            f64::sqrt((dx * dx) as f64 + (dy * dy) as f64)
-        };
-        let mut points = vec![];
-        let wd = (wd + 1.0) / 2.0;
-        //eprintln!("wd = {}, ed = {}", wd, ed);
-        loop {
-            points.push((x0, y0));
-            self.plot(x0, y0);
-            e2 = err;
-            x2 = x0;
-            if 2 * e2 >= -dx {
-                /* x step */
-                //eprintln!(" x step ");
-                e2 += dy;
-                y2 = y0;
-                while e2 < ((ed as f64 * wd) as i64) && (y1 != y2 || dx > dy) {
-                    y2 += sy;
-                    self.plot(x0, y2);
-                    points.push((x0, y2));
-                    e2 += dx;
+        let mut d;
+        let mut x: i64;
+        let mut y: i64;
+        let mut ax: i64;
+        let mut ay: i64;
+        let sx: i64;
+        let sy: i64;
+        let dx: i64;
+        let dy: i64;
+
+        dx = x2 - x1;
+        ax = (dx * 2).abs();
+        sx = if dx > 0 { 1 } else { -1 };
+
+        dy = y2 - y1;
+        ay = (dy * 2).abs();
+        sy = if dy > 0 { 1 } else { -1 };
+
+        x = x1;
+        y = y1;
+
+        let b = if dy == 0 { -1 } else { dx / dy };
+        let a = 1;
+        let double_d = (wd * f64::sqrt((a * a + b * b) as f64)) as i64;
+        let delta = double_d / 2;
+
+        if ax > ay {
+            /* x step */
+            d = ay - ax / 2;
+            loop {
+                self.plot(x, y);
+                {
+                    let total = |_x| {
+                        if dy == 0 {
+                            _x - x1
+                        } else {
+                            _x - (y * dx) / dy + (y1 * dx) / dy - x1
+                        }
+                    };
+                    let mut _x = x;
+                    loop {
+                        let t = total(_x);
+                        if t < -1 * delta || t > delta {
+                            break;
+                        }
+                        _x += 1;
+                        self.plot(_x, y);
+                    }
+                    let mut _x = x;
+                    loop {
+                        let t = total(_x);
+                        if t < -1 * delta || t > delta {
+                            break;
+                        }
+                        _x -= 1;
+                        self.plot(_x, y);
+                    }
                 }
-                if x0 == x1 {
-                    break;
-                };
-                e2 = err;
-                err -= dy;
-                x0 += sx;
+                if x == x2 {
+                    return;
+                }
+                if d >= 0 {
+                    y = y + sy;
+                    d = d - ax;
+                }
+                x = x + sx;
+                d = d + ay;
             }
-            if 2 * e2 <= dy {
-                /* y step */
-                //eprintln!(" y step ");
-                e2 = dx - e2;
-                while e2 < ((ed as f64 * wd) as i64) && (x1 != x2 || dx < dy) {
-                    x2 += sx;
-                    self.plot(x2, y0);
-                    points.push((x2, y0));
-                    e2 += dy;
+        } else {
+            /* y step */
+            d = ax - ay / 2;
+            let delta = double_d / 3;
+            loop {
+                self.plot(x, y);
+                {
+                    let total = |_x| {
+                        if dy == 0 {
+                            _x - x1
+                        } else {
+                            _x - (y * dx) / dy + (y1 * dx) / dy - x1
+                        }
+                    };
+                    let mut _x = x;
+                    loop {
+                        let t = total(_x);
+                        if t < -1 * delta || t > delta {
+                            break;
+                        }
+                        _x += 1;
+                        self.plot(_x, y);
+                    }
+                    let mut _x = x;
+                    loop {
+                        let t = total(_x);
+                        if t < -1 * delta || t > delta {
+                            break;
+                        }
+                        _x -= 1;
+                        self.plot(_x, y);
+                    }
                 }
-                if y0 == y1 {
-                    break;
-                };
-                err += dx;
-                y0 += sy;
+                if y == y2 {
+                    return;
+                }
+                if d >= 0 {
+                    x = x + sx;
+                    d = d - ay;
+                }
+                y = y + sy;
+                d = d + ax;
             }
         }
     }

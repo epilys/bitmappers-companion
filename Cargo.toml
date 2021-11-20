@@ -18,5 +18,14 @@ path="src/chapter_1.rs"
 name="chapter_11"
 path="src/chapter_11.rs"
 
+[[bin]]
+name="chapter_19"
+path="src/chapter_19.rs"
+
+
+[[bin]]
+name="chapter_20"
+path="src/chapter_20.rs"
+
 [dependencies]
 minifb = "*"
