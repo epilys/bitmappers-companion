@@ -7,8 +7,10 @@
   \usepackage{unicode-math}
   %\setmathfont{Latin Modern Math}
   \setmathfont{TeX Gyre Pagella Math}
-  \newfontfamily\pixel[Scale=1]{terminal-grotesque.ttf}
-  \newfontfamily\fira[Scale=1]{Fira Sans}
+  \newfontfamily\pixel[Scale=0.95]{terminal-grotesque.ttf}
+  \newfontfamily\fira[Scale=0.85]{Fira Sans}
+  \newfontfamily\pixeltitle[Scale=2.8]{terminal-grotesque.ttf}
+  \newfontfamily\avaratitle[Scale=2.5]{Avara}
   \usepackage{microtype}
   \usepackage{dot2texi}
   \usepackage{hyperref}
@@ -89,7 +91,7 @@
   \href{#1}{\myuline{blue}{#2}}%
 }
 
-\newcommand\titletext{A {\pixel{}Bitmapper}'s Geometry}
+\newcommand\titletext{A {\pixeltitle{}Bitmapper}'s Geometry}
 \title{\titletext{}}
 \newcommand\subtitle{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}
 \newcommand\biblatex{\texttt{biblatex}\xspace}%
@@ -114,7 +116,7 @@
     \vspace{-0.9\baselineskip}
     \rule{\textwidth}{0.4pt}\\[0.8\baselineskip]
     {\centering
-    \scalebox{2.0}{\parbox{0.5\textwidth}{\centering\Huge{}\textsc{{\titletext{}}}}}\\
+    \scalebox{2.0}{\parbox{0.5\textwidth}{\centering{\avaratitle{}\titletext{}}}}\\
     \vspace{1.5\baselineskip}
     {\LARGE\subtitle{}}\par
     \vspace*{0.3\baselineskip}
