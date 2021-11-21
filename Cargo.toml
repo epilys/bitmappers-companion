@@ -6,26 +6,5 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[[bin]]
-name="introduction"
-path="src/introduction.rs"
-
-[[bin]]
-name="chapter_1"
-path="src/chapter_1.rs"
-
-[[bin]]
-name="chapter_11"
-path="src/chapter_11.rs"
-
-[[bin]]
-name="chapter_19"
-path="src/chapter_19.rs"
-
-
-[[bin]]
-name="chapter_20"
-path="src/chapter_20.rs"
-
 [dependencies]
 minifb = "*"

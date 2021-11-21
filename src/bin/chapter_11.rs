@@ -22,7 +22,7 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
     ret
 }
 
-include!("dmr.rs");
+include!("../dmr.xbm.rs");
 
 const WINDOW_WIDTH: usize = 100;
 const WINDOW_HEIGHT: usize = 100;
