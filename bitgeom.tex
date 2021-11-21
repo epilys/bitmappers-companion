@@ -769,8 +769,39 @@ The result: \includegraphics{figures/ch11-3.png}
 \chapter{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}
 % Graphics gems vol 2. pdf page 113 
 \skelpars{2}
-\chapter{Magnification}
-\skelpars{2}
+\chapter{Magnification/Scaling}
+\includegraphics{figures/scaled_dmr.png}
+
+\begin{minted}{rust}
+let mut original = Image::new(DMR_WIDTH, DMR_HEIGHT, 25, 25);
+original.bytes = bits_to_bytes(DMR_BITS, DMR_WIDTH);
+original.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
+
+let mut scaled = Image::new(DMR_WIDTH * 5, DMR_HEIGHT * 5, 100, 100);
+let mut sx: i64; //source
+let mut sy: i64; //source
+let mut dx: i64; //destination
+let mut dy: i64 = 0; //destination
+
+let og_height = original.height as i64;
+let og_width = original.width as i64;
+let scaled_height = scaled.height as i64;
+let scaled_width = scaled.width as i64;
+
+while dy < scaled_height {
+    sy = (dy * og_height) / scaled_height;
+    dx = 0;
+    while dx < scaled_width {
+        sx = (dx * og_width) / scaled_width;
+        if original.get(sx, sy) == Some(BLACK) {
+            scaled.plot(dx, dy);
+        }
+        dx += 1;
+    }
+    dy += 1;
+}
+scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
+\end{minted}
 \section{Smoothing enlarged \bitmaps{}}
 % Graphics gems vol 1. pdf page 189 "SMOOTHING ENLARGED MONOCHROME IMAGES"
 \skelpars{2}
