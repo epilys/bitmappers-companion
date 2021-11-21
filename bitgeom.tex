@@ -370,25 +370,57 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
 % From graphic gems vol 2 pdf page 40
 \skelpars{2}
 \chapter{Equations of a line}
+\section{The common form}
 \skelpars{2}
-\chapter{The parametric form}
+\section{The parametric form}
 \skelpars{2}
 \chapter{Angle between two lines}
 \skelpars{2}
 \chapter{Intersection of two lines}
 \skelpars{2}
 \chapter{Line through two points}
-\skelpars{2}
+  \begin{figure}
+  {\centering%
+  \skelfig[width=0.4\textwidth]{2\baselineskip}%
+  \skelcaption[width=0.2\textwidth,lines=1]{}}
+  \end{figure}
+It seems sufficient, given the coordinates of two points $M, N$, to calculate $a, b$ and $c$ to form a line equation:
+
+$$ax+by+c=0$$
+
+If the two points are not the same, they necessarily form such a line. To get there, we start from expressing the line as parametric over $t$: at $t=0$ it's at point $M$ and at $t=1$ it's at point $N$:
+
+$$c = c_M + (c_N - c_M)t, t\in R, c \in \{x, y\}$$
+
+Substituting $t$ in one of the equations we get:
+
+$$(y_M - y_N)x + (x_N-x_M)y+(x_{M}y_{N}-x_{N}y_{M})=0$$
+
+Which is what we were after. We finish by normalising what we found with $\frac{1}{\sqrt{a^2+b^2}}$:
+\begin{minted}{rust}
+\end{minted}
+
 \chapter{Line equidistant from two points}
-\skelpars{2}
+  \begin{figure}
+  {\centering%
+  \skelfig[width=0.4\textwidth]{2\baselineskip}%
+  \skelcaption[width=0.2\textwidth,lines=1]{}}
+  \end{figure}
+Let's name this line $L$. From the previous chapter we know how to get the line that's created by the two points $M$ and $N$. If only we knew how to get a perpendicular line over the midpoint of a line segment!
+
+Thankfully that midpoint also satisfies $L$'s equation, $ax+by+c$. The midpoint's coordinates are intuitively:
+
+$$ (\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2})$$
+
+Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
 \chapter{Normal to a line through a point}
-\skelpars{2}
-\chapter{Bounding Circle}
-% From graphic gems vol 2 pdf page 46
 \skelpars{2}
 \part{Points, Lines and Circles}
 \skelpars{2}
 \chapter{Equations of a Circle}
+\skelpars{2}
+\chapter{Bounding Circle}
+% From graphic gems vol 2 pdf page 46
 \skelpars{2}
 \part{Points, Line Segments and Arcs}
 \chapter{Drawing a line segment from its two endpoints}
@@ -463,18 +495,7 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64)) {
     }
 }
 \end{minted}
-
-\section{Faster Drawing a line segment from its two endpoints using Symmetry}
-% From graphic gems vol 1 p 103 (pdf page 128)
-\skelpars{2}
-
-\chapter{Intersection of two line segments}
-\skelpars{2}
-% Graphics gems vol 2. pdf page 37
-\section{\emph{Fast} intersection of two line segments}
-% Graphics gems vol 3. pdf page 231 
-\skelpars{2}
-\chapter{Printing Line segments With Width}
+\chapter{Drawing Line segments With Width}
 \begin{minted}{rust}
 pub fn plot_line_width(&mut self, (x1, y1): (i64, i64),
                        (x2, y2): (i64, i64), _wd: f64) {
@@ -580,8 +601,24 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64),
 }
 \end{minted}
 % Graphics gems vol 1. pdf page 139 "RENDERING FAT LINES ON 2D GRID"
-\chapter{Joining the ends of two wide line segments together}
-% Graphics gems vol 1. pdf page 132 "AN ALGORITHM FOR FILLING IN 2D WIDE LINE BEVEL JOINTS"
+
+\chapter{Intersection of two line segments}
+% Graphics gems vol 2. pdf page 37
+Let points $\textbf{1}=(x_1,y_1)$, $\textbf{2} = (x_2, y_2)$, $\textbf{3} = (x_3, y_3)$ and $\textbf{4} = (x_4, y_4)$ and $\textbf{1,2}$, $\textbf{3,4}$ two line segments they form. We wish to find their intersection:
+
+First, get the equation of line $L_{12}$ and line $L_{34}$ from chapter FIXME.
+
+Substitute points $\textbf{3}$ and $\textbf{4}$ in equation $L_{12}$ to compute $r_3 = L_{12}(\textbf{3})$ and $r_4=L_{12}(\textbf{4})$ respectively.
+
+If $r_3 \neq{} 0$, $r_4 \neq{} 0$ and $sgn(r_3)==sign(r_4)$ the line segments don't intersect, so stop.
+
+In $L_{34}$ substitute point $\textbf{1}$ to compute $r_1$, and do the same for point $\textbf{2}$.
+
+If $r_1 \neq{} 0$, $r_2 \neq{} 0$ and $sgn(r_1)==sign(r_2)$ the line segments don't intersect, so stop.
+
+At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to FIXME.)
+\section{\emph{Fast} intersection of two line segments}
+% Graphics gems vol 3. pdf page 231 
 \skelpars{2}
 \part{Curves other than circles}
 \chapter{Parametric ellipictal arcs}
@@ -595,10 +632,6 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64),
 
 \chapter{Centroid of polygon}
 % Graphics gems vol 4. pdf page 14
-\skelpars{2}
-
-\chapter{Space-Filling Curves}
-% Graphics gems vol 2. pdf page 58
 \skelpars{2}
 \part{Vectors, matrices and transformations}
 \chapter{Rotation of a \bitmap{}}
@@ -733,7 +766,7 @@ The result: \includegraphics{figures/ch11-3.png}
 \section{Fast 2D Rotation}
 % Graphics gems vol 1. pdf page 456 
 \skelpars{2}
-\chapter{90deg Rotation of a \bitmap{} by parallel recursive subdivision}
+\chapter{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}
 % Graphics gems vol 2. pdf page 113 
 \skelpars{2}
 \chapter{Magnification}
@@ -744,17 +777,22 @@ The result: \includegraphics{figures/ch11-3.png}
 \section{Stretching lines of \bitmaps{}}
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpars{2}
-\part{Flood filling}
+\part{Areas}
+\skelpars{2}
+\chapter{Flood filling}
 \skelpars{2}
 % Graphics gems vol 1. pdf page 296 "SEED FILL"
 \skelpars{2}
 % Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
 \skelpars{2}
-\part{Areas}
-\skelpars{2}
-\part{Volumes}
-\skelpars{2}
 \part{Advanced}
+\section{Faster Drawing a line segment from its two endpoints using Symmetry}
+% From graphic gems vol 1 p 103 (pdf page 128)
+\skelpars{2}
+
+\chapter{Joining the ends of two wide line segments together}
+% Graphics gems vol 1. pdf page 132 "AN ALGORITHM FOR FILLING IN 2D WIDE LINE BEVEL JOINTS"
+\skelpars{2}
 \chapter{Composing monochrome \bitmaps{} with separate alpha channel data}
 % Graphics gems vol 3. pdf page 64 "COMPOSING BW BITMAPS
 \skelpars{2}
@@ -766,6 +804,9 @@ The result: \includegraphics{figures/ch11-3.png}
 \skelpars{2}
 \chapter{Faster line clipping}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
+\skelpars{2}
+\chapter{Space-Filling Curves}
+% Graphics gems vol 2. pdf page 58
 \skelpars{2}
 \clearpage{}
 \bookmarksetup{startatroot}
