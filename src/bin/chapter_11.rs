@@ -1,4 +1,4 @@
-use bitmappers_geometry::*;
+use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
 use std::f64::consts::FRAC_PI_2;
 

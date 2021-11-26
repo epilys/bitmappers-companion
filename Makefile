@@ -15,8 +15,8 @@ all: bitgeom.pdf
 
 bitgeom.pdf: bitgeom.tex *.tex $(OUTFILES)
 	latexmk -file-line-error -outdir=build -auxdir=build -e '$$max_repeat=2' -pdfxe  -pdfxelatex="xelatex -output-directory=build --shell-escape %O %S" -use-make bitgeom.tex
-	@du -sh build/main.pdf
-	@mpv --volume 35 /usr/share/sounds/freedesktop/stereo/bell.oga > /dev/null
+	@du -sh build/bitgeom.pdf
+	@mpv /usr/share/sounds/freedesktop/stereo/bell.oga > /dev/null
 	@notify-send Done
 
 
@@ -24,13 +24,4 @@ clean:
 	latexmk -outdir=build -auxdir=build -CA
 
 gen-samples:
-	convert -alpha remove -density 300 -quality 100 "build/main.pdf[$(pages)]" output.png
-
-style.pdf:
-	pandoc style.md --from markdown+raw_attribute --pdf-engine=xelatex -o build/style.pdf
-
-aoaom: aoaom.pdf
-
-aoaom.pdf:
-	#pandoc aoaom.md --toc --from markdown+raw_attribute+hard_line_breaks --pdf-engine=xelatex --pdf-engine-opt="-shell-escape" -o build/aoaom.pdf
-	latexmk -file-line-error -outdir=build -auxdir=build -e '$$max_repeat=2' -pdfxe  -pdfxelatex="xelatex -halt-on-error -output-directory=build -interaction=batchmode --shell-escape %O %S" -use-make aoaom.tex
+	convert -alpha remove -density 300 -quality 100 "build/bitgeom.pdf[$(pages)]" output.png

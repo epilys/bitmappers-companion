@@ -1,4 +1,4 @@
-use bitmappers_geometry::*;
+use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
 
 pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {

@@ -140,7 +140,7 @@
 
 \noindent{}The skull in the cover is a transformed bitmap of the skull in the 1533 oil painting by Hans Holbein the Younger, \emph{The Ambassadors}, which features a floating distorted skull rendered in anamorphic perspective.
 
-\noindent{}\emph{A Bitmapper’s Geometry}, 2021\\
+\noindent{}\emph{A Bitmapper’s Companion}, 2021\\
 \noindent{}\textbf{Special Topics} $\blacktriangleright{}$ \textbf{Computer Graphics} $\blacktriangleright{}$ \textbf{Programming}\\
 \noindent{}006.6'6--dc20
 \vfill{}
@@ -152,10 +152,11 @@
 
 \noindent{}The source code is available here
 
-\noindent{}\url{https://github.com/epilys/bitmappers-geometry}
+\noindent{}\url{https://github.com/epilys/bitmappers-companion}
 
 \clearpage{}
 \pdfbookmark{\contentsname}{toc}
+\ThisLRCornerWallPaper{0.6}{The-Ambassadors.png}
 \tableofcontents
 \ThisLRCornerWallPaper{0.6}{Holbein_Skull.png}
 \part{Introduction}
@@ -222,7 +223,7 @@ impl Image {
 A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
 
 \begin{minted}{rust}
-use bitmappers_geometry::*;
+use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
 
 const WINDOW_WIDTH: usize = 400;

@@ -67,7 +67,7 @@ impl Image {
         self.bytes[y * self.width + x] = BLACK;
     }
 
-    pub fn get(&mut self, x: i64, y: i64) -> Option<u32> {
+    pub fn get(&self, x: i64, y: i64) -> Option<u32> {
         if x < 0 || y < 0 || y >= (self.height as i64) || x >= (self.width as i64) {
             return None;
         }

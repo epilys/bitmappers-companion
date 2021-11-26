@@ -1,5 +1,5 @@
 [package]
-name = "bitmappers_geometry"
+name = "bitmappers_companion"
 license-file = "LICENSE"
 version = "0.1.0"
 edition = "2021"
