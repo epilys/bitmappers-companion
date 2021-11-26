@@ -3,14 +3,16 @@
   \usepackage{fontspec}
   \setmainlanguage{english}
   \setotherlanguage{greek}
-  \setmainfont[Scale=0.8]{Avara}
+  \setmainfont{Redaction}
   \usepackage{unicode-math}
   %\setmathfont{Latin Modern Math}
   \setmathfont{TeX Gyre Pagella Math}
-  \newfontfamily\pixel[Scale=0.95]{terminal-grotesque.ttf}
-  \newfontfamily\fira[Scale=0.85]{Fira Sans}
-  \newfontfamily\pixeltitle[Scale=2.8]{terminal-grotesque.ttf}
-  \newfontfamily\avaratitle[Scale=2.5]{Avara}
+  \setmonofont[Scale=1.1]{CMU Typewriter Text}
+  \newfontfamily\pixel{Redaction20-Regular}
+  \newfontfamily\fira[Scale=0.90]{Fira Sans}
+  \newfontfamily\pixeltitle[Scale=2.5]{Redaction20-Regular}
+  \newfontfamily\reduxtitle[Scale=2.5]{Redaction}
+  \newfontfamily\cm{CMU Serif}
   \usepackage{microtype}
   \usepackage{dot2texi}
   \usepackage{hyperref}
@@ -80,6 +82,7 @@
 
 \newcommand\bitmap{{\pixel{}\textbf{bitmap}}}
 \newcommand\bitmaps{{\pixel{}\textbf{bitmaps}}}
+\newcommand\pixels{{\pixel{}\textbf{pixels}}}
 \newcommand\Rust{{\fira{}\textbf{Rust}}}
 
 \newcommand\colorunderline[1]{\bgroup\markoverwith{\textcolor{#1}{\rule[-0.5ex]{2pt}{0.8pt}}}\ULon}
@@ -91,7 +94,7 @@
   \href{#1}{\myuline{blue}{#2}}%
 }
 
-\newcommand\titletext{A {\pixeltitle{}Bitmapper}'s Geometry}
+\newcommand\titletext{A {\pixeltitle{}Bitmapper}'s Companion}
 \title{\titletext{}}
 \newcommand\subtitle{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}
 \newcommand\biblatex{\texttt{biblatex}\xspace}%
@@ -116,7 +119,7 @@
     \vspace{-0.9\baselineskip}
     \rule{\textwidth}{0.4pt}\\[0.8\baselineskip]
     {\centering
-    \scalebox{2.0}{\parbox{0.5\textwidth}{\centering{\avaratitle{}\titletext{}}}}\\
+    \scalebox{2.0}{\parbox{0.5\textwidth}{\centering{\reduxtitle{}\titletext{}}}}\\
     \vspace{1.5\baselineskip}
     {\LARGE\subtitle{}}\par
     \vspace*{0.3\baselineskip}
@@ -159,7 +162,7 @@
 \chapter{Data representation}
 The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a pixel in memory will be \texttt{u8} instead of 1 bit.
 
-We will work on the cartesian grid representing the framebuffer that will show us the pixels. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.
+We will work on the cartesian grid representing the framebuffer that will show us the \pixels{}. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.
 \begin{center}
 \input{cartesian_grid.pdf_tex}
 \end{center}
@@ -215,8 +218,8 @@ impl Image {
 }
 \end{minted}
 
-\chapter{Displaying pixels to your screen}
-A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw pixels directly on it. Here's how you could set it up:
+\chapter{Displaying \pixels{} to your screen}
+A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
 
 \begin{minted}{rust}
 use bitmappers_geometry::*;
@@ -265,7 +268,7 @@ Running this will show you something like this:
 
 \includegraphics{figures/introduction.png}
 
-\chapter{Bits to byte pixels}
+\chapter{Bits to byte \pixels{}}
 Let's define a way to convert bit information to a byte vector:
 
 \begin{minted}{rust}
@@ -290,13 +293,13 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 }
 \end{minted}
 
-\chapter{Real pixels to byte pixels}
+\chapter{Real \pixels{} to byte \pixels{}}
 % From graphic gems vol 2 pdf page 109
 \skelpars{2}
 
 \chapter{Loading \texttt{xbm} files in \Rust{}}
 
-\texttt{xbm} files are C source code files that contain the pixel information for an image as macro definitions for the dimensions and a static \texttt{char} array for the pixels, with each bit column representing a pixel. If the width dimension doesn't have 8 as a factor, the remaining bit columns are left blank/ignored.
+\texttt{xbm} files are C source code files that contain the pixel information for an image as macro definitions for the dimensions and a static \texttt{char} array for the \pixels{}, with each bit column representing a pixel. If the width dimension doesn't have 8 as a factor, the remaining bit columns are left blank/ignored.
 
 They used to be a popular way to share user avatars in the old internet and are also good material for us to work with, since they are small and numerous. The following is such an image:
 
@@ -425,8 +428,8 @@ Putting them into the equation we can generate a triple of $(a', b', c')$ and th
 \part{Points, Line Segments and Arcs}
 \chapter{Drawing a line segment from its two endpoints}
 
-For any line segment with any slope, pixels must be matched with the infinite
-amount of points contained in the segment. As shown in the following figure, a segment \emph{touches} some pixels; we could fill them using an algorithm and get a \bitmap{} of the line segment.
+For any line segment with any slope, \pixels{} must be matched with the infinite
+amount of points contained in the segment. As shown in the following figure, a segment \emph{touches} some \pixels{}; we could fill them using an algorithm and get a \bitmap{} of the line segment.
 
 \begin{center}
 \input{fig2.pdf_tex}
@@ -708,7 +711,7 @@ We didn't mention in the beginning that the rotation has to be relative to a \em
 \input{cartesian_grid_dmr_1.pdf_tex}
   \def\svgscale{0.6}
 \input{cartesian_grid_dmr_2.pdf_tex}//
-(the distance to the origin (actually 0 pixels) has been exaggerated for the sake of the example)
+(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)
 \end{center}
 
 Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.
@@ -803,6 +806,7 @@ while dy < scaled_height {
 scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \end{minted}
 \section{Smoothing enlarged \bitmaps{}}
+% https://en.wikipedia.org/wiki/Hqx
 % Graphics gems vol 1. pdf page 189 "SMOOTHING ENLARGED MONOCHROME IMAGES"
 \skelpars{2}
 \section{Stretching lines of \bitmaps{}}
@@ -846,11 +850,11 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \thispagestyle{empty}
 \colophontitlesize{25pt}
 \begin{colophon}
-The text has been typeset in \XeLaTeX{} using the \texttt{book} class and\,:
+\noindent{}The text has been typeset in {\cm{}\XeLaTeX{}} using the \texttt{book} class and:
 \begin{itemize}
-  \item \textbf{Avara} for the main text.
+  \item \emph{Redaction} for the main text.
   \item \emph{\fira{}Fira Sans} for referring to the programming language \Rust{}\,.
-  \item \emph{\pixel{}Terminal Grotesque} for referring to the word \bitmap{} as a concept.
+  \item \emph{\pixel{}Redaction20} for referring to the words \bitmap{} and \pixels{} as a concept.
 \end{itemize}
 \end{colophon}
 \end{document}
