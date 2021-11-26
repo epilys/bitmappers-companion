@@ -8,7 +8,7 @@
   %\setmathfont{Latin Modern Math}
   \setmathfont{TeX Gyre Pagella Math}
   \setmonofont[Scale=1.1]{CMU Typewriter Text}
-  \newfontfamily\pixel{Redaction20-Regular}
+  \newfontfamily\pixel{Redaction35-Regular}
   \newfontfamily\fira[Scale=0.90]{Fira Sans}
   \newfontfamily\pixeltitle[Scale=2.5]{Redaction20-Regular}
   \newfontfamily\reduxtitle[Scale=2.5]{Redaction}
@@ -80,9 +80,9 @@
 \renewcommand{\l@subsubsection}{\@dottedtocline{3}{7.4em}{4.5em}}
 \makeatother
 
-\newcommand\bitmap{{\pixel{}\textbf{bitmap}}}
-\newcommand\bitmaps{{\pixel{}\textbf{bitmaps}}}
-\newcommand\pixels{{\pixel{}\textbf{pixels}}}
+\newcommand\bitmap{{\pixel{}bitmap}}
+\newcommand\bitmaps{{\pixel{}bitmaps}}
+\newcommand\pixels{{\pixel{}pixels}}
 \newcommand\Rust{{\fira{}\textbf{Rust}}}
 
 \newcommand\colorunderline[1]{\bgroup\markoverwith{\textcolor{#1}{\rule[-0.5ex]{2pt}{0.8pt}}}\ULon}
@@ -106,7 +106,7 @@
 \usepackage{wallpaper}
 \begin{document}
 \pdfbookmark{Title page}{title-page}
-\ThisLRCornerWallPaper{0.6}{Holbein_Skull2.png}
+\ThisLRCornerWallPaper{0.55}{Holbein_Skull2.png}
 \setstretch{1.1}
 \addtolength{\parskip}{5pt}%
 \newlength\drop
@@ -158,7 +158,7 @@
 \pdfbookmark{\contentsname}{toc}
 \ThisLRCornerWallPaper{0.6}{The-Ambassadors.png}
 \tableofcontents
-\ThisLRCornerWallPaper{0.6}{Holbein_Skull.png}
+\ThisLRCornerWallPaper{0.4}{Holbein_Skull.png}
 \part{Introduction}
 \chapter{Data representation}
 The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a pixel in memory will be \texttt{u8} instead of 1 bit.
@@ -369,20 +369,24 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
     f64::sqrt((xlk*xlk + ylk*ylk) as f64)
 }
 \end{minted}
-
-\chapter{Distance from a point to a line}
-% From graphic gems vol 2 pdf page 40
-\skelpars{2}
 \chapter{Equations of a line}
-\section{The common form}
-\skelpars{2}
-\section{The parametric form}
-\skelpars{2}
-\chapter{Angle between two lines}
-\skelpars{2}
-\chapter{Intersection of two lines}
-\skelpars{2}
-\chapter{Line through two points}
+There are several ways to describe a line mathematically. We'll list the convenient ones for drawing \pixels{}.
+
+The equation that describes every possible line on a two dimensional grid is the \emph{implicit} form $ax+by=c, (a,b) \neq{} (0,0)$. We can generate equivalent equations by adding the equation to itself, i.e. $ax+by=c \equiv 2ax+2by=2c \equiv a'x+b'y=c', a'=2a, b'=2b, c'=2c$ as many times as we want. To "minimize" the constants $a,b,c$ we want to satisfy the relationship $a^{2}+b^{2}=1$, and thus can convert the equivalent equations into one representative equation by multiplying the two sides with $\frac{1}{\sqrt{a^2+b^2}}$; this is called the normalized equation. % TODO: why? add footnote: in the normalized form, a is the cosine of the angle the normal vector makes with the x axis, and b the cosine of the angle with the y axis. and c = - (dist of line to the origin)
+
+The \emph{slope intercept form} describes any line that intercepts the $y$ axis at $b \in{} \mathbb{R}$ with a specific slope $a$:
+
+$$y=ax+b$$
+
+The \emph{parametric} form... % TODO
+
+%% TODO: add conversion between forms
+
+\section{Line through a point $P=(x_p,y_p)$ and a slope $m$}
+
+$$y-y_p=m(x-x_p)$$
+
+\section{Line through two points}
   \begin{figure}
   {\centering%
   \skelfig[width=0.4\textwidth]{2\baselineskip}%
@@ -404,6 +408,13 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \begin{minted}{rust}
 \end{minted}
 
+\chapter{Distance from a point to a line}
+% From graphic gems vol 2 pdf page 40
+\skelpars{2}
+\chapter{Angle between two lines}
+\skelpars{2}
+\chapter{Intersection of two lines}
+\skelpars{2}
 \chapter{Line equidistant from two points}
   \begin{figure}
   {\centering%
@@ -421,9 +432,9 @@ Putting them into the equation we can generate a triple of $(a', b', c')$ and th
 \skelpars{2}
 \part{Points, Lines and Circles}
 \skelpars{2}
-\chapter{Equations of a Circle}
+\chapter{Equations of a circle}
 \skelpars{2}
-\chapter{Bounding Circle}
+\chapter{Bounding circle}
 % From graphic gems vol 2 pdf page 46
 \skelpars{2}
 \part{Points, Line Segments and Arcs}
@@ -499,7 +510,7 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64)) {
     }
 }
 \end{minted}
-\chapter{Drawing Line segments With Width}
+\chapter{Drawing line segments with width}
 \begin{minted}{rust}
 pub fn plot_line_width(&mut self, (x1, y1): (i64, i64),
                        (x2, y2): (i64, i64), _wd: f64) {
@@ -622,14 +633,16 @@ If $r_1 \neq{} 0$, $r_2 \neq{} 0$ and $sgn(r_1)==sign(r_2)$ the line segments do
 
 At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to FIXME.)
 \section{\emph{Fast} intersection of two line segments}
-% Graphics gems vol 3. pdf page 231 
+% Graphics gems vol 3. pdf page 231
 \skelpars{2}
 \part{Curves other than circles}
 \chapter{Parametric ellipictal arcs}
 % Graphics gems vol 3. pdf page 196
 \skelpars{2}
-\part{Points, Lines and Planes}
-
+\part{Points, Lines and Shapes}
+%\chapter{Triangles}
+%\section{Making a triangle from a point and given angles}
+%\chapter{Rectangles, parallelograms}
 \chapter{Union, intersection and difference of polygons}
 % Graphics gems vol 2. pdf page 63
 \skelpars{2}
@@ -813,6 +826,15 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \section{Stretching lines of \bitmaps{}}
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpars{2}
+\chapter{Mirroring}
+% Geometric tools for computer graphics  pdf page 195, "Reflection"
+\skelpars{2}
+\chapter{Shearing}
+% Geometric tools for computer graphics  pdf page 200, "Shearing"
+\skelpars{2}
+\chapter{Projections}
+% Geometric tools for computer graphics  pdf page 205, "Projections"
+\skelpars{2}
 \part{Areas}
 \skelpars{2}
 \chapter{Flood filling}
@@ -841,7 +863,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \chapter{Faster line clipping}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
 \skelpars{2}
-\chapter{Space-Filling Curves}
+\chapter{Space-filling Curves}
 % Graphics gems vol 2. pdf page 58
 \skelpars{2}
 \clearpage{}
