@@ -369,7 +369,7 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
     f64::sqrt((xlk*xlk + ylk*ylk) as f64)
 }
 \end{minted}
-\chapter{Equations of a line}
+\chapter{Equations of a line}\label{ch:equations-lines}
 There are several ways to describe a line mathematically. We'll list the convenient ones for drawing \pixels{}.
 
 The equation that describes every possible line on a two dimensional grid is the \emph{implicit} form $ax+by=c, (a,b) \neq{} (0,0)$. We can generate equivalent equations by adding the equation to itself, i.e. $ax+by=c \equiv 2ax+2by=2c \equiv a'x+b'y=c', a'=2a, b'=2b, c'=2c$ as many times as we want. To "minimize" the constants $a,b,c$ we want to satisfy the relationship $a^{2}+b^{2}=1$, and thus can convert the equivalent equations into one representative equation by multiplying the two sides with $\frac{1}{\sqrt{a^2+b^2}}$; this is called the normalized equation. % TODO: why? add footnote: in the normalized form, a is the cosine of the angle the normal vector makes with the x axis, and b the cosine of the angle with the y axis. and c = - (dist of line to the origin)
@@ -413,7 +413,7 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \skelpars{2}
 \chapter{Angle between two lines}
 \skelpars{2}
-\chapter{Intersection of two lines}
+\chapter{Intersection of two lines}\label{ch:intersection-lines}
 \skelpars{2}
 \chapter{Line equidistant from two points}
   \begin{figure}
@@ -621,7 +621,7 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64),
 % Graphics gems vol 2. pdf page 37
 Let points $\textbf{1}=(x_1,y_1)$, $\textbf{2} = (x_2, y_2)$, $\textbf{3} = (x_3, y_3)$ and $\textbf{4} = (x_4, y_4)$ and $\textbf{1,2}$, $\textbf{3,4}$ two line segments they form. We wish to find their intersection:
 
-First, get the equation of line $L_{12}$ and line $L_{34}$ from chapter FIXME.
+First, get the equation of line $L_{12}$ and line $L_{34}$ from chapter \emph{\nameref{ch:equations-lines}}.
 
 Substitute points $\textbf{3}$ and $\textbf{4}$ in equation $L_{12}$ to compute $r_3 = L_{12}(\textbf{3})$ and $r_4=L_{12}(\textbf{4})$ respectively.
 
@@ -631,7 +631,7 @@ In $L_{34}$ substitute point $\textbf{1}$ to compute $r_1$, and do the same for 
 
 If $r_1 \neq{} 0$, $r_2 \neq{} 0$ and $sgn(r_1)==sign(r_2)$ the line segments don't intersect, so stop.
 
-At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to FIXME.)
+At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to \emph{\nameref{ch:intersection-lines}}.)
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
 \skelpars{2}
