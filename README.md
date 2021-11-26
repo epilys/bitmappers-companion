@@ -1,4 +1,4 @@
-# A Bitmapper's Geometry - zine/book about bitmap drawing algorithms and math with code examples in Rust
+# A Bitmapper's Companion - zine/book about bitmap drawing algorithms and math with code examples in Rust
 
 A small zine/book written in LaTeX. In progress.
 
