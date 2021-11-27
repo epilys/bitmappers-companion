@@ -389,8 +389,8 @@ $$y-y_p=m(x-x_p)$$
 \section{Line through two points}
   \begin{figure}
   {\centering%
-  \skelfig[width=0.4\textwidth]{2\baselineskip}%
-  \skelcaption[width=0.2\textwidth,lines=1]{}}
+\input{line_through_points.pdf_tex}
+  \caption{}}
   \end{figure}
 It seems sufficient, given the coordinates of two points $M, N$, to calculate $a, b$ and $c$ to form a line equation:
 
@@ -399,6 +399,7 @@ $$ax+by+c=0$$
 If the two points are not the same, they necessarily form such a line. To get there, we start from expressing the line as parametric over $t$: at $t=0$ it's at point $M$ and at $t=1$ it's at point $N$:
 
 $$c = c_M + (c_N - c_M)t, t\in R, c \in \{x, y\}$$
+$$c = c_M, t\in R, c \in \{x, y\}$$
 
 Substituting $t$ in one of the equations we get:
 
@@ -409,8 +410,25 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \end{minted}
 
 \chapter{Distance from a point to a line}
+
+\begin{center}
+\input{point_line_distance.pdf_tex}
+\end{center}
+
+\section{Using the implicit equation form}
+Let's find the distance from a given point $P$ and a given line $L$. Let $d$ be the distance between them. Bring $L$ to the implicit form $ax+by=c$.
+
+$$d= \frac{|ax_p+by_p+c|}{\sqrt{a^2+b^2}}$$
+
+\section{Using an $L$ defined by two points $P_1, P_2$}
+With $P=(x_0, y_0)$, $P_1 = (x_1, y_1)$ and $P_2 = (x_2, y_2)$.
+
+$$d=\frac{|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|}{\sqrt{((x_2-x_1)^2+(y_2-y_1)^2}}$$
+\section{Using an $L$ defined by a point $P_l$ and angle $θ$}
+
+$$d=|cos(θ)(P_{ly}-y_p)-sin(θ)(P_{lx} - P_x)|$$
+
 % From graphic gems vol 2 pdf page 40
-\skelpars{2}
 \chapter{Angle between two lines}
 \skelpars{2}
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
