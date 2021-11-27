@@ -10,6 +10,7 @@
   \setmonofont[Scale=1.1]{CMU Typewriter Text}
   \newfontfamily\pixel{Redaction35-Regular}
   \newfontfamily\fira[Scale=0.90]{Fira Sans}
+  \newfontfamily\thumbfont{Redaction35-Regular}
   \newfontfamily\pixeltitle[Scale=3.5]{Redaction35-Bold}
   \newfontfamily\reduxtitle[Scale=3.5]{Redaction-Bold}
   \newfontfamily\cm{CMU Serif}
@@ -41,7 +42,7 @@
   \usepackage{calc} % for inkscape pdf tex
   \usepackage{attachfile2}
 %\usepackage[showframe,marginparwidth=3cm,twoside=true]{geometry}
-\usepackage[marginparwidth=3cm,twoside=true]{geometry}
+\usepackage[marginparwidth=3cm,twoside=true,a4paper]{geometry}
   \usepackage{metalogo}
   \usepackage{csquotes}
   \usepackage[compact,nostruts,medium]{titlesec}
@@ -53,7 +54,6 @@
   \skelcaption[width=0.2\textwidth,lines=1]{}}
   \end{figure}}
   \usepackage{setspace}
-  \usepackage{xcolor}
   \definecolor{blackoutline}{RGB}{14,14,14}
   \definecolor{bgcolor}{rgb}{0.95,0.95,0.95}
   \definecolor{red}{rgb}{1,0,0}
@@ -133,12 +133,27 @@ This code file is a PDF attachment}%
 
 \newsavebox{\mintedbox}
 
-\newcommand{\setbackgroundcolour}{\pagecolor[rgb]{0.17,0.17,0.17}}
+\usepackage[thumblink=rule,linefill=dots,height=50pt,minheight={50pt},width=50pt,distance={2mm},topthumbmargin={2pt},bottomthumbmargin={2pt},eventxtindent={2pt},oddtxtexdent={0pt},evenmarkindent={0pt},oddmarkexdent={0pt},evenprintvoffset={0pt},nophantomsection=false,ignorehoffset=true,ignorevoffset=true,final=true,hidethumbs=false,verbose=true]{thumbs}
+ \definecolor{DarkBg}  {rgb} {0.17,0.17,0.17}
+ \definecolor{DarkFg}  {rgb} {0.90,0.90,0.90}
+ \definecolor{LightBg} {rgb}{1.0,1.0,1.0}
+\newcommand{\setbackgroundcolour}{\pagecolor{DarkBg}}
 \newcommand{\settextcolour}{\color[rgb]{0.90,0.90,0.90}}
 \newcommand{\invertbackgroundtext}{\setbackgroundcolour\settextcolour}
-\newcommand{\revertbackgroundcolour}{\pagecolor[rgb]{1.0,1.0,1.0}}
+\newcommand{\revertbackgroundcolour}{\pagecolor{LightBg}}
 \newcommand{\reverttextcolour}{\color[rgb]{0.19,0.19,0.19}}
 \newcommand{\revertbackgroundtext}{\revertbackgroundcolour\reverttextcolour}
+
+\newcommand\myaddthumb[2]{%
+  %\addtitlethumb{#1}{\fcolorbox{red}{black}{\parbox[t][45pt]{45pt}{\noindent%
+  \addtitlethumb{#1}{%
+    \parbox[t][43pt]{43pt}{\centering{}\vfill\noindent%
+{\thumbfont{}#2\par\vfill}%
+}%
+}{white}{DarkBg}{pagesLTS.0}%
+}%
+
+\pagenumbering{arabic}
 
 \begin{document}
 \newgeometry{left=1cm,top=0.1cm,right=1cm,bottom=0.1cm}
@@ -200,10 +215,13 @@ This code file is a PDF attachment}%
 \noindent{}\myurl{https://github.com/epilys/bitmappers-companion}{https://github.com/epilys/bitmappers-companion}
 
 \clearpage{}
+\myaddthumb{Table Of Contents}{toc}
 \pdfbookmark{\contentsname}{toc}
 \ThisLRCornerWallPaper{0.6}{The-Ambassadors.png}
 \tableofcontents
 \ThisLRCornerWallPaper{0.4}{Holbein_Skull.png}
+\clearpage{}
+\myaddthumb{Introduction}{intro}
 \part{Introduction}
 \chapter{Data representation}
 The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a pixel in memory will be \texttt{u8} instead of 1 bit.
@@ -385,6 +403,8 @@ and finally run it:
 
 \includegraphics{figures/intro-2.png}
 
+\clearpage{}
+\myaddthumb{Points and Lines}{lines}
 \part{Points and Lines}
 \chapter{Distance between two points}
 
@@ -486,6 +506,8 @@ $$ (\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2})$$
 Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
 \chapter{Normal to a line through a point}
 \skelpars{2}
+\clearpage{}
+\myaddthumb{Points, Lines and Circles}{circles}
 \part{Points, Lines and Circles}
 \skelpars{2}
 \chapter{Equations of a circle}
@@ -493,6 +515,7 @@ Putting them into the equation we can generate a triple of $(a', b', c')$ and th
 \chapter{Bounding circle}
 % From graphic gems vol 2 pdf page 46
 \skelpars{2}
+\myaddthumb{Points, Line Segments and Arcs}{arcs}
 \part{Points, Line Segments and Arcs}
 \chapter{Drawing a line segment from its two endpoints}
 
@@ -690,10 +713,12 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
 \skelpars{2}
+\myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
 \chapter{Parametric ellipictal arcs}
 % Graphics gems vol 3. pdf page 196
 \skelpars{2}
+\myaddthumb{Points, Lines and Shapes}{shapes}
 \part{Points, Lines and Shapes}
 %\chapter{Triangles}
 %\section{Making a triangle from a point and given angles}
@@ -705,7 +730,8 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \chapter{Centroid of polygon}
 % Graphics gems vol 4. pdf page 14
 \skelpars{2}
-\part{Vectors, matrices and transformations}
+\myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
+\part{Vectors, matrices and trans\-for\-ma\-tions}
 \chapter{Rotation of a \bitmap{}}
 
 \[
@@ -894,6 +920,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \chapter{Projections}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
 \skelpars{2}
+\myaddthumb{Areas}{areas}
 \part{Areas}
 \skelpars{2}
 \chapter{Flood filling}
@@ -902,6 +929,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \skelpars{2}
 % Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
 \skelpars{2}
+\myaddthumb{Advanced}{ad\-vanced}
 \part{Advanced}
 \section{Faster Drawing a line segment from its two endpoints using Symmetry}
 % From graphic gems vol 1 p 103 (pdf page 128)
@@ -926,6 +954,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 % Graphics gems vol 2. pdf page 58
 \skelpars{2}
 \clearpage{}
+\stopthumb
 \bookmarksetup{startatroot}
 \colophontitle{About this text}
 \pdfbookmark{About this text}{colophon}
