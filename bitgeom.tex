@@ -28,6 +28,7 @@
     urlcolor=black
 }
   \usepackage{microtype}
+  \usepackage{marginnote}
   \usepackage[noclrdblpg]{colophon}
   \usepackage{bookmark}
   \usepackage{amsmath}
@@ -104,6 +105,9 @@
   pdfsubject={programming},
 }
 \usepackage{wallpaper}
+
+\newsavebox{\mintedbox}
+
 \begin{document}
 \pdfbookmark{Title page}{title-page}
 \ThisLRCornerWallPaper{0.55}{Holbein_Skull2.png}
@@ -222,6 +226,8 @@ impl Image {
 \chapter{Displaying \pixels{} to your screen}
 A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
 
+\begin{lrbox}{\mintedbox}
+\begin{minipage}{\textwidth} % add here for the width
 \begin{minted}{rust}
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
@@ -231,6 +237,54 @@ const WINDOW_HEIGHT: usize = 400;
 
 fn main() {
     let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
+    let mut window = Window::new(
+        "Test - ESC to exit",
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        WindowOptions {
+            title: true,
+            //borderless: true,
+            //resize: false,
+            //transparency: true,
+            ..WindowOptions::default()
+        },
+    )
+    .unwrap();
+
+    // Limit to max ~60 fps update rate
+    window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
+
+    let mut image = Image::new(50, 50, 150, 150);
+    image.draw_outline();
+    image.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
+
+    while window.is_open()
+         && !window.is_key_down(Key::Escape)
+         && !window.is_key_down(Key::Q) {
+        window
+            .update_with_buffer(&buffer, WINDOW_WIDTH, WINDOW_HEIGHT)
+            .unwrap();
+        let millis = std::time::Duration::from_millis(100);
+        std::thread::sleep(millis);
+    }
+}
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\marginnote{\footnotesize{}You can easily select and copy the entire code from this shrunk copy:\\\scalebox{0.2}{\usebox{\mintedbox}}}
+
+\begin{minted}{rust}
+use bitmappers_companion::*;
+use minifb::{Key, Window, WindowOptions};
+
+const WINDOW_WIDTH: usize = 400;
+const WINDOW_HEIGHT: usize = 400;
+
+fn main() {
+    let mut buffer: Vec<u32> = vec![WHITE;
+                                    WINDOW_WIDTH *
+                                    WINDOW_HEIGHT];
     let mut window = Window::new(
         "Test - ESC to exit",
         WINDOW_WIDTH,
@@ -357,9 +411,7 @@ Given two points, $K$ and $L$, an elementary application of Pythagoras' Theorem 
 \begin{equation}
   r = \sqrt{(x_{L} - x_{K})^{2} +(y_{L} - y_{K})^{2}}
 \end{equation}
-
 which is simply coded:
-
 \begin{minted}{rust}
 pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
     let (x_k, y_k) = p_k;
