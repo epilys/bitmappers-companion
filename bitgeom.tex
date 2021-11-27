@@ -10,8 +10,8 @@
   \setmonofont[Scale=1.1]{CMU Typewriter Text}
   \newfontfamily\pixel{Redaction35-Regular}
   \newfontfamily\fira[Scale=0.90]{Fira Sans}
-  \newfontfamily\pixeltitle[Scale=2.5]{Redaction20-Regular}
-  \newfontfamily\reduxtitle[Scale=2.5]{Redaction}
+  \newfontfamily\pixeltitle[Scale=3.5]{Redaction20-Regular}
+  \newfontfamily\reduxtitle[Scale=3.5]{Redaction}
   \newfontfamily\cm{CMU Serif}
   \usepackage{microtype}
   \usepackage{dot2texi}
@@ -38,6 +38,9 @@
   \usepackage{tikz}
   \usepackage{svg}
   \usepackage{calc} % for inkscape pdf tex
+  \usepackage{attachfile2}
+%\usepackage[showframe,marginparwidth=3cm,twoside=true]{geometry}
+\usepackage[marginparwidth=3cm,twoside=true]{geometry}
   \usepackage{metalogo}
   \usepackage{csquotes}
   \usepackage[compact,nostruts,medium]{titlesec}
@@ -62,6 +65,7 @@
  \definecolor{theframe}  {gray}{0.75}
  \definecolor{theshade}  {gray}{0.94}
 \usepackage[cache=false,outputdir=build]{minted}
+\setminted[rust]{fontsize=\scriptsize,baselinestretch=0.5}
 %\setminted[tex]{breaklines=true,linenos=true,bgcolor=theshade,frame=single,framesep=5pt,rulecolor=theframe}
 %\setminted[shell]{breaklines=true,linenos=true,bgcolor=theshade,frame=single,framesep=5pt,rulecolor=theframe}
 %\definecolor{bg}{rgb}{0.95,0.95,0.95}
@@ -106,7 +110,7 @@
 }
 
 \newcommand\titletext{A {\pixeltitle{}Bitmapper}'s Companion}
-\newcommand\covertitletext{\TitleOutline{A Bitmapper's Companion}}
+\newcommand\covertitletext{\TitleOutline{A {\pixeltitle{}Bitmapper}'s Companion}}
 \title{\titletext{}}
 \newcommand\subtitle{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}
 \newcommand\coversubtitle{\TitleOutline{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}}
@@ -120,14 +124,15 @@
 
 \newsavebox{\mintedbox}
 
-\newcommand{\setbackgroundcolour}{\pagecolor[rgb]{0.19,0.19,0.19}}
+\newcommand{\setbackgroundcolour}{\pagecolor[rgb]{0.17,0.17,0.17}}
 \newcommand{\settextcolour}{\color[rgb]{0.90,0.90,0.90}}
 \newcommand{\invertbackgroundtext}{\setbackgroundcolour\settextcolour}
-\newcommand{\revertbackgroundcolour}{\pagecolor[rgb]{0.98,0.98,0.98}}
+\newcommand{\revertbackgroundcolour}{\pagecolor[rgb]{1.0,1.0,1.0}}
 \newcommand{\reverttextcolour}{\color[rgb]{0.19,0.19,0.19}}
 \newcommand{\revertbackgroundtext}{\revertbackgroundcolour\reverttextcolour}
 
 \begin{document}
+\newgeometry{left=1cm,top=0.1cm,right=1cm,bottom=0.1cm}
 \pdfbookmark{Title page}{title-page}%cover
 \ThisLRCornerWallPaper{0.55}{Holbein_Skull2_inverted.png}
 \setstretch{1.1}
@@ -146,16 +151,22 @@
 \contourlength{0.02em}
     \scalebox{2.0}{\parbox{0.5\textwidth}{\centering{\reduxtitle{}\covertitletext{}}}}\\
     \vspace{.8\baselineskip}
-    {\LARGE\coversubtitle{}}\par
+    \par
     \vspace{-0.4\baselineskip}
     }\rule{\textwidth}{1.6pt}%
     \vspace{-0.9\baselineskip}
     \rule{\textwidth}{0.4pt}\\[0.2\baselineskip]
     {\Large{}\TitleOutline{epilys}}\hfill{\small{}\TitleOutline{\today{}}}
+
+\vfill%
+    \scalebox{1.5}{\parbox{0.28\textwidth}{\noindent%
+{\LARGE\raggedleft\coversubtitle{}\par}
+    }}
 \vfill%
 \end{flushleft}%
 \endgroup
 \clearpage{}
+\restoregeometry
 \revertbackgroundtext
 \noindent{}Manos Pitsidianakis (epilys)\\
 \url{https://nessuent.xyz}\\
@@ -195,7 +206,10 @@ We will work on the cartesian grid representing the framebuffer that will show u
 \end{center}
 
 We will represent points as pairs of signed integers. When actually drawing them though, negative values and values outside the window's geometry will be ignored (clipped).
-
+%
+\marginnote{\scriptsize{}This code is also a PDF attachment:\\ \attachfile{src/lib.rs}}%
+%
+%
 \begin{minted}{rust}
 pub type Point = (i64, i64);
 
@@ -247,55 +261,10 @@ impl Image {
 
 \chapter{Displaying \pixels{} to your screen}
 A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
-
-\begin{lrbox}{\mintedbox}
-\begin{minipage}{\textwidth} % add here for the width
-\begin{minted}{rust}
-use bitmappers_companion::*;
-use minifb::{Key, Window, WindowOptions};
-
-const WINDOW_WIDTH: usize = 400;
-const WINDOW_HEIGHT: usize = 400;
-
-fn main() {
-    let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
-    let mut window = Window::new(
-        "Test - ESC to exit",
-        WINDOW_WIDTH,
-        WINDOW_HEIGHT,
-        WindowOptions {
-            title: true,
-            //borderless: true,
-            //resize: false,
-            //transparency: true,
-            ..WindowOptions::default()
-        },
-    )
-    .unwrap();
-
-    // Limit to max ~60 fps update rate
-    window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
-
-    let mut image = Image::new(50, 50, 150, 150);
-    image.draw_outline();
-    image.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
-
-    while window.is_open()
-         && !window.is_key_down(Key::Escape)
-         && !window.is_key_down(Key::Q) {
-        window
-            .update_with_buffer(&buffer, WINDOW_WIDTH, WINDOW_HEIGHT)
-            .unwrap();
-        let millis = std::time::Duration::from_millis(100);
-        std::thread::sleep(millis);
-    }
-}
-\end{minted}
-\end{minipage}
-\end{lrbox}
-
-\marginnote{\footnotesize{}You can easily select and copy the entire code from this shrunk copy:\\\scalebox{0.2}{\usebox{\mintedbox}}}
-
+%
+\marginnote{\scriptsize{}This code is also a PDF attachment:\\ \attachfile{src/bin/introduction.rs}}%
+%
+%
 \begin{minted}{rust}
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
@@ -764,7 +733,10 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \end{equation*}
 
 Let's load an \texttt{xface}. We will use \texttt{bits\_to\_bytes} (See Introduction).
-
+%
+\marginnote{\scriptsize{}This chapter's code is also a PDF attachment:\\ \attachfile{src/bin/rotation.rs}}%
+%
+%
 \begin{minted}{rust}
 include!("dmr.rs");
 
