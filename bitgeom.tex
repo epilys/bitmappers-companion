@@ -50,6 +50,7 @@
   \end{figure}}
   \usepackage{setspace}
   \usepackage{xcolor}
+  \definecolor{blackoutline}{RGB}{14,14,14}
   \definecolor{bgcolor}{rgb}{0.95,0.95,0.95}
   \definecolor{red}{rgb}{1,0,0}
   \definecolor{gray}{RGB}{24,24,24}
@@ -65,10 +66,19 @@
 %\setminted[shell]{breaklines=true,linenos=true,bgcolor=theshade,frame=single,framesep=5pt,rulecolor=theframe}
 %\definecolor{bg}{rgb}{0.95,0.95,0.95}
 \usepackage{xspace}
+\usepackage{xparse}
 \usepackage{contour}
 \usepackage[normalem]{ulem}
 \usepackage{minted}
 \usemintedstyle{bw}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\TitleOutline}{m}
+ {
+  \seq_set_split:Nnn \l_tmpa_seq { ~ } { #1 }
+  \seq_map_inline:Nn \l_tmpa_seq { \contour{blackoutline}{##1} ~ } \unskip
+ }
+\ExplSyntaxOff
 
 \renewcommand{\ULdepth}{1.8pt}
 \contourlength{0.8pt}
@@ -96,8 +106,10 @@
 }
 
 \newcommand\titletext{A {\pixeltitle{}Bitmapper}'s Companion}
+\newcommand\covertitletext{\TitleOutline{A Bitmapper's Companion}}
 \title{\titletext{}}
 \newcommand\subtitle{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}
+\newcommand\coversubtitle{\TitleOutline{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}}
 \newcommand\biblatex{\texttt{biblatex}\xspace}%
 \hypersetup{
   pdftitle={\titletext{}},
@@ -131,14 +143,15 @@
     \vspace{-0.9\baselineskip}
     \rule{\textwidth}{0.4pt}\\[0.8\baselineskip]
     {\centering
-    \scalebox{2.0}{\parbox{0.5\textwidth}{\centering{\reduxtitle{}\titletext{}}}}\\
+\contourlength{0.02em}
+    \scalebox{2.0}{\parbox{0.5\textwidth}{\centering{\reduxtitle{}\covertitletext{}}}}\\
     \vspace{.8\baselineskip}
-    {\LARGE\subtitle{}}\par
+    {\LARGE\coversubtitle{}}\par
     \vspace{-0.4\baselineskip}
     }\rule{\textwidth}{1.6pt}%
     \vspace{-0.9\baselineskip}
     \rule{\textwidth}{0.4pt}\\[0.2\baselineskip]
-    {\Large{}epilys}\hfill{\small{}\today{}}
+    {\Large{}\TitleOutline{epilys}}\hfill{\small{}\TitleOutline{\today{}}}
 \vfill%
 \end{flushleft}%
 \endgroup
