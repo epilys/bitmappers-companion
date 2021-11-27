@@ -108,10 +108,18 @@
 
 \newsavebox{\mintedbox}
 
+\newcommand{\setbackgroundcolour}{\pagecolor[rgb]{0.19,0.19,0.19}}
+\newcommand{\settextcolour}{\color[rgb]{0.90,0.90,0.90}}
+\newcommand{\invertbackgroundtext}{\setbackgroundcolour\settextcolour}
+\newcommand{\revertbackgroundcolour}{\pagecolor[rgb]{0.98,0.98,0.98}}
+\newcommand{\reverttextcolour}{\color[rgb]{0.19,0.19,0.19}}
+\newcommand{\revertbackgroundtext}{\revertbackgroundcolour\reverttextcolour}
+
 \begin{document}
-\pdfbookmark{Title page}{title-page}
-\ThisLRCornerWallPaper{0.55}{Holbein_Skull2.png}
+\pdfbookmark{Title page}{title-page}%cover
+\ThisLRCornerWallPaper{0.55}{Holbein_Skull2_inverted.png}
 \setstretch{1.1}
+\invertbackgroundtext
 \addtolength{\parskip}{5pt}%
 \newlength\drop
 \thispagestyle{empty}
@@ -135,6 +143,7 @@
 \end{flushleft}%
 \endgroup
 \clearpage{}
+\revertbackgroundtext
 \noindent{}Manos Pitsidianakis (epilys)\\
 \url{https://nessuent.xyz}\\
 \url{https://github.com/epilys}\\
