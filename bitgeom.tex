@@ -15,6 +15,7 @@
   \newfontfamily\reduxtitle[Scale=3.5]{Redaction-Bold}
   \newfontfamily\cm{CMU Serif}
   \usepackage{microtype}
+  \usepackage{graphicx}
   \usepackage{dot2texi}
   \usepackage[breaklinks=true]{hyperref}
 \hypersetup{
@@ -828,9 +829,10 @@ We didn't mention in the beginning that the rotation has to be relative to a \em
   \def\svgscale{0.6}
 \input{cartesian_grid_dmr_1.pdf_tex}
   \def\svgscale{0.6}
-\input{cartesian_grid_dmr_2.pdf_tex}//
-(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)
+\input{cartesian_grid_dmr_2.pdf_tex}
 \end{center}
+
+{\centering{}\noindent(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)}
 
 Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.\index{centroid}
 
@@ -932,11 +934,106 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpars{2}
 \chapter{Mirroring}
+Mirroring to an axis is the transformation of one coordinate to its equidistant value across the axis:
+
+To mirror a \pixel across the $x$ axis, simply multiply its coordinates with the following matrix:
+
+\[
+  M_x =
+  \begin{bmatrix}
+    1 & 0\\
+    0 & -1
+  \end{bmatrix}
+\]
+
+This results in the $y$ coordinate's sign being flipped.
+
+For $y$-mirroring, the transformation follows the same logic:
+
+\[
+  M_y =
+  \begin{bmatrix}
+    -1 & 0\\
+    0 & 1
+  \end{bmatrix}
+\]
+
 % Geometric tools for computer graphics  pdf page 195, "Reflection"
-\skelpars{2}
 \chapter{Shearing}
+\attachsource{src/bin/shearing.rs}%
+Simple shearing\index{shearing} is the transformation of one dimension by a distance proportional to the other dimension, In $x$-shearing (or horizontal shearing) only the $x$ coordinate is affected, and likewise in $y$-shearing only $y$ as well.
+
 % Geometric tools for computer graphics  pdf page 200, "Shearing"
-\skelpars{2}
+{\noindent\centering{}\includegraphics{figures/shearing-0.png}}
+
+With $l$ being equal to the desired tilt away from the $y$ axis, the transformation is described by the following matrix:%TODO add figure explaining which slope $l$ defines
+
+\[
+  S_x =
+  \begin{bmatrix}
+    1 & l\\
+    0 & 1
+  \end{bmatrix}
+\]
+
+Which is as simple as this function:
+
+\begin{minted}{rust}
+fn shear_x((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
+    (x_p+(l*(y_p as f64)) as i64, y_p)
+}
+\end{minted}
+
+\noindent\includegraphics{figures/shearing-1.png}
+
+For $y$-shearing, we have the following:
+
+\[
+  S_y =
+  \begin{bmatrix}
+    1 & 0\\
+    l & 1
+  \end{bmatrix}
+\]
+
+\begin{minted}{rust}
+fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
+    (x_p, (l*(x_p as f64)) as i64 + y_p)
+}
+\end{minted}
+
+\noindent\includegraphics{figures/shearing-2.png}
+
+A full example:
+\begin{minted}{rust}
+include!("../dmr.xbm.rs");
+
+const WINDOW_WIDTH: usize = 200;
+const WINDOW_HEIGHT: usize = 200;
+
+fn shear_x((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
+    (x_p+(l*(y_p as f64)) as i64, y_p)
+}
+fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
+    (x_p, (l*(x_p as f64)) as i64 + y_p)
+}
+
+let mut image = Image::new(DMR_WIDTH, DMR_HEIGHT, 25, 25);
+image.bytes = bits_to_bytes(DMR_BITS, DMR_WIDTH);
+image.draw_outline();
+
+let l = -0.5;
+let mut sheared = Image::new(DMR_WIDTH*2, DMR_HEIGHT*2, 25, 25);
+for x in 0..DMR_WIDTH {
+    for y in 0..DMR_HEIGHT  {
+        if image.bytes[y * DMR_WIDTH + x] == BLACK {
+          let p = shear_x((x as i64 ,y as i64 ), l);
+          sheared.plot(p.0+(DMR_WIDTH/2) as i64, p.1+(DMR_HEIGHT/2) as i64); 
+        }
+    }
+}
+sheared.draw_outline();
+\end{minted}
 \chapter{Projections}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
 \skelpars{2}
@@ -988,7 +1085,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \begin{itemize}
   \item \textbf{Redaction} for the main text.
   \item \textbf{\fira{}Fira Sans} for referring to the programming language \Rust{}\,.
-  \item \textbf{\pixel{}Redaction20} for referring to the words \bitmap{} and \pixels{} as a concept.
+  \item \textbf{\pixelfont{}Redaction20} for referring to the words \bitmap{} and \pixels{} as a concept.
 \end{itemize}
 \end{colophon}
 \end{document}
