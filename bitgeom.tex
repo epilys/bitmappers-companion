@@ -29,6 +29,9 @@
     urlcolor=black
 }
 \usepackage[nobiblatex]{xurl}
+\usepackage{makeidx}
+\makeindex
+\usepackage[totoc]{idxlayout}
   \usepackage{microtype}
   \usepackage{marginnote}
   \usepackage[noclrdblpg]{colophon}
@@ -191,7 +194,7 @@ This code file is a PDF attachment}%
 \clearpage{}
 \restoregeometry
 \revertbackgroundtext
-\noindent{}Manos Pitsidianakis (epilys)\\
+\marginnote{\includegraphics{xface.png}}[-1.3\baselineskip]\noindent{}Manos Pitsidianakis (epilys)\\
 \myurl{https://nessuent.xyz}{https://\-nessuent.xyz}\\
 \myurl{https://github.com/epilys}{https://github.com/epilys}\\
 \myurl{epilys@nessuent.xyz}{epilys@nessuent.xyz}\\
@@ -717,7 +720,7 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \clearpage{}
 \myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
-\chapter{Parametric ellipictal arcs}
+\chapter{Parametric elliptical arcs}
 % Graphics gems vol 3. pdf page 196
 \skelpars{2}
 \clearpage{}
@@ -730,7 +733,7 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 % Graphics gems vol 2. pdf page 63
 \skelpars{2}
 
-\chapter{Centroid of polygon}
+\chapter{Centroid of polygon}\index{centroid}
 % Graphics gems vol 4. pdf page 14
 \skelpars{2}
 \chapter{Flood filling}
@@ -822,7 +825,7 @@ We didn't mention in the beginning that the rotation has to be relative to a \em
 (the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)
 \end{center}
 
-Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.
+Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.\index{centroid}
 
 If we have a list of $n$ points, the centroid is calculated as:
 
@@ -963,6 +966,11 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \skelpars{1}
 \clearpage{}
 \stopthumb
+\backmatter
+\bookmarksetup{startatroot}
+\cleardoublepage
+\printindex
+\cleardoublepage
 \bookmarksetup{startatroot}
 \colophontitle{About this text}
 \pdfbookmark{About this text}{colophon}
