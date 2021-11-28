@@ -10,7 +10,7 @@
   \setmonofont[Scale=1.1]{CMU Typewriter Text}
   \newfontfamily\pixel{Redaction35-Regular}
   \newfontfamily\fira[Scale=0.90]{Fira Sans}
-  \newfontfamily\thumbfont{Redaction35-Regular}
+  \newfontfamily\thumbfont[Scale=0.9]{Redaction35-Regular}
   \newfontfamily\pixeltitle[Scale=3.5]{Redaction35-Bold}
   \newfontfamily\reduxtitle[Scale=3.5]{Redaction-Bold}
   \newfontfamily\cm{CMU Serif}
@@ -69,8 +69,10 @@
  \definecolor{theframe}  {gray}{0.75}
  \definecolor{theshade}  {gray}{0.94}
  \definecolor{thepeach}  {RGB}{246,232,220}
+ \definecolor{punchbg}{RGB}{250, 230, 180}
+ \definecolor{punchframe}{RGB}{240, 220, 170}
 \usepackage[cache=false,outputdir=build]{minted}
-\setminted[rust]{labelposition=bottomline,bgcolor=thepeach,fontsize=\scriptsize,baselinestretch=0.5,frame=leftline,breaklines=true,breakanywhere=true}
+\setminted[rust]{labelposition=bottomline,bgcolor=thepeach,rulecolor=punchframe,fontsize=\scriptsize,baselinestretch=0.5,frame=leftline,breaklines=true,breakanywhere=true}
 \setminted[c]{bgcolor=theshade,fontsize=\scriptsize,baselinestretch=0.5,frame=leftline,breaklines=true,breakanywhere=true}
 %\setminted[tex]{breaklines=true,linenos=true,bgcolor=theshade,frame=single,framesep=5pt,rulecolor=theframe}
 %\setminted[shell]{breaklines=true,linenos=true,bgcolor=theshade,frame=single,framesep=5pt,rulecolor=theframe}
@@ -136,7 +138,7 @@ This code file is a PDF attachment}%
 
 \newsavebox{\mintedbox}
 
-\usepackage[thumblink=rule,linefill=dots,height=50pt,minheight={50pt},width=50pt,distance={2mm},topthumbmargin={2pt},bottomthumbmargin={2pt},eventxtindent={2pt},oddtxtexdent={0pt},evenmarkindent={0pt},oddmarkexdent={0pt},evenprintvoffset={0pt},nophantomsection=false,ignorehoffset=true,ignorevoffset=true,final=true,hidethumbs=false,verbose=true]{thumbs}
+\usepackage[thumblink=line,height=50pt,minheight={50pt},width=50pt,distance={2mm},topthumbmargin={5cm},bottomthumbmargin={2pt},eventxtindent={0pt},oddtxtexdent={2pt},evenmarkindent={0pt},oddmarkexdent={0pt},evenprintvoffset={0pt},nophantomsection=false,ignorehoffset=true,ignorevoffset=true,final=true,hidethumbs=false,verbose=true]{thumbs}
  \definecolor{DarkBg}  {rgb} {0.17,0.17,0.17}
  \definecolor{DarkFg}  {rgb} {0.90,0.90,0.90}
  \definecolor{LightBg} {rgb}{1.0,1.0,1.0}
@@ -149,9 +151,9 @@ This code file is a PDF attachment}%
 
 \newcommand\myaddthumb[2]{%
   %\addtitlethumb{#1}{\fcolorbox{red}{black}{\parbox[t][45pt]{45pt}{\noindent%
-  \addtitlethumb{#1}{%
+  \addtitlethumb{\hspace{5pt}#1}{%
     \parbox[t][43pt]{43pt}{\centering{}\vfill\noindent%
-{\thumbfont{}#2\par\vfill}%
+{\linespread{.7}\thumbfont{}#2\par\vfill}%
 }%
 }{white}{DarkBg}{pagesLTS.0}%
 }%
@@ -194,6 +196,11 @@ This code file is a PDF attachment}%
 \clearpage{}
 \restoregeometry
 \revertbackgroundtext
+\clearpage{}
+.
+\clearpage{}
+\thumbsoverview{map}
+\clearpage{}
 \marginnote{\includegraphics{xface.png}}[-1.3\baselineskip]\noindent{}Manos Pitsidianakis (epilys)\\
 \myurl{https://nessuent.xyz}{https://\-nessuent.xyz}\\
 \myurl{https://github.com/epilys}{https://github.com/epilys}\\
