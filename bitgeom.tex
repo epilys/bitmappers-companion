@@ -401,11 +401,11 @@ image.bytes = bits_to_bytes(NEWS_BITS, NEWS_WIDTH);
 
 and finally run it:
 
-\includegraphics{figures/intro-2.png}
-
+\includegraphics{figures/intro-2.png}%
+%
 \clearpage{}
-\myaddthumb{Points and Lines}{lines}
-\part{Points and Lines}
+\myaddthumb{Points And Lines}{lines}
+\part{Points And Lines}
 \chapter{Distance between two points}
 
 \begin{center}
@@ -507,16 +507,8 @@ Putting them into the equation we can generate a triple of $(a', b', c')$ and th
 \chapter{Normal to a line through a point}
 \skelpars{2}
 \clearpage{}
-\myaddthumb{Points, Lines and Circles}{circles}
-\part{Points, Lines and Circles}
-\skelpars{2}
-\chapter{Equations of a circle}
-\skelpars{2}
-\chapter{Bounding circle}
-% From graphic gems vol 2 pdf page 46
-\skelpars{2}
-\myaddthumb{Points, Line Segments and Arcs}{arcs}
-\part{Points, Line Segments and Arcs}
+\myaddthumb{Points and Line Segments}{segments}
+\part{Points And Line Segments}
 \chapter{Drawing a line segment from its two endpoints}
 
 For any line segment with any slope, \pixels{} must be matched with the infinite
@@ -713,11 +705,22 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
 \skelpars{2}
+\clearpage{}
+\myaddthumb{Points, Lines and Circles}{circles}
+\part{Points, Lines and Circles}
+\skelpars{2}
+\chapter{Equations of a circle}
+\skelpars{2}
+\chapter{Bounding circle}
+% From graphic gems vol 2 pdf page 46
+\skelpars{2}
+\clearpage{}
 \myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
 \chapter{Parametric ellipictal arcs}
 % Graphics gems vol 3. pdf page 196
 \skelpars{2}
+\clearpage{}
 \myaddthumb{Points, Lines and Shapes}{shapes}
 \part{Points, Lines and Shapes}
 %\chapter{Triangles}
@@ -730,6 +733,13 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \chapter{Centroid of polygon}
 % Graphics gems vol 4. pdf page 14
 \skelpars{2}
+\chapter{Flood filling}
+\skelpars{2}
+% Graphics gems vol 1. pdf page 296 "SEED FILL"
+\skelpars{2}
+% Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
+\skelpars{2}
+\clearpage{}
 \myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
 \part{Vectors, matrices and trans\-for\-ma\-tions}
 \chapter{Rotation of a \bitmap{}}
@@ -920,15 +930,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \chapter{Projections}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
 \skelpars{2}
-\myaddthumb{Areas}{areas}
-\part{Areas}
-\skelpars{2}
-\chapter{Flood filling}
-\skelpars{2}
-% Graphics gems vol 1. pdf page 296 "SEED FILL"
-\skelpars{2}
-% Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
-\skelpars{2}
+\clearpage{}
 \myaddthumb{Advanced}{ad\-vanced}
 \part{Advanced}
 \section{Faster Drawing a line segment from its two endpoints using Symmetry}
@@ -952,7 +954,13 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \skelpars{2}
 \chapter{Space-filling Curves}
 % Graphics gems vol 2. pdf page 58
-\skelpars{2}
+\skelpars{1}
+\section{Hilbert curves}
+\skelpars{1}
+\section{Peano curves}
+\skelpars{1}
+\section{Z-order curves}
+\skelpars{1}
 \clearpage{}
 \stopthumb
 \bookmarksetup{startatroot}
