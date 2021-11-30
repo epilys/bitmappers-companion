@@ -8,7 +8,7 @@
   %\setmathfont{Latin Modern Math}
   \setmathfont{TeX Gyre Pagella Math}
   \setmonofont[Scale=1.1]{CMU Typewriter Text}
-  \newfontfamily\pixel{Redaction35-Regular}
+  \newfontfamily\pixelfont{Redaction35-Regular}
   \newfontfamily\fira[Scale=0.90]{Fira Sans}
   \newfontfamily\thumbfont[Scale=0.9]{Redaction35-Bold}
   \newfontfamily\pixeltitle[Scale=3.5]{Redaction35-Bold}
@@ -104,9 +104,10 @@
 \renewcommand{\l@subsubsection}{\@dottedtocline{3}{7.4em}{4.5em}}
 \makeatother
 
-\newcommand\bitmap{{\pixel{}bitmap}}
-\newcommand\bitmaps{{\pixel{}bitmaps}}
-\newcommand\pixels{{\pixel{}pixels}}
+\newcommand\bitmap{{\pixelfont{}bitmap}}
+\newcommand\bitmaps{{\pixelfont{}bitmaps}}
+\newcommand\pixel{{\pixelfont{}pixel}}
+\newcommand\pixels{{\pixelfont{}pixels}}
 \newcommand\Rust{{\fira{}\textbf{Rust}}}
 
 \newcommand\colorunderline[1]{\bgroup\markoverwith{\textcolor{#1}{\rule[-0.5ex]{2pt}{0.8pt}}}\ULon}
@@ -161,6 +162,7 @@ This code file is a PDF attachment}%
 
 \pagenumbering{arabic}
 
+  \usepackage[textsize=tiny]{todonotes}
 \begin{document}
 \newgeometry{left=1cm,top=0.1cm,right=1cm,bottom=0.1cm}
 \pdfbookmark{Title page}{title-page}%cover
@@ -235,7 +237,7 @@ This code file is a PDF attachment}%
 \myaddthumb{Introduction}{intro}
 \part{Introduction}
 \chapter{Data representation}
-The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a pixel in memory will be \texttt{u8} instead of 1 bit.
+The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a \pixel{} in memory will be \texttt{u8} instead of 1 bit.
 
 We will work on the cartesian grid representing the framebuffer that will show us the \pixels{}. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.%
 \begin{center}%
@@ -285,7 +287,7 @@ impl Image {
 }
 \end{minted}
 
-\chapter{Displaying \pixels{} to your screen}
+\chapter{Displaying {\pixels{}} to your screen}
 A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
 %
 \attachsource{src/bin/introduction.rs}
@@ -369,7 +371,7 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 
 \chapter{Loading \texttt{xbm} files in \Rust{}}
 
-\texttt{xbm} files are C source code files that contain the pixel information for an image as macro definitions for the dimensions and a static \texttt{char} array for the \pixels{}, with each bit column representing a pixel. If the width dimension doesn't have 8 as a factor, the remaining bit columns are left blank/ignored.
+\texttt{xbm} files are C source code files that contain the \pixel{} information for an image as macro definitions for the dimensions and a static \texttt{char} array for the \pixels{}, with each bit column representing a pixel. If the width dimension doesn't have 8 as a factor, the remaining bit columns are left blank/ignored.
 
 They used to be a popular way to share user avatars in the old internet and are also good material for us to work with, since they are small and numerous. The following is such an image:
 
@@ -479,7 +481,7 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \end{minted}
 
 \chapter{Distance from a point to a line}
-
+\todo[inline]{code samples}
 \begin{center}
 \input{point_line_distance.pdf_tex}
 \end{center}
@@ -503,6 +505,7 @@ $$d=|cos(θ)(P_{ly}-y_p)-sin(θ)(P_{lx} - P_x)|$$
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
 \skelpars{2}
 \chapter{Line equidistant from two points}
+\todo[inline]{add figure}
   \begin{figure}
   {\centering%
   \skelfig[width=0.4\textwidth]{2\baselineskip}%
@@ -592,6 +595,7 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64)) {
     }
 }
 \end{minted}
+\todo[inline]{add some explanation behind the algorithm}
 \chapter{Drawing line segments with width}
 \begin{minted}{rust}
 pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64), _wd: f64) {
@@ -713,6 +717,7 @@ In $L_{34}$ substitute point $\textbf{1}$ to compute $r_1$, and do the same for 
 If $r_1 \neq{} 0$, $r_2 \neq{} 0$ and $sgn(r_1)==sign(r_2)$ the line segments don't intersect, so stop.
 
 At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to \emph{\nameref{ch:intersection-lines}}.)
+\todo[inline]{add code sample}
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
 \skelpars{2}
@@ -934,6 +939,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpars{2}
 \chapter{Mirroring}
+\todo[inline]{add screenshots and figure and code}
 Mirroring to an axis is the transformation of one coordinate to its equidistant value across the axis:
 
 To mirror a \pixel across the $x$ axis, simply multiply its coordinates with the following matrix:
@@ -961,6 +967,7 @@ For $y$-mirroring, the transformation follows the same logic:
 % Geometric tools for computer graphics  pdf page 195, "Reflection"
 \chapter{Shearing}
 \attachsource{src/bin/shearing.rs}%
+\todo[inline]{add figure}
 Simple shearing\index{shearing} is the transformation of one dimension by a distance proportional to the other dimension, In $x$-shearing (or horizontal shearing) only the $x$ coordinate is affected, and likewise in $y$-shearing only $y$ as well.
 
 % Geometric tools for computer graphics  pdf page 200, "Shearing"
@@ -1038,8 +1045,8 @@ sheared.draw_outline();
 % Geometric tools for computer graphics  pdf page 205, "Projections"
 \skelpars{2}
 \clearpage{}
-\myaddthumb{Advanced}{ad\-vanced}
-\part{Advanced}
+\myaddthumb{Addendum}{ad\-den\-dum}
+\part{Addendum}
 \section{Faster Drawing a line segment from its two endpoints using Symmetry}
 % From graphic gems vol 1 p 103 (pdf page 128)
 \skelpars{2}
@@ -1088,4 +1095,6 @@ sheared.draw_outline();
   \item \textbf{\pixelfont{}Redaction20} for referring to the words \bitmap{} and \pixels{} as a concept.
 \end{itemize}
 \end{colophon}
+\clearpage{}
+\listoftodos{}
 \end{document}
