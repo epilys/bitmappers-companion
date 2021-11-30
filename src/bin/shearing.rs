@@ -28,12 +28,11 @@ const WINDOW_WIDTH: usize = 150;
 const WINDOW_HEIGHT: usize = 150;
 
 fn shear_x((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
-    (x_p+(l*(y_p as f64)) as i64, y_p)
+    (x_p + (l * (y_p as f64)) as i64, y_p)
 }
 fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
-    (x_p, (l*(x_p as f64)) as i64 + y_p)
+    (x_p, (l * (x_p as f64)) as i64 + y_p)
 }
-
 
 fn main() {
     let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
@@ -59,14 +58,14 @@ fn main() {
     image.draw_outline();
 
     let l = -1.047;
-    let mut sheared = Image::new(DMR_WIDTH*2, DMR_HEIGHT*2, 25, 25);
+    let mut sheared = Image::new(DMR_WIDTH * 2, DMR_HEIGHT * 2, 25, 25);
     for x in 0..DMR_WIDTH {
-        for y in 0..DMR_HEIGHT  {
+        for y in 0..DMR_HEIGHT {
             if image.bytes[y * DMR_WIDTH + x] == BLACK {
-            //let p = (x as i64 ,y as i64 );
-            let p = shear_x((x as i64 ,y as i64 ), l);
-            //let p = shear_y((x as i64 ,y as i64 ), l);
-            sheared.plot(p.0+(DMR_WIDTH/2) as i64, p.1+(DMR_HEIGHT/2) as i64); 
+                //let p = (x as i64 ,y as i64 );
+                let p = shear_x((x as i64, y as i64), l);
+                //let p = shear_y((x as i64 ,y as i64 ), l);
+                sheared.plot(p.0 + (DMR_WIDTH / 2) as i64, p.1 + (DMR_HEIGHT / 2) as i64);
             }
         }
     }

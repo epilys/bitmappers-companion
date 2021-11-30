@@ -60,7 +60,7 @@ impl Image {
 
     pub fn plot(&mut self, x: i64, y: i64) {
         if x < 0 || y < 0 || y >= (self.height as i64) || x >= (self.width as i64) {
-            eprintln!("invalid plot() coors: ({}, {})", x, y);
+            //eprintln!("invalid plot() coors: ({}, {})", x, y);
             return;
         }
         let (x, y): (usize, usize) = (x as _, y as _);
@@ -73,6 +73,10 @@ impl Image {
         }
         let (x, y): (usize, usize) = (x as _, y as _);
         Some(self.bytes[y * self.width + x])
+    }
+
+    pub fn plot_circle(&mut self, center: Point, r: i64, _wd: f64) {
+        self.plot_ellipse(center, (r, r), [true, true, true, true], _wd)
     }
 
     pub fn plot_ellipse(

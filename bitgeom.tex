@@ -338,7 +338,10 @@ fn main() {
 Running this will show you something like this:
 % FIXME reduce window size and resulting screenshot size
 
-\includegraphics{figures/introduction.png}
+\begin{figure}[H]
+\centering
+  \includegraphics{figures/introduction.png}
+\end{figure}
 
 \chapter{Bits to byte \pixels{}}
 Let's define a way to convert bit information to a byte vector:
@@ -375,9 +378,10 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 
 They used to be a popular way to share user avatars in the old internet and are also good material for us to work with, since they are small and numerous. The following is such an image:
 
-\begin{center}
-\includegraphics{figures/news.png}
-\end{center}
+\begin{figure}[H]
+\centering
+  \includegraphics{figures/news.png}
+\end{figure}
 %FIXME
 Then, we can convert the \texttt{xbm} file from C to \Rust{} with the following transformations:
 
@@ -414,7 +418,9 @@ image.bytes = bits_to_bytes(NEWS_BITS, NEWS_WIDTH);
 
 and finally run it:
 
-\includegraphics{figures/intro-2.png}%
+\begin{figure}[H]
+{\centering\includegraphics{figures/intro-2.png}}
+\end{figure}
 %
 \clearpage{}
 \myaddthumb{Points And Lines}{lines}
@@ -461,7 +467,7 @@ $$y-y_p=m(x-x_p)$$
   \begin{figure}
   {\centering%
 \input{line_through_points.pdf_tex}
-  \caption{}}
+  }
   \end{figure}
 It seems sufficient, given the coordinates of two points $M, N$, to calculate $a, b$ and $c$ to form a line equation:
 
@@ -729,7 +735,209 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \skelpars{2}
 \chapter{Bounding circle}
 % From graphic gems vol 2 pdf page 46
-\skelpars{2}
+% From Υπολογιστική Γεωμετρία 4.7 page 85 Μικρότατοι περικλείοντες δίσκοι
+A bounding circle is a circle that includes all the points in a given set. Usually we're interested in one of the smallest ones possible.
+
+\begin{figure}[H]
+{\centering\includegraphics{figures/minidisc.png}}
+\end{figure}
+
+\attachsource{src/bin/boundingcircle.rs}
+\begin{minted}{rust}
+use bitmappers_companion::*;
+use minifb::{Key, Window, WindowOptions};
+use rand::seq::SliceRandom;
+use rand::thread_rng;
+use std::f64::consts::{FRAC_PI_2, PI};
+
+include!("../me.xbm.rs");
+
+const WINDOW_WIDTH: usize = 400;
+const WINDOW_HEIGHT: usize = 400;
+
+pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
+    let (x_k, y_k) = p_k;
+    let (x_l, y_l) = p_l;
+    let xlk = x_l - x_k;
+    let ylk = y_l - y_k;
+    f64::sqrt((xlk * xlk + ylk * ylk) as f64)
+}
+
+fn image_to_points(image: &Image) -> Vec<Point> {
+    let mut ret = Vec::with_capacity(image.bytes.len());
+    for y in 0..(image.height as i64) {
+        for x in 0..(image.width as i64) {
+            if image.get(x, y) == Some(BLACK) {
+                ret.push((x, y));
+            }
+        }
+    }
+    ret
+}
+
+type Circle = (Point, f64);
+
+fn bc(image: &Image) -> Circle {
+    let mut points = image_to_points(image);
+    points.shuffle(&mut thread_rng());
+    min_circle(&points)
+}
+fn min_circle(points: &[Point]) -> Circle {
+    let mut points = points.to_vec();
+    points.shuffle(&mut thread_rng());
+
+    let p1 = points[0];
+    let p2 = points[1];
+    //The  circle  is  determined  by  two  points,  P  and  Q.  The  center  of the  circle  is
+    //at  (P  +  Q)/2.0  and  the  radius  is  |(P  –  Q)/2.0|
+    let d_2 = (
+        (((p1.0 + p2.0) / 2), (p1.1 + p2.1) / 2),
+        (distance_between_two_points(p1, p2) / 2.0),
+    );
+
+    let mut d_prev = d_2;
+
+    for i in 2..points.len() {
+        let p_i = points[i];
+        if distance_between_two_points(p_i, d_prev.0) <= (d_prev.1) {
+            // then d_i = d_(i-1)
+        } else {
+            let new = min_circle_w_point(&points[..i], p_i);
+            if distance_between_two_points(p_i, new.0) <= (new.1) {
+                d_prev = new;
+            }
+        }
+    }
+
+    d_prev
+}
+
+fn min_circle_w_point(points: &[Point], q: Point) -> Circle {
+    let mut points = points.to_vec();
+
+    points.shuffle(&mut thread_rng());
+    let p1 = points[0];
+    //The  circle  is  determined  by  two  points,  P_1  and  Q.  The  center  of the  circle  is
+    //at  (P_1  +  Q)/2.0  and  the  radius  is  |(P_1  –  Q)/2.0|
+    let d_1 = (
+        (((p1.0 + q.0) / 2), (p1.1 + q.1) / 2),
+        (distance_between_two_points(p1, q) / 2.0),
+    );
+
+    let mut d_prev = d_1;
+
+    for j in 1..points.len() {
+        let p_j = points[j];
+        if distance_between_two_points(p_j, d_prev.0) <= (d_prev.1) {
+            //d_prev = d_prev;
+        } else {
+            let new = min_circle_w_points(&points[..j], p_j, q);
+            if distance_between_two_points(p_j, new.0) <= (new.1) {
+                d_prev = new;
+            }
+        }
+    }
+    d_prev
+}
+
+fn min_circle_w_points(points: &[Point], q1: Point, q2: Point) -> Circle {
+    let mut points = points.to_vec();
+
+    let d_0 = (
+        (((q1.0 + q2.0) / 2), (q1.1 + q2.1) / 2),
+        (distance_between_two_points(q1, q2) / 2.0),
+    );
+
+    let mut d_prev = d_0;
+    for k in 0..points.len() {
+        let p_k = points[k];
+        if distance_between_two_points(p_k, d_prev.0) <= (d_prev.1) {
+        } else {
+            let new = min_circle_w_3_points(q1, q2, p_k);
+            if distance_between_two_points(p_k, new.0) <= (new.1) {
+                d_prev = new;
+            }
+        }
+    }
+    d_prev
+}
+
+fn min_circle_w_3_points(q1: Point, q2: Point, q3: Point) -> Circle {
+    let (ax, ay) = (q1.0 as f64, q1.1 as f64);
+    let (bx, by) = (q2.0 as f64, q2.1 as f64);
+    let (cx, cy) = (q3.0 as f64, q3.1 as f64);
+
+    let mut d = 2. * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by));
+    if d == 0.0 {
+        d = std::cmp::max(
+            std::cmp::max(
+                distance_between_two_points(q1, q2) as i64,
+                distance_between_two_points(q2, q3) as i64,
+            ),
+            distance_between_two_points(q1, q3) as i64,
+        ) as f64
+            / 2.;
+    }
+    let ux = ((ax * ax + ay * ay) * (by - cy)
+        + (bx * bx + by * by) * (cy - ay)
+        + (cx * cx + cy * cy) * (ay - by))
+        / d;
+    let uy = ((ax * ax + ay * ay) * (cx - bx)
+        + (bx * bx + by * by) * (ax - cx)
+        + (cx * cx + cy * cy) * (bx - ax))
+        / d;
+    let mut center = (ux as i64, uy as i64);
+
+    if center.0 < 0 {
+        center.0 = 0;
+    }
+    if center.1 < 0 {
+        center.1 = 0;
+    }
+    let d = distance_between_two_points(center, q1);
+    (center, d)
+}
+
+fn main() {
+    let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
+    let mut window = Window::new(
+        "Test - ESC to exit",
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        WindowOptions {
+            title: true,
+            //borderless: true,
+            resize: true,
+            //transparency: true,
+            ..WindowOptions::default()
+        },
+    )
+    .unwrap();
+
+    // Limit to max ~60 fps update rate
+    window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
+
+    let mut full = Image::new(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
+    let mut image = Image::new(ME_WIDTH, ME_HEIGHT, 45, 45);
+    image.bytes = bits_to_bytes(ME_BITS, ME_WIDTH);
+    let (center, r) = bc(&image);
+    image.draw_outline();
+
+    full.plot_circle((center.0 + 45, center.1 + 45), r as i64, 0.);
+    while window.is_open() && !window.is_key_down(Key::Escape) && !window.is_key_down(Key::Q) {
+        image.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
+        full.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
+
+        window
+            .update_with_buffer(&buffer, WINDOW_WIDTH, WINDOW_HEIGHT)
+            .unwrap();
+
+        let millis = std::time::Duration::from_millis(100);
+
+        std::thread::sleep(millis);
+    }
+}
+\end{minted}
 \clearpage{}
 \myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
@@ -793,7 +1001,10 @@ let mut image = Image::new(DMR_WIDTH, DMR_HEIGHT, 25, 25);
 image.bytes = bits_to_bytes(DMR_BITS, DMR_WIDTH);
 \end{minted}
 
-\includegraphics{figures/ch11-1.png}
+\begin{figure}[H]
+  \centering
+  \includegraphics{figures/ch11-1.png}
+\end{figure}
 
 This is the \texttt{xface} of \texttt{dmr}. Instead of displaying the \bitmap{}, this time we will rotate it $0.5$ radians. Setup our image first:
 
@@ -827,7 +1038,10 @@ for y in 0..DMR_HEIGHT {
 
 The result:
 
-\includegraphics{figures/ch11-2.png}
+\begin{figure}[H]
+\centering
+  \includegraphics{figures/ch11-2.png}
+\end{figure}
 
 We didn't mention in the beginning that the rotation has to be relative to a \emph{point} and the given transformation is relative to the \emph{origin}, in this case the upper left corner $(0,0)$. So \texttt{dmr} was rotated relative to the origin\,:
 \begin{center}
@@ -898,7 +1112,10 @@ The result: \includegraphics{figures/ch11-3.png}
 % Graphics gems vol 2. pdf page 113 
 \skelpars{2}
 \chapter{Magnification/Scaling}
-\includegraphics{figures/scaled_dmr.png}
+\begin{figure}[H]
+\centering
+  \includegraphics{figures/scaled_dmr.png}
+\end{figure}
 
 \attachsource{src/bin/scale.rs}%
 \begin{minted}{rust}
@@ -971,7 +1188,9 @@ For $y$-mirroring, the transformation follows the same logic:
 Simple shearing\index{shearing} is the transformation of one dimension by a distance proportional to the other dimension, In $x$-shearing (or horizontal shearing) only the $x$ coordinate is affected, and likewise in $y$-shearing only $y$ as well.
 
 % Geometric tools for computer graphics  pdf page 200, "Shearing"
-{\noindent\centering{}\includegraphics{figures/shearing-0.png}}
+\begin{figure}[H]
+{\centering\includegraphics{figures/shearing-0.png}}
+\end{figure}
 
 With $l$ being equal to the desired tilt away from the $y$ axis, the transformation is described by the following matrix:%TODO add figure explaining which slope $l$ defines
 
@@ -991,7 +1210,9 @@ fn shear_x((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
 }
 \end{minted}
 
-\noindent\includegraphics{figures/shearing-1.png}
+\begin{figure}[H]
+{\centering\includegraphics{figures/shearing-1.png}}
+\end{figure}
 
 For $y$-shearing, we have the following:
 
@@ -1009,7 +1230,9 @@ fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
 }
 \end{minted}
 
-\noindent\includegraphics{figures/shearing-2.png}
+\begin{figure}[H]
+{\centering\includegraphics{figures/shearing-2.png}}
+\end{figure}
 
 A full example:
 \begin{minted}{rust}
