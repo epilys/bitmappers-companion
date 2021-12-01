@@ -154,7 +154,8 @@ This code file is a PDF attachment}%
 \newcommand\myaddthumb[2]{%
   %\addtitlethumb{#1}{\fcolorbox{red}{black}{\parbox[t][45pt]{45pt}{\noindent%
   \addtitlethumb{\hspace{5pt}#1}{%
-    \parbox[t][43pt]{43pt}{\centering{}\vfill\noindent%
+    \parbox[t][43pt]{43pt}{\centering
+    \vfill\noindent%
 {\linespread{.7}\thumbfont{}#2\par\vfill}%
 }%
 }{white}{DarkBg}{pagesLTS.0}%
@@ -340,7 +341,7 @@ Running this will show you something like this:
 
 \begin{figure}[H]
 \centering
-  \includegraphics{figures/introduction.png}
+\includegraphics{figures/introduction.png}
 \end{figure}
 
 \chapter{Bits to byte \pixels{}}
@@ -368,10 +369,6 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 }
 \end{minted}
 
-\chapter{Real \pixels{} to byte \pixels{}}
-% From graphic gems vol 2 pdf page 109
-\skelpars{2}
-
 \chapter{Loading \texttt{xbm} files in \Rust{}}
 
 \emph{The end of this chapter includes a short \Rust{} program to automatically convert \texttt{xbm} files to equivalent \Rust{} code.}
@@ -382,7 +379,7 @@ They used to be a popular way to share user avatars in the old internet and are 
 
 \begin{figure}[H]
 \centering
-  \includegraphics{figures/news.png}
+\includegraphics{figures/news.png}
 \end{figure}
 %FIXME
 Then, we can convert the \texttt{xbm} file from C to \Rust{} with the following transformations:
@@ -564,7 +561,7 @@ $$d=|cos(θ)(P_{ly}-y_p)-sin(θ)(P_{lx} - P_x)|$$
 \chapter{Line equidistant from two points}
 \begin{figure}[H]
 \centering
-  \includegraphics[height=10\baselineskip,keepaspectratio]{figures/equidistant.pdf}
+\includegraphics[height=10\baselineskip,keepaspectratio]{figures/equidistant.pdf}
 \end{figure}
 Let's name this line $L$. From the previous chapter we know how to get the line that's created by the two points $M$ and $N$. If only we knew how to get a perpendicular line over the midpoint of a line segment!
 
@@ -788,7 +785,7 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \attachsource{src/bin/boundingcircle.rs}
 \begin{figure}[H]
 \centering
-  \includegraphics[scale=2,keepaspectratio]{figures/minidisc.pdf}
+\includegraphics[scale=2,keepaspectratio]{figures/minidisc.pdf}
 \end{figure}
 A bounding circle is a circle that includes all the points in a given set. Usually we're interested in one of the smallest ones possible.
 
@@ -803,7 +800,7 @@ We will need a way to construct a circle out of two points:\index{circle out of 
 
 \begin{figure}[H]
 \centering
-  \includegraphics[scale=0.25,keepaspectratio]{figures/two_points_circle.png}
+\includegraphics[scale=0.25,keepaspectratio]{figures/two_points_circle.png}
 \end{figure}
 
 \begin{minted}{rust}
@@ -821,7 +818,7 @@ And a way to make a circle out of three points:\index{circle out of three points
 
 \begin{figure}[H]
 \centering
-  \includegraphics[scale=0.25,keepaspectratio]{figures/triangle_circle.png}
+\includegraphics[scale=0.25,keepaspectratio]{figures/triangle_circle.png}
 \end{figure}
 
 \begin{minted}{rust}
@@ -1094,7 +1091,8 @@ fn main() {
   \begin{bmatrix}
     cosθ & -sinθ\\
     sinθ & cosθ
-  \end{bmatrix} \]\[ \begin{bmatrix}
+  \end{bmatrix}
+  \begin{bmatrix}
     x_{p}\\
     y_{p}
   \end{bmatrix}
@@ -1123,8 +1121,8 @@ image.bytes = bits_to_bytes(DMR_BITS, DMR_WIDTH);
 \end{minted}
 
 \begin{figure}[H]
-  \centering
-  \includegraphics{figures/ch11-1.png}
+\centering
+\includegraphics{figures/ch11-1.png}
 \end{figure}
 
 This is the \texttt{xface} of \texttt{dmr}. Instead of displaying the \bitmap{}, this time we will rotate it $0.5$ radians. Setup our image first:
@@ -1161,7 +1159,7 @@ The result:
 
 \begin{figure}[H]
 \centering
-  \includegraphics{figures/ch11-2.png}
+\includegraphics{figures/ch11-2.png}
 \end{figure}
 
 We didn't mention in the beginning that the rotation has to be relative to a \emph{point} and the given transformation is relative to the \emph{origin}, in this case the upper left corner $(0,0)$. So \texttt{dmr} was rotated relative to the origin\,:
@@ -1172,7 +1170,9 @@ We didn't mention in the beginning that the rotation has to be relative to a \em
 \input{cartesian_grid_dmr_2.pdf_tex}
 \end{center}
 
-{\centering{}\noindent(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)}
+{\centering{}
+\noindent(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)
+}
 
 Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.\index{centroid}
 
@@ -1235,7 +1235,7 @@ The result: \includegraphics{figures/ch11-3.png}
 \chapter{Magnification/Scaling}
 \begin{figure}[H]
 \centering
-  \includegraphics{figures/scaled_dmr.png}
+\includegraphics{figures/scaled_dmr.png}
 \end{figure}
 
 \attachsource{src/bin/scale.rs}%
@@ -1305,15 +1305,15 @@ For $y$-mirroring, the transformation follows the same logic:
 % Geometric tools for computer graphics  pdf page 195, "Reflection"
 \chapter{Shearing}
 \attachsource{src/bin/shearing.rs}%
-\todo[inline]{add figure}
 Simple shearing\index{shearing} is the transformation of one dimension by a distance proportional to the other dimension, In $x$-shearing (or horizontal shearing) only the $x$ coordinate is affected, and likewise in $y$-shearing only $y$ as well.
 
 % Geometric tools for computer graphics  pdf page 200, "Shearing"
 \begin{figure}[H]
-{\centering\includegraphics{figures/shearing-0.png}}
+\centering
+\includegraphics{figures/shearing-0.png}
 \end{figure}
 
-With $l$ being equal to the desired tilt away from the $y$ axis, the transformation is described by the following matrix:%TODO add figure explaining which slope $l$ defines
+With $l$ being equal to the desired tilt away from the $y$ axis, the transformation is described by the following matrix:
 
 \[
   S_x =
@@ -1332,7 +1332,8 @@ fn shear_x((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
 \end{minted}
 
 \begin{figure}[H]
-{\centering\includegraphics{figures/shearing-1.png}}
+\centering
+\includegraphics{figures/shearing-1.png}
 \end{figure}
 
 For $y$-shearing, we have the following:
@@ -1352,7 +1353,8 @@ fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
 \end{minted}
 
 \begin{figure}[H]
-{\centering\includegraphics{figures/shearing-2.png}}
+\centering
+\includegraphics{figures/shearing-2.png}
 \end{figure}
 
 A full example:
@@ -1385,6 +1387,21 @@ for x in 0..DMR_WIDTH {
 }
 sheared.draw_outline();
 \end{minted}
+\section{The relationship between shearing factor and angle}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{figures/xshear.pdf}
+\end{figure}
+Shearing is a delta movement in one dimension, thus the point before moving and the point after form an angle with the $x$ axis. To move a point $(x, 0)$ by 30\textdegree{} forward we will have the new point $(x+f, 0)$ where $f$ is the shear factor. These two points and $(x, h)$ where $h$ is the height of the \bitmap{} form a triangle, thus the following are true:
+
+$$cot\theta{} = \frac{h}{f}$$
+
+Therefore to find your factor for any angle $\theta{}$ replace its cotangent in the following formula:
+
+$$f = \frac{h}{cot\theta{}}$$
+
+For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to the right, since rotations are always clockwise) we need $cot(-30deg) = -\sqrt{3}$ and $f=-\frac{h}{\sqrt{3}}$.
+
 \chapter{Projections}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
 \skelpars{2}
