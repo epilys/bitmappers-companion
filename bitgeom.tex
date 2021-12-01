@@ -241,9 +241,10 @@ This code file is a PDF attachment}%
 The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a \pixel{} in memory will be \texttt{u8} instead of 1 bit.
 
 We will work on the cartesian grid representing the framebuffer that will show us the \pixels{}. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.%
-\begin{center}%
+\begin{figure}%
+\centering
 \input{cartesian_grid.pdf_tex}
-\end{center}%
+\end{figure}%
 %
 We will represent points as pairs of signed integers. When actually drawing them though, negative values and values outside the window's geometry will be ignored (clipped).
 %
@@ -475,9 +476,10 @@ fn main() {
 \part{Points And Lines}
 \chapter{Distance between two points}
 
-\begin{center}
+\begin{figure}
+\centering
 \input{fig1.pdf_tex}
-\end{center}
+\end{figure}
 
 Given two points, $K$ and $L$, an elementary application of Pythagoras' Theorem gives the distance between them as
 
@@ -512,11 +514,10 @@ The \emph{parametric} form... % TODO
 $$y-y_p=m(x-x_p)$$
 
 \section{Line through two points}
-  \begin{figure}
-  {\centering%
+\begin{figure}
+\centering
 \input{line_through_points.pdf_tex}
-  }
-  \end{figure}
+\end{figure}
 It seems sufficient, given the coordinates of two points $M, N$, to calculate $a, b$ and $c$ to form a line equation:
 
 $$ax+by+c=0$$
@@ -536,9 +537,10 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 
 \chapter{Distance from a point to a line}
 \todo[inline]{Add code samples in \emph{Distance from a point to a line}}
-\begin{center}
+\begin{figure}
+\centering
 \input{point_line_distance.pdf_tex}
-\end{center}
+\end{figure}
 
 \section{Using the implicit equation form}
 Let's find the distance from a given point $P$ and a given line $L$. Let $d$ be the distance between them. Bring $L$ to the implicit form $ax+by=c$.
@@ -583,9 +585,10 @@ Putting them into the equation we can generate a triple of $(a', b', c')$ and th
 For any line segment with any slope, \pixels{} must be matched with the infinite
 amount of points contained in the segment. As shown in the following figure, a segment \emph{touches} some \pixels{}; we could fill them using an algorithm and get a \bitmap{} of the line segment.
 
-\begin{center}
+\begin{figure}
+\centering
 \input{fig2.pdf_tex}
-\end{center}
+\end{figure}
 
 The algorithm presented here was first derived by Bresenham. In the \emph{Image} implementation, it is used in the \texttt{plot\_line\_width} method.
 % From graphic gems vol 1 p 99 (pdf page 124)
@@ -1169,12 +1172,13 @@ The result:
 \end{figure}
 
 We didn't mention in the beginning that the rotation has to be relative to a \emph{point} and the given transformation is relative to the \emph{origin}, in this case the upper left corner $(0,0)$. So \texttt{dmr} was rotated relative to the origin\,:
-\begin{center}
+\begin{figure}
+\centering
   \def\svgscale{0.6}
 \input{cartesian_grid_dmr_1.pdf_tex}
   \def\svgscale{0.6}
 \input{cartesian_grid_dmr_2.pdf_tex}
-\end{center}
+\end{figure}
 
 {\centering{}
 \noindent(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)
@@ -1193,24 +1197,27 @@ By subtracting the centroid from each point before we apply the transformation a
 
 Here's it visually: First subtract the center point.
 
-\begin{center}
-  \def\svgscale{0.6}
+\begin{figure}
+\centering
+\def\svgscale{0.6}
 \input{cartesian_grid_dmr_3.pdf_tex}
-\end{center}
+\end{figure}
 
 Then, rotate.
 
-\begin{center}
-  \def\svgscale{0.6}
+\begin{figure}
+\centering
+\def\svgscale{0.6}
 \input{cartesian_grid_dmr_4.pdf_tex}
-\end{center}
+\end{figure}
 
 And subtract back to the original position.
 
-\begin{center}
-  \def\svgscale{0.6}
+\begin{figure}
+\centering
+\def\svgscale{0.6}
 \input{cartesian_grid_dmr_5.pdf_tex}
-\end{center}
+\end{figure}
 
 In code:
 
