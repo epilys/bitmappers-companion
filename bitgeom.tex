@@ -535,7 +535,7 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \end{minted}
 
 \chapter{Distance from a point to a line}
-\todo[inline]{code samples}
+\todo[inline]{Add code samples in \emph{Distance from a point to a line}}
 \begin{center}
 \input{point_line_distance.pdf_tex}
 \end{center}
@@ -555,8 +555,10 @@ $$d=|cos(θ)(P_{ly}-y_p)-sin(θ)(P_{lx} - P_x)|$$
 
 % From graphic gems vol 2 pdf page 40
 \chapter{Angle between two lines}
+\todo[inline]{Add \emph{Angle between two lines}}
 \skelpars{2}
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
+\todo[inline]{Add \emph{Intersection of two lines}}
 \skelpars{2}
 \chapter{Line equidistant from two points}
 \begin{figure}[H]
@@ -571,6 +573,7 @@ $$ (\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2})$$
 
 Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
 \chapter{Normal to a line through a point}
+\todo[inline]{Add \emph{Normal to a line through a point}}
 \skelpars{2}
 \clearpage{}
 \myaddthumb{Points and Line Segments}{segments}
@@ -647,7 +650,7 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64)) {
     }
 }
 \end{minted}
-\todo[inline]{add some explanation behind the algorithm}
+\todo[inline]{Add some explanation behind the algorithm in \emph{Drawing a line segment from its two endpoints}}
 \chapter{Drawing line segments with width}
 \begin{minted}{rust}
 pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64), _wd: f64) {
@@ -769,7 +772,7 @@ In $L_{34}$ substitute point $\textbf{1}$ to compute $r_1$, and do the same for 
 If $r_1 \neq{} 0$, $r_2 \neq{} 0$ and $sgn(r_1)==sign(r_2)$ the line segments don't intersect, so stop.
 
 At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to \emph{\nameref{ch:intersection-lines}}.)
-\todo[inline]{add code sample}
+\todo[inline]{Add code sample in \emph{Intersection of two line segments}}
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
 \skelpars{2}
@@ -778,6 +781,7 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \part{Points, Lines and Circles}
 \skelpars{2}
 \chapter{Equations of a circle}
+\todo[inline]{Add \emph{Equations of a circle}}
 \skelpars{2}
 \chapter{Bounding circle}
 % From graphic gems vol 2 pdf page 46
@@ -1060,6 +1064,7 @@ fn main() {
 \myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
 \chapter{Parametric elliptical arcs}
+\todo[inline]{Add \emph{Parametric elliptical arcs}}
 % Graphics gems vol 3. pdf page 196
 \skelpars{2}
 \clearpage{}
@@ -1069,18 +1074,19 @@ fn main() {
 %\section{Making a triangle from a point and given angles}
 %\chapter{Rectangles, parallelograms}
 \chapter{Union, intersection and difference of polygons}
+\todo[inline]{Add \emph{Union, intersection and difference of polygons}}
 % Graphics gems vol 2. pdf page 63
 \skelpars{2}
 
 \chapter{Centroid of polygon}\index{centroid}
+\todo[inline]{Add \emph{Centroid of polygon}}
 % Graphics gems vol 4. pdf page 14
 \skelpars{2}
 \chapter{Flood filling}
+\todo[inline]{Add \emph{Flood filling}}
 \skelpars{2}
 % Graphics gems vol 1. pdf page 296 "SEED FILL"
-\skelpars{2}
 % Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
-\skelpars{2}
 \clearpage{}
 \myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
 \part{Vectors, matrices and trans\-for\-ma\-tions}
@@ -1227,9 +1233,11 @@ for y in 0..DMR_HEIGHT {
 The result: \includegraphics{figures/ch11-3.png}
 
 \section{Fast 2D Rotation}
+\todo[inline]{Add \emph{Fast 2D Rotation}}
 % Graphics gems vol 1. pdf page 456 
 \skelpars{2}
 \chapter{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}
+\todo[inline]{Add \emph{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}}
 % Graphics gems vol 2. pdf page 113 
 \skelpars{2}
 \chapter{Magnification/Scaling}
@@ -1270,14 +1278,16 @@ while dy < scaled_height {
 scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \end{minted}
 \section{Smoothing enlarged \bitmaps{}}
+\todo[inline]{Add \emph{Smoothing enlarged \bitmaps{}}}
 % https://en.wikipedia.org/wiki/Hqx
 % Graphics gems vol 1. pdf page 189 "SMOOTHING ENLARGED MONOCHROME IMAGES"
 \skelpars{2}
 \section{Stretching lines of \bitmaps{}}
+\todo[inline]{Add \emph{Stretching lines of \bitmaps{}}}
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpars{2}
 \chapter{Mirroring}
-\todo[inline]{add screenshots and figure and code}
+\todo[inline]{Add screenshots and figure and code in \emph{Mirroring}}
 Mirroring to an axis is the transformation of one coordinate to its equidistant value across the axis:
 
 To mirror a \pixel across the $x$ axis, simply multiply its coordinates with the following matrix:
@@ -1403,38 +1413,49 @@ $$f = \frac{h}{cot\theta{}}$$
 For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to the right, since rotations are always clockwise) we need $cot(-30deg) = -\sqrt{3}$ and $f=-\frac{h}{\sqrt{3}}$.
 
 \chapter{Projections}
+\todo[inline]{Add \emph{Projections}}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
 \skelpars{2}
 \clearpage{}
 \myaddthumb{Addendum}{ad\-den\-dum}
 \part{Addendum}
 \section{Faster Drawing a line segment from its two endpoints using Symmetry}
+\todo[inline]{Add \emph{Faster Drawing a line segment from its two endpoints using Symmetry}}
 % From graphic gems vol 1 p 103 (pdf page 128)
 \skelpars{2}
 
 \chapter{Joining the ends of two wide line segments together}
+\todo[inline]{Add \emph{Joining the ends of two wide line segments together}}
 % Graphics gems vol 1. pdf page 132 "AN ALGORITHM FOR FILLING IN 2D WIDE LINE BEVEL JOINTS"
 \skelpars{2}
 \chapter{Composing monochrome \bitmaps{} with separate alpha channel data}
+\todo[inline]{Add \emph{Composing monochrome \bitmaps{} with separate alpha channel data}}
 % Graphics gems vol 3. pdf page 64 "COMPOSING BW BITMAPS
 \skelpars{2}
 \chapter{Orthogonal connection of two points}
+\todo[inline]{Add \emph{Orthogonal connection of two points}}
 % Graphics gems vol 3. pdf page 205 "SIMPLE CONNECTION ALGORITHM FOR 2D DRAWING"
 \skelpars{2}
 \chapter{Join segments with round corners}
+\todo[inline]{Add \emph{Join segments with round corners}}
 % Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
 \skelpars{2}
 \chapter{Faster line clipping}
+\todo[inline]{Add \emph{Faster line clipping}}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
 \skelpars{2}
 \chapter{Space-filling Curves}
+\todo[inline]{Add \emph{Space-filling Curves}}
 % Graphics gems vol 2. pdf page 58
 \skelpars{1}
 \section{Hilbert curves}
+\todo[inline]{Add \emph{Hilbert curves}}
 \skelpars{1}
 \section{Peano curves}
+\todo[inline]{Add \emph{Peano curves}}
 \skelpars{1}
 \section{Z-order curves}
+\todo[inline]{Add \emph{Z-order curves}}
 \skelpars{1}
 \clearpage{}
 \stopthumb
