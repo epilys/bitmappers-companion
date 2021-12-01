@@ -736,13 +736,85 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \chapter{Bounding circle}
 % From graphic gems vol 2 pdf page 46
 % From Υπολογιστική Γεωμετρία 4.7 page 85 Μικρότατοι περικλείοντες δίσκοι
+\attachsource{src/bin/boundingcircle.rs}
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=2,keepaspectratio]{figures/minidisc.pdf}
+\end{figure}
 A bounding circle is a circle that includes all the points in a given set. Usually we're interested in one of the smallest ones possible.
 
 \begin{figure}[H]
-{\centering\includegraphics{figures/minidisc.png}}
+\centering
+\includegraphics{figures/minidisc.png}
 \end{figure}
 
-\attachsource{src/bin/boundingcircle.rs}
+We can use the following methodology to find the bounding circle: start from two points and the circle they make up, and for each of the rest of the points check if the circle includes them. If not, make a bounding circle that includes every point up to the current one. To do this, we need some primitive operations.
+
+We will need a way to construct a circle out of two points:\index{circle out of two points}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=0.25,keepaspectratio]{figures/two_points_circle.png}
+\end{figure}
+
+\begin{minted}{rust}
+  let p1 = points[0];
+  let p2 = points[1];
+  //The  circle  is  determined  by  two  points,  P  and  Q.  The  center  of the  circle  is
+  //at  (P  +  Q)/2.0  and  the  radius  is  |(P  –  Q)/2.0|
+  let d_2 = (
+  (((p1.0 + p2.0) / 2), (p1.1 + p2.1) / 2),
+  (distance_between_two_points(p1, p2) / 2.0),
+  );
+\end{minted}
+
+And a way to make a circle out of three points:\index{circle out of three points}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=0.25,keepaspectratio]{figures/triangle_circle.png}
+\end{figure}
+
+\begin{minted}{rust}
+fn min_circle_w_3_points(q1: Point, q2: Point, q3: Point) -> Circle {
+    let (ax, ay) = (q1.0 as f64, q1.1 as f64);
+    let (bx, by) = (q2.0 as f64, q2.1 as f64);
+    let (cx, cy) = (q3.0 as f64, q3.1 as f64);
+
+    let mut d = 2. * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by));
+    if d == 0.0 {
+        d = std::cmp::max(
+            std::cmp::max(
+                distance_between_two_points(q1, q2) as i64,
+                distance_between_two_points(q2, q3) as i64,
+            ),
+            distance_between_two_points(q1, q3) as i64,
+        ) as f64
+            / 2.;
+    }
+    let ux = ((ax * ax + ay * ay) * (by - cy)
+        + (bx * bx + by * by) * (cy - ay)
+        + (cx * cx + cy * cy) * (ay - by))
+        / d;
+    let uy = ((ax * ax + ay * ay) * (cx - bx)
+        + (bx * bx + by * by) * (ax - cx)
+        + (cx * cx + cy * cy) * (bx - ax))
+        / d;
+    let mut center = (ux as i64, uy as i64);
+
+    if center.0 < 0 {
+        center.0 = 0;
+    }
+    if center.1 < 0 {
+        center.1 = 0;
+    }
+    let d = distance_between_two_points(center, q1);
+    (center, d)
+}
+\end{minted}
+
+The algorithm:
+
 \begin{minted}{rust}
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
