@@ -28,6 +28,13 @@ A small zine/book written in LaTeX. In progress.
 
 <kbd>
 
+![frontmatter_sample2](./frontmatter_sample2.png?raw=true)
+
+</kbd>
+--------
+
+<kbd>
+
 ![page_sample](./page_sample.png?raw=true)
 
 </kbd>

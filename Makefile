@@ -27,3 +27,4 @@ gen-samples:
 	convert -alpha remove -density 300 -quality 100 "build/bitgeom.pdf[$(pages)]" output.png
 
 # convert news.png  -density 38 -units PixelsPerCentimeter news.png
+# convert +append output-1.png page_sep.png output-2.png thumb_sample.png

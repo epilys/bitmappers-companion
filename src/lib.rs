@@ -174,7 +174,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t > delta {
+                        if t < -1 * delta || t >= delta {
                             break;
                         }
                         _x += 1;
@@ -183,7 +183,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t > delta {
+                        if t < -1 * delta || t >= delta {
                             break;
                         }
                         _x -= 1;
@@ -217,7 +217,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t > delta {
+                        if t < -1 * delta || t >= delta {
                             break;
                         }
                         _x += 1;
@@ -226,7 +226,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t > delta {
+                        if t < -1 * delta || t >= delta {
                             break;
                         }
                         _x -= 1;
