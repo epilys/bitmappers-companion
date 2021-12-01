@@ -115,7 +115,7 @@
   \colorunderline{#1}{\phantom{#2}}%
   \llap{\contour{white}{#2}}%
 }
-\newcommand{\myurl}[2]{%
+\DeclareRobustCommand{\myurl}[2]{%
   \href{#1}{\myuline{blue}{#2}}%
 }
 
@@ -1455,9 +1455,118 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \todo[inline]{Add \emph{Space-filling Curves}}
 % Graphics gems vol 2. pdf page 58
 \skelpars{1}
+\clearpage{}
 \section{Hilbert curves}
-\todo[inline]{Add \emph{Hilbert curves}}
-\skelpars{1}
+\todo[inline]{Add \emph{Hilbert curves} explanation}
+\begin{figure}[H]
+\centering
+  \includegraphics[height=15\baselineskip,keepaspectratio]{figures/HilbertCurve.pdf}\par
+  {\scriptsize{}The first six iterations of the Hilbert curve \myurl{https://commons.wikimedia.org/wiki/File:Hilbert\_curve.svg}{by \texttt{Braindrain0000}}}
+\end{figure}
+\attachsource{src/bin/hilbert.rs}
+Here's a simple algorithm for drawing a Hilbert curve.\footnote{Griffiths, J. G. (1985). \emph{Table-driven algorithms for generating space-filling curves}. Computer-Aided Design, 17(1), 37–41. \texttt{doi:10.1016/0010-4485(85)90009-0}}
+\begin{minted}{rust}
+const HILBERT: &[&[usize]] = &[
+    &[22, 10, 16, 38],
+    &[10, 22, 24, 48],
+    &[44, 36, 30, 18],
+    &[36, 44, 42, 28],
+];
+
+fn curve(img: &mut Image, k: usize, order: i64, mut x: i64, mut y: i64) -> (i64, i64) {
+    const STEP_SIZE: i64 = 5;
+    let mut row: usize;
+    let mut direction: usize;
+    if order > 0 {
+        for j in 0..4 {
+            let step = HILBERT[k][j];
+            row = (step / 10) - 1;
+            let (xn, yn) = curve(img, row, order - 1, x, y);
+            x = xn;
+            y = yn;
+            direction = step % 10;
+            let prev = (x, y);
+            match direction {
+                8 => {
+                    // null op
+                }
+                2 => {
+                    //N
+                    y -= STEP_SIZE;
+                }
+                1 => {
+                    // NE
+                    y -= STEP_SIZE;
+                    x += STEP_SIZE;
+                }
+                0 => {
+                    //E
+                    x += STEP_SIZE;
+                }
+                7 => {
+                    //SE
+                    x += STEP_SIZE;
+                    y += STEP_SIZE;
+                }
+                6 => {
+                    //S
+                    y += STEP_SIZE;
+                }
+                5 => {
+                    //SW
+                    y += STEP_SIZE;
+                    x -= STEP_SIZE;
+                }
+                4 => {
+                    //W
+                    x -= STEP_SIZE;
+                }
+                3 => {
+                    //NW
+                    y -= STEP_SIZE;
+                    x -= STEP_SIZE;
+                }
+                other => unreachable!("{}", other),
+            }
+            img.plot_line_width(prev, (x, y), 0.);
+        }
+    }
+    (x, y)
+}
+\end{minted}
+\begin{minted}{rust}
+let mut image = Image::new(WINDOW_WIDTH, WINDOW_WIDTH, 0, 0);
+curve(&mut image, 0, 7, 0, WINDOW_WIDTH as i64);
+\end{minted}
+\begin{figure}
+\centering
+  \includegraphics[keepaspectratio,scale=1]{figures/hilbert.png}
+\end{figure}
+\section{Sierpinshi curve}
+\begin{figure}
+  \centering
+  \includegraphics[keepaspectratio,scale=1]{figures/sierpinshi.png}
+\end{figure}
+
+Switching the table from the Hilbert implementation to this:
+
+\begin{minted}{rust}
+const SIERP: &[&[usize]] = &[
+    &[17, 25, 33, 41],
+    &[17, 20, 41, 18],
+    &[25, 36, 17, 28],
+    &[33, 44, 25, 38],
+    &[41, 12, 33, 48],
+];
+\end{minted}
+And switching two lines from the function to
+\begin{minted}{diff}
+ - let step = HILBERT[k][j];
+ - row = (step / 10) - 1;
+ + let step = SIERP[k][j];
+ + row = (step / 10);
+\end{minted}
+You can draw a Sierpinshi curve of order $n$ by calling \texttt{curve(\&mut image, 0,n+1, 0, 0)}.
 \section{Peano curves}
 \todo[inline]{Add \emph{Peano curves}}
 \skelpars{1}
