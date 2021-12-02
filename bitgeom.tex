@@ -52,7 +52,7 @@
   \usepackage[compact,nostruts,medium]{titlesec}
   %\titlespacing*{\chapter}{0pt}{0pt}{0pt}
   \newcommand\makeskelfig{%
-  \begin{figure}
+    \begin{figure}[H]
   {\centering%
   \skelfig[width=0.4\textwidth]{2\baselineskip}%
   \skelcaption[width=0.2\textwidth,lines=1]{}}
@@ -477,7 +477,7 @@ fn main() {
 \part{Points And Lines}
 \chapter{Distance between two points}
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \input{fig1.pdf_tex}
 \end{figure}
@@ -515,7 +515,7 @@ The \emph{parametric} form... % TODO
 $$y-y_p=m(x-x_p)$$
 
 \section{Line through two points}
-\begin{figure}
+\begin{figure}[H]
 \centering
 \input{line_through_points.pdf_tex}
 \end{figure}
@@ -538,7 +538,7 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 
 \chapter{Distance from a point to a line}
 \todo[inline]{Add code samples in \emph{Distance from a point to a line}}
-\begin{figure}
+\begin{figure}[H]
 \centering
 \input{point_line_distance.pdf_tex}
 \end{figure}
@@ -552,17 +552,44 @@ $$d= \frac{|ax_p+by_p+c|}{\sqrt{a^2+b^2}}$$
 With $P=(x_0, y_0)$, $P_1 = (x_1, y_1)$ and $P_2 = (x_2, y_2)$.
 
 $$d=\frac{|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|}{\sqrt{((x_2-x_1)^2+(y_2-y_1)^2}}$$
-\section{Using an $L$ defined by a point $P_l$ and angle $θ$}
+\section{Using an $L$ defined by a point $P_l$ and angle $\hat{θ}$}
 
-$$d=|cos(θ)(P_{ly}-y_p)-sin(θ)(P_{lx} - P_x)|$$
+$$d=|cos(\hat{θ})(P_{ly}-y_p)-sin(\hat{θ})(P_{lx} - P_x)|$$
 
 % From graphic gems vol 2 pdf page 40
-\chapter{Angle between two lines}
-\todo[inline]{Add \emph{Angle between two lines}}
-\skelpars{2}
+\chapter{Angle between two lines}\index{angle between two lines}
+\todo[inline]{Add \emph{Angle between two lines} code samples}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,keepaspectratio]{figures/line_angles.pdf}
+\end{figure}
+By angle we mean the angle formed by the two directions of the lines; and direction vectors start from the origin (in the figure, they are the \textcolor{red}{red arrows}). So if we want any of the other three angles, we already know them from basic geometry as shown in the figure above.
+
+If you prefer using the implicit equation, bring the two lines $L_1$ and $L_2$ to that form ($a_1x+b_1y+c=0$ and $a_2x+b_2y+c_2=0$) and you can directly find $\hat{θ}$ with the formula:
+$$\hat{θ} = arccos\frac{a_{1}a_{2}+b_{1}b_{2}}{\sqrt{(a_1^2 + b_1^2)(a_2^2+b_2^2)}}$$
+For the following parametric equations of $L_1$, $L_2$:
+
+$$ L_{1} = (\{x=x_1 +f_1t\}, \{y=y_1+g_1t\})$$
+$$ L_{2} = (\{x=x_2 +f_2s\}, \{y=y_2+g_2s\})$$
+
+the formula is:
+
+$$\hat{θ} = arccos\frac{f_{1}f_{2}+g_{1}g_{2}}{\sqrt{(f_1^2 + g_1^2)(f_2^2+g_2^2)}}$$
+
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
-\todo[inline]{Add \emph{Intersection of two lines}}
-\skelpars{2}
+\todo[inline]{Add \emph{Intersection of two lines} code}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth,keepaspectratio]{figures/intersection_lines.pdf}
+\end{figure}
+If the lines $L_1$, $L_2$ are in implicit form ($a_1x+b_1y+c=0$ and $a_2x+b_2y+c_2=0$), the result comes after checking if the lines are parallel (in which case there's no single point of intersection):
+
+$$a_1b_2-a_2b_1 \neq{} 0$$
+
+If they are not parallel, $P$ is:
+
+$$P = (\frac{b_1c_2-b_2c_1}{a_1b_2-a_2b_1}, \frac{a_2c_1-a_1c_2}{a_1b_2-a_2b_1})$$
+
 \chapter{Line equidistant from two points}
 \begin{figure}[H]
 \centering
@@ -586,7 +613,7 @@ Putting them into the equation we can generate a triple of $(a', b', c')$ and th
 For any line segment with any slope, \pixels{} must be matched with the infinite
 amount of points contained in the segment. As shown in the following figure, a segment \emph{touches} some \pixels{}; we could fill them using an algorithm and get a \bitmap{} of the line segment.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \input{fig2.pdf_tex}
 \end{figure}
@@ -828,7 +855,7 @@ And a way to make a circle out of three points:\index{circle out of three points
 \centering
 \includegraphics[scale=0.25,keepaspectratio]{figures/triangle_circle.png}
 \end{figure}
-
+% graphics gems vol 1. triangles
 \begin{minted}{rust}
 fn min_circle_w_3_points(q1: Point, q2: Point, q3: Point) -> Circle {
     let (ax, ay) = (q1.0 as f64, q1.1 as f64);
@@ -1175,7 +1202,7 @@ The result:
 \end{figure}
 
 We didn't mention in the beginning that the rotation has to be relative to a \emph{point} and the given transformation is relative to the \emph{origin}, in this case the upper left corner $(0,0)$. So \texttt{dmr} was rotated relative to the origin\,:
-\begin{figure}
+\begin{figure}[H]
 \centering
   \def\svgscale{0.6}
 \input{cartesian_grid_dmr_1.pdf_tex}
@@ -1200,7 +1227,7 @@ By subtracting the centroid from each point before we apply the transformation a
 
 Here's it visually: First subtract the center point.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \def\svgscale{0.6}
 \input{cartesian_grid_dmr_3.pdf_tex}
@@ -1208,7 +1235,7 @@ Here's it visually: First subtract the center point.
 
 Then, rotate.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \def\svgscale{0.6}
 \input{cartesian_grid_dmr_4.pdf_tex}
@@ -1216,7 +1243,7 @@ Then, rotate.
 
 And subtract back to the original position.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \def\svgscale{0.6}
 \input{cartesian_grid_dmr_5.pdf_tex}
@@ -1543,12 +1570,12 @@ fn curve(img: &mut Image, k: usize, order: i64, mut x: i64, mut y: i64) -> (i64,
 let mut image = Image::new(WINDOW_WIDTH, WINDOW_WIDTH, 0, 0);
 curve(&mut image, 0, 7, 0, WINDOW_WIDTH as i64);
 \end{minted}
-\begin{figure}
+\begin{figure}[H]
 \centering
   \includegraphics[keepaspectratio,scale=1]{figures/hilbert.png}
 \end{figure}
 \section{Sierpiński curve}
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[keepaspectratio,scale=1]{figures/sierpinshi.png}
 \end{figure}
