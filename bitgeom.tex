@@ -1601,9 +1601,109 @@ And switching two lines from the function to
 You can draw a Sierpinshi curve of order $n$ by calling \texttt{curve(\&mut image, 0,n+1, 0, 0)}.
 \section{Peano curve}
 \todo[inline]{Add \emph{Peano curve}}
-\skelpars{1}
 \section{Z-order curve}
-\todo[inline]{Add \emph{Z-order curve}}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/Zordercurve.pdf}
+\end{figure}
+Drawing the Z-order curve is really simple: first, have a counter variable that starts from zero and is incremented by one at each step. Then, you extract the $(x, y)$ coordinates the new step represents from its binary representation. The bits for the $x$ coordinate are located at the odd bits, and for $y$ at the even bits. I.e. the values are interleaved as bits in the value of the step:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/zcurvebits.pdf}
+\end{figure}
+
+Knowing this, implementing the drawing process will consist of computing the next step, drawing a line segment from the current step and the next, set the current step as the next and continue;
+
+\begin{minted}{rust}
+fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
+    const STEP_SIZE: i64 = 8;
+    let mut sx: i64 = 0;
+    let mut sy: i64 = 0;
+    let mut b: u64 = 0;
+
+    let mut prev_pos = (sx + x_offset, sy + y_offset);
+    loop {
+        let next = b + 1;
+        sx = 0;
+        if (next & 1) as i64 > 0 {
+            sx += STEP_SIZE;
+        }
+        if next & 0b100 > 0 {
+            sx += 2 * STEP_SIZE;
+        }
+        if next & 0b10_000 > 0 {
+            sx += 4 * STEP_SIZE;
+        }
+        if next & 0b1_000_000 > 0 {
+            sx += 8 * STEP_SIZE;
+        }
+        if next & 0b100_000_000 > 0 {
+            sx += 16 * STEP_SIZE;
+        }
+        if next & 0b10_000_000_000 > 0 {
+            sx += 32 * STEP_SIZE;
+        }
+        if next & 0b1_000_000_000_000 > 0 {
+            sx += 64 * STEP_SIZE;
+        }
+        if next & 0b100_000_000_000_000 > 0 {
+            sx += 128 * STEP_SIZE;
+        }
+        if next & 0b10_000_000_000_000_000 > 0 {
+            sx += 256 * STEP_SIZE;
+        }
+        if next & 0b1_000_000_000_000_000_000 > 0 {
+            sx += 512 * STEP_SIZE;
+        }
+        sy = 0;
+        if (next & 0b10) as i64 > 0 {
+            sy += STEP_SIZE;
+        }
+        if next & 0b1_000 > 0 {
+            sy += 2 * STEP_SIZE;
+        }
+        if next & 0b100_000 > 0 {
+            sy += 4 * STEP_SIZE;
+        }
+        if next & 0b10_000_000 > 0 {
+            sy += 8 * STEP_SIZE;
+        }
+        if next & 0b1_000_000_000 > 0 {
+            sy += 16 * STEP_SIZE;
+        }
+        if next & 0b100_000_000_000 > 0 {
+            sy += 32 * STEP_SIZE;
+        }
+        if next & 0b10_000_000_000_000 > 0 {
+            sy += 64 * STEP_SIZE;
+        }
+        if next & 0b1_000_000_000_000_000 > 0 {
+            sy += 128 * STEP_SIZE;
+        }
+        if next & 0b100_000_000_000_000_000 > 0 {
+            sy += 256 * STEP_SIZE;
+        }
+        if next & 0b10_000_000_000_000_000_000 > 0 {
+            sy += 512 * STEP_SIZE;
+        }
+        img.plot_line_width(prev_pos, (sx + x_offset, sy + y_offset), 1.0);
+
+        if next == 0b111_111_111_111_111_111_111_111 {
+            break;
+        }
+        if sx as usize > img.width && sy as usize > img.height {
+            break;
+        }
+
+        prev_pos = (sx + x_offset, sy + y_offset);
+        b = next;
+    }
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \includegraphics[keepaspectratio,scale=1]{figures/zcurve.png}
+\end{figure}
 \section{flowsnake curve}
 \todo[inline]{Add \emph{flowsnake curve}}
 % https://en.wikipedia.org/wiki/Gosper_curve
