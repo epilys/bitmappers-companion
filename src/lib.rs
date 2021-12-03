@@ -10,6 +10,7 @@ pub const RED: u32 = from_u8_rgb(157, 37, 10);
 pub const WHITE: u32 = from_u8_rgb(255, 255, 255);
 pub const BLACK: u32 = 0;
 
+#[derive(Clone)]
 pub struct Image {
     pub bytes: Vec<u32>,
     pub width: usize,
@@ -135,8 +136,8 @@ impl Image {
         let mut d;
         let mut x: i64;
         let mut y: i64;
-        let mut ax: i64;
-        let mut ay: i64;
+        let ax: i64;
+        let ay: i64;
         let sx: i64;
         let sy: i64;
         let dx: i64;
@@ -303,13 +304,13 @@ impl Image {
         }
     }
 
-    pub fn flood_fill(&mut self, mut x: i64, y: i64) {
+    pub fn flood_fill(&mut self, x: i64, y: i64) {
         if self.get(x, y) != Some(WHITE) {
             return;
         }
 
-        let w = (self.width as i64);
-        let h = (self.height as i64);
+        let w = self.width as i64;
+        let h = self.height as i64;
         let mut span_above: bool;
         let mut span_below: bool;
 
@@ -365,6 +366,40 @@ impl Image {
             }
         }
     }
+
+    pub fn copy(
+        &mut self,
+        source: &Image,
+        (x_offset, y_offset): (usize, usize),
+        (sx_offset, sy_offset): (usize, usize),
+        width: usize,
+        height: usize,
+    ) {
+        for (sy, y) in (y_offset..std::cmp::min(height + y_offset, self.height)).enumerate() {
+            for (sx, x) in (x_offset..std::cmp::min(width + x_offset, self.width)).enumerate() {
+                if let Some(p) =
+                    source.get(sx as i64 + sx_offset as i64, sy as i64 + sy_offset as i64)
+                {
+                    if p == BLACK {
+                        self.plot(x as i64, y as i64);
+                    }
+                }
+            }
+        }
+    }
+
+    pub fn write_str(&mut self, font: &BitmapFont, s: &str, (x, y): (i64, i64)) {
+        for (i, c) in s.chars().enumerate() {
+            let glyph = font.glyph(c).unwrap();
+            self.copy(
+                &glyph,
+                (x as usize + i * font.glyph_width, y as usize),
+                (0, 0),
+                font.glyph_width,
+                font.glyph_height,
+            );
+        }
+    }
 }
 
 pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
@@ -384,5 +419,53 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
             }
         }
     }
+    assert!(current_row_count == 0);
     ret
+}
+
+pub struct BitmapFont {
+    image: Image,
+    x_offset: usize,
+    y_offset: usize,
+    glyph_width: usize,
+    glyph_height: usize,
+}
+
+impl BitmapFont {
+    pub fn new(
+        image: Image,
+        (glyph_width, glyph_height): (usize, usize),
+        x_offset: usize,
+        y_offset: usize,
+    ) -> Self {
+        Self {
+            image: image,
+            x_offset,
+            y_offset,
+            glyph_width,
+            glyph_height,
+        }
+    }
+
+    pub fn glyph(&self, c: char) -> Option<Image> {
+        let gwidth = (self.image.width - self.x_offset) / self.glyph_width;
+
+        let idx = c as u32;
+        let row = (idx & 0x00FF) as usize;
+
+        let cursor = (
+            self.x_offset + (row % gwidth) * self.glyph_width,
+            self.y_offset + (row / gwidth) * self.glyph_height,
+        );
+
+        let mut glyph = Image::new(self.glyph_width, self.glyph_height, 0, 0);
+        glyph.copy(
+            &self.image,
+            (self.x_offset, self.y_offset),
+            (cursor.0, cursor.1),
+            self.glyph_width,
+            self.glyph_height,
+        );
+        Some(glyph)
+    }
 }
