@@ -246,6 +246,63 @@ impl Image {
         }
     }
 
+    pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
+        let make_equation =
+            |p1: Point, p2: Point, p3: Point, a: &mut i64, b: &mut i64, c: &mut i64| {
+                *a = p2.1 - p1.1;
+                *b = p1.0 - p2.0;
+                *c = p1.0 * p2.1 - p1.1 * p2.0;
+
+                if *a * p3.0 + *b * p3.1 + *c < 0 {
+                    *a = -*a;
+                    *b = -*b;
+                    *c = -*c;
+                }
+            };
+        let mut x_min = q1.0;
+        let mut y_min = q1.1;
+        let mut x_max = q1.0;
+        let mut y_max = q1.1;
+        let mut a = [0_i64; 3];
+        let mut b = [0_i64; 3];
+        let mut c = [0_i64; 3];
+
+        // find bounding box
+        for q in [q1, q2, q3] {
+            x_min = std::cmp::min(x_min, q.0);
+            x_max = std::cmp::max(x_max, q.0);
+
+            y_min = std::cmp::min(y_min, q.1);
+            y_max = std::cmp::max(y_max, q.1);
+        }
+        make_equation(q1, q2, q3, &mut a[0], &mut b[0], &mut c[0]);
+        make_equation(q1, q3, q2, &mut a[1], &mut b[1], &mut c[1]);
+        make_equation(q2, q3, q1, &mut a[2], &mut b[2], &mut c[2]);
+
+        let mut d0 = a[0] * x_min + b[0] * y_min + c[0];
+        let mut d1 = a[1] * x_min + b[1] * y_min + c[1];
+        let mut d2 = a[2] * x_min + b[2] * y_min + c[2];
+
+        for y in y_min..=y_max {
+            let mut f0 = d0;
+            let mut f1 = d1;
+            let mut f2 = d2;
+
+            d0 += b[0];
+            d1 += b[1];
+            d2 += b[2];
+
+            for x in x_min..=x_max {
+                if f0 >= 0 && f1 >= 0 && f2 >= 0 {
+                    self.plot(x, y);
+                }
+                f0 += a[0];
+                f1 += a[1];
+                f2 += a[2];
+            }
+        }
+    }
+
     pub fn flood_fill(&mut self, mut x: i64, y: i64) {
         if self.get(x, y) != Some(WHITE) {
             return;
