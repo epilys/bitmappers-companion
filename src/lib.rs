@@ -1,4 +1,8 @@
+use regex;
+use regex::Regex;
 use std::collections::VecDeque;
+use std::fs::File;
+use std::io::prelude::*;
 pub type Point = (i64, i64);
 
 pub const fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
@@ -28,6 +32,45 @@ impl Image {
             x_offset,
             y_offset,
         }
+    }
+
+    pub fn from_xbm(
+        path: &str,
+        x_offset: usize,
+        y_offset: usize,
+    ) -> Result<Self, Box<dyn ::std::error::Error>> {
+        let mut file = File::open(path)?;
+        let mut s = String::new();
+        file.read_to_string(&mut s)?;
+        let re = Regex::new(
+            r"(?imx)
+  ^\s*\x23\s*define\s+(?P<i>.+?)_width\s+(?P<w>\d\d*)$
+  \s*
+  ^\s*\x23\s*define\s+.+?_height\s+(?P<h>\d\d*)$
+  \s*
+  ^\s*static(\s+unsigned){0,1}\s+char\s+.+?_bits..\s*=\s*\{(?P<b>[^}]+)\};
+",
+        )
+        .unwrap();
+        let caps = re
+            .captures(&s)
+            .ok_or("Could not open xbm file, regex doesn't match :(")?;
+        let width = caps.name("w").unwrap().as_str().parse::<usize>()?;
+        let height = caps.name("h").unwrap().as_str().parse::<usize>()?;
+        let bits = caps
+            .name("b")
+            .unwrap()
+            .as_str()
+            .split(",")
+            .map(|h| u8::from_str_radix(&h.trim()["0x".len()..], 16))
+            .collect::<Result<Vec<u8>, _>>()?;
+        Ok(Image {
+            bytes: bits_to_bytes(&bits, width),
+            width,
+            height,
+            x_offset,
+            y_offset,
+        })
     }
 
     pub fn draw(&self, buffer: &mut Vec<u32>, fg: u32, bg: Option<u32>, window_width: usize) {

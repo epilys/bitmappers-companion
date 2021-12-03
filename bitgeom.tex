@@ -277,6 +277,7 @@ pub struct Image {
 
 impl Image {
     pub fn new(width: usize, height: usize, x_offset: usize, y_offset: usize) -> Self;
+    pub fn from_xbm(path: &str, x_offset: usize, y_offset: usize) -> Result<Self, Box<dyn Error>>;
     pub fn draw(&self, buffer: &mut Vec<u32>, fg: u32, bg: Option<u32>, window_width: usize);
     pub fn draw_outline(&mut self);
     pub fn clear(&mut self);
@@ -375,7 +376,19 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 }
 \end{minted}
 
-\chapter{Loading \texttt{xbm} files in \Rust{}}
+\chapter{Loading graphics files in \Rust{}}
+The book's library includes a method to load \texttt{xbm} files on runtime (see \emph{\nameref{ch:xbmtors}} for including them in your binary at compile time). If you have another way to load pictures such as your own code or a picture format library crate, all you have to do is convert the pixel information to an \texttt{Image} whose definition we repeat here:
+
+\begin{minted}{rust}
+pub struct Image {
+    pub bytes: Vec<u32>,
+    pub width: usize,
+    pub height: usize,
+    pub x_offset: usize,
+    pub y_offset: usize,
+}
+\end{minted}
+\chapter{Including \texttt{xbm} files in \Rust{}}\label{ch:xbmtors}
 
 \emph{The end of this chapter includes a short \Rust{} program to automatically convert \texttt{xbm} files to equivalent \Rust{} code.}
 
@@ -1347,8 +1360,14 @@ The result: \includegraphics{figures/ch11-3.png}
 \chapter{Magnification/Scaling}
 \begin{figure}[H]
 \centering
-\includegraphics{figures/scaled_dmr.png}
+\includegraphics[width=0.5\textwidth,keepaspectratio]{figures/scaled_dmr.png}
 \end{figure}
+We want to magnify a \bitmap{} without any smoothing. We define an \texttt{Image} scaled to the dimensions we want, and loop for every \pixel{} in the scaled \texttt{Image}. Then, for each \pixel{}, calculate its source in the original \bitmap{}: if the coordinates in the scaled \bitmap{} are $(x, y)$  then the source coordinates $(sx, sy)$ are:
+
+$$ sx = \frac{x * original.width}{scaled.width}$$
+$$ sy = \frac{y * original.height}{scaled.height}$$
+
+So, if $(sx, sy)$ are painted, then $(x, y)$ must be painted as well.
 
 \attachsource{src/bin/scale.rs}%
 \begin{minted}{rust}

@@ -9,9 +9,6 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
     f64::sqrt((xlk * xlk + ylk * ylk) as f64)
 }
 
-include!("../dmr.xbm.rs");
-include!("../smoothtest.xbm.rs");
-include!("../me.xbm.rs");
 const WINDOW_WIDTH: usize = 800;
 const WINDOW_HEIGHT: usize = 800;
 
@@ -261,13 +258,10 @@ fn main() {
     // Limit to max ~60 fps update rate
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
-    let mut original = Image::new(ME_WIDTH, ME_HEIGHT, 100, 100);
-    original.bytes = bits_to_bytes(ME_BITS, ME_WIDTH);
-    //original.draw_outline();
-    //println!("{:?}", &original.bytes);
+    let mut original = Image::from_xbm("./xface.xbm", 100, 100).unwrap();
     original.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 
-    let mut scaled = Image::new(ME_WIDTH * 8, ME_HEIGHT * 8, 0, 100);
+    let mut scaled = Image::new(original.width * 8, original.width * 8, 0, 100);
     let mut sx: i64; //source
     let mut sy: i64; //source
     let mut dx: i64; //destination
@@ -304,49 +298,6 @@ fn main() {
         //smooth(&rul, i, &original, &mut scaled);
     }
     scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
-    /*
-    let mut original = Image::new(DMR_WIDTH, DMR_HEIGHT, 25, 25);
-    original.bytes = bits_to_bytes(DMR_BITS, DMR_WIDTH);
-    original.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
-
-    let mut scaled = Image::new(DMR_WIDTH * 5, DMR_HEIGHT * 5, 0, 100);
-    let mut sx: i64; //source
-    let mut sy: i64; //source
-    let mut dx: i64; //destination
-    let mut dy: i64 = 0; //destination
-
-    let og_height = original.height as i64;
-    let og_width = original.width as i64;
-    let scaled_height = scaled.height as i64;
-    let scaled_width = scaled.width as i64;
-
-    while dy < scaled_height {
-        sy = (dy * og_height) / scaled_height;
-        dx = 0;
-        while dx < scaled_width {
-            sx = (dx * og_width) / scaled_width;
-            if original.get(sx, sy) == Some(BLACK) {
-                scaled.plot(dx, dy);
-            }
-            dx += 1;
-        }
-        dy += 1;
-    }
-
-    scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
-    scaled.x_offset += 180;
-
-    for (i, rul) in rule_3_set.iter().enumerate() {
-        smooth(&rul, i, &original, &mut scaled);
-    }
-    for (i, rul) in rule_2_set.iter().enumerate() {
-        smooth(&rul, i, &original, &mut scaled);
-    }
-    for (i, rul) in rule_1_set.iter().enumerate() {
-        smooth(&rul, i, &original, &mut scaled);
-    }
-    scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
-    */
 
     while window.is_open() && !window.is_key_down(Key::Escape) && !window.is_key_down(Key::Q) {
         window
