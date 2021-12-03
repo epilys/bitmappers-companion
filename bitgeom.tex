@@ -1,4 +1,4 @@
-\documentclass[12pt,a4,oneside,usenames,dvipsnames]{book}
+\documentclass[12pt,openany,a4,usenames,dvipsnames]{book}
   \usepackage{polyglossia}
   \usepackage{fontspec}
   \setmainlanguage{english}
@@ -34,6 +34,7 @@
 \makeindex
 \usepackage[totoc]{idxlayout}
   \usepackage{microtype}
+  \usepackage{footmisc}
   \usepackage{marginnote}
   \usepackage[noclrdblpg]{colophon}
   \usepackage{bookmark}
@@ -49,7 +50,8 @@
 \usepackage[marginparwidth=3cm,twoside=true,a4paper]{geometry}
   \usepackage{metalogo}
   \usepackage{csquotes}
-  \usepackage[compact,nostruts,medium]{titlesec}
+  \usepackage[compact,nostruts,medium,noindentafter]{titlesec}
+  \newcommand{\chapterbreak}{}
   %\titlespacing*{\chapter}{0pt}{0pt}{0pt}
   \newcommand\makeskelfig{%
     \begin{figure}[H]
@@ -170,6 +172,8 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 
   \usepackage[textsize=tiny]{todonotes}
 \begin{document}
+\pagestyle{plain}
+  \assignpagestyle{\chapter}{plain}
 \newgeometry{left=1cm,top=0.1cm,right=1cm,bottom=0.1cm}
 \pdfbookmark{Title page}{title-page}%cover
 \ThisLRCornerWallPaper{0.55}{Holbein_Skull2_inverted.png}
@@ -206,10 +210,13 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 \restoregeometry
 \revertbackgroundtext
 \clearpage{}
+\thispagestyle{empty}
 .
 \clearpage{}
+\thispagestyle{empty}
 \thumbsoverview{map}
 \clearpage{}
+\thispagestyle{empty}
 \marginnote{\includegraphics{xface.png}}[-1.3\baselineskip]\noindent{}Manos Pitsidianakis (epilys)\\
 \myurl{https://nessuent.xyz}{https://\-nessuent.xyz}\\
 \myurl{https://github.com/epilys}{https://github.com/epilys}\\
@@ -621,7 +628,7 @@ $$ (\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2})$$
 Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
 \chapter{Normal to a line through a point}
 \todo[inline]{Add \emph{Normal to a line through a point}}
-\skelpars{2}
+\skelpar%
 \clearpage{}
 \myaddthumb{Points and Line Segments}{segments}
 \part{Points And Line Segments}
@@ -823,14 +830,14 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \todo[inline]{Add code sample in \emph{Intersection of two line segments}}
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
-\skelpars{2}
+\skelpar%
 \clearpage{}
 \myaddthumb{Points, Lines and Circles}{circles}
 \part{Points, Lines and Circles}
-\skelpars{2}
+\skelpar%
 \chapter{Equations of a circle}
 \todo[inline]{Add \emph{Equations of a circle}}
-\skelpars{2}
+\skelpar%
 \chapter{Bounding circle}
 % From graphic gems vol 2 pdf page 46
 % From Υπολογιστική Γεωμετρία 4.7 page 85 Μικρότατοι περικλείοντες δίσκοι
@@ -1114,7 +1121,7 @@ fn main() {
 \chapter{Parametric elliptical arcs}
 \todo[inline]{Add \emph{Parametric elliptical arcs}}
 % Graphics gems vol 3. pdf page 196
-\skelpars{2}
+\skelpar%
 \clearpage{}
 \myaddthumb{Points, Lines and Shapes}{shapes}
 \part{Points, Lines and Shapes}
@@ -1124,14 +1131,14 @@ fn main() {
 \chapter{Union, intersection and difference of polygons}
 \todo[inline]{Add \emph{Union, intersection and difference of polygons}}
 % Graphics gems vol 2. pdf page 63
-\skelpars{2}
-
+\skelpar%
 \chapter{Centroid of polygon}\index{centroid}
 \todo[inline]{Add \emph{Centroid of polygon}}
 % Graphics gems vol 4. pdf page 14
-\skelpars{2}
-\chapter{Polygon clipping}
+\skelpar%
+\chapter{Polygon clipping}%
 % https://github.com/jasonwebb/morphogenesis-resources#polygon-clipping
+\skelpar%
 \chapter{Triangle filling}
 \todo[inline]{Add \emph{Triangle filling} explanation}
 \sourceinlib{}%
@@ -1197,7 +1204,7 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 
 \chapter{Flood filling}
 \todo[inline]{Add \emph{Flood filling}}
-\skelpars{2}
+\skelpar%
 % Graphics gems vol 1. pdf page 296 "SEED FILL"
 % Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
 \clearpage{}
@@ -1352,11 +1359,11 @@ The result: \includegraphics{figures/ch11-3.png}
 \section{Fast 2D Rotation}
 \todo[inline]{Add \emph{Fast 2D Rotation}}
 % Graphics gems vol 1. pdf page 456 
-\skelpars{2}
+\skelpar%
 \chapter{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}
 \todo[inline]{Add \emph{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}}
 % Graphics gems vol 2. pdf page 113 
-\skelpars{2}
+\skelpar%
 \chapter{Magnification/Scaling}
 \begin{figure}[H]
 \centering
@@ -1404,11 +1411,11 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \todo[inline]{Add \emph{Smoothing enlarged \bitmaps{}}}
 % https://en.wikipedia.org/wiki/Hqx
 % Graphics gems vol 1. pdf page 189 "SMOOTHING ENLARGED MONOCHROME IMAGES"
-\skelpars{2}
+\skelpar%
 \section{Stretching lines of \bitmaps{}}
 \todo[inline]{Add \emph{Stretching lines of \bitmaps{}}}
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
-\skelpars{2}
+\skelpar%
 \chapter{Mirroring}
 \todo[inline]{Add screenshots and figure and code in \emph{Mirroring}}
 Mirroring to an axis is the transformation of one coordinate to its equidistant value across the axis:
@@ -1538,41 +1545,74 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \chapter{Projections}
 \todo[inline]{Add \emph{Projections}}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
-\skelpars{2}
+\skelpar%
 \clearpage{}
 \myaddthumb{Addendum}{ad\-den\-dum}
 \part{Addendum}
 \section{Faster Drawing a line segment from its two endpoints using Symmetry}
 \todo[inline]{Add \emph{Faster Drawing a line segment from its two endpoints using Symmetry}}
 % From graphic gems vol 1 p 103 (pdf page 128)
-\skelpars{2}
+\skelpar%
 
 \chapter{Joining the ends of two wide line segments together}
 \todo[inline]{Add \emph{Joining the ends of two wide line segments together}}
 % Graphics gems vol 1. pdf page 132 "AN ALGORITHM FOR FILLING IN 2D WIDE LINE BEVEL JOINTS"
-\skelpars{2}
+\skelpar%
 \chapter{Composing monochrome \bitmaps{} with separate alpha channel data}
 \todo[inline]{Add \emph{Composing monochrome \bitmaps{} with separate alpha channel data}}
 % Graphics gems vol 3. pdf page 64 "COMPOSING BW BITMAPS
-\skelpars{2}
+\skelpar%
 \chapter{Orthogonal connection of two points}
 \todo[inline]{Add \emph{Orthogonal connection of two points}}
 % Graphics gems vol 3. pdf page 205 "SIMPLE CONNECTION ALGORITHM FOR 2D DRAWING"
-\skelpars{2}
+\skelpar%
 \chapter{Join segments with round corners}
-\todo[inline]{Add \emph{Join segments with round corners}}
 % Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
-\skelpars{2}
+\begin{figure}[H]
+\centering
+\includegraphics[height=13\baselineskip,keepaspectratio]{figures/fillet_main.pdf}
+\end{figure}
+Round corners are everywhere around us. It is useful to know at least one method of construction. This specific method constructs a circle that has a common point with each given line segment, and calculates the arc that when added to the line segments they are smoothly joined. The excess length, since those common points will be before the end of the line segments, must be erased.
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.8\textwidth}
+  \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_1.pdf}}
+
+  \vspace{\baselineskip}
+  \noindent{\centering{}Beginning with two line segments $P_{1}P_{2}$ and $P_{3}P_{4}$ that make up segments $S_1$ and $S_2$.}
+\end{minipage}
+\end{figure}
+
+Since the segments intercept, the round corner will end up beneath the intersection. We wish to find a circle
+that has a common point with each segment and the arc made up from those points and the circle is the round corner we are after.
+
+\begin{figure}[H]
+\begin{minipage}{0.8\textwidth}
+  \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_2.pdf}}
+
+  \vspace{\baselineskip}
+  \noindent{\centering{}Calculate perpendicular lines $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.}
+\end{minipage}
+\end{figure}
+\begin{figure}[H]
+  \begin{minipage}{0.8\textwidth}
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}}
+
+    \vspace{\baselineskip}
+    \noindent{\centering{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments.}
+  \end{minipage}
+\end{figure}
+\todo[inline]{Add \emph{Join segments with round corners} code}
 \chapter{Faster line clipping}
 \todo[inline]{Add \emph{Faster line clipping}}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
-\skelpars{2}
+\skelpar%
 \chapter{Space-filling Curves}
 \todo[inline]{Add \emph{Space-filling Curves}}
 % https://en.wikipedia.org/wiki/Space-filling_tree maybe?
 % Spiral tilings? https://isohedral.ca/escher-like-spiral-tilings/
 % Graphics gems vol 2. pdf page 58
-\skelpars{1}
+\skelpar%
 \clearpage{}
 \section{Hilbert curve}
 \todo[inline]{Add \emph{Hilbert curve} explanation}
@@ -1793,13 +1833,105 @@ fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
 \section{flowsnake curve}
 \todo[inline]{Add \emph{flowsnake curve}}
 % https://en.wikipedia.org/wiki/Gosper_curve
-\skelpars{1}
+\skelpar%
 \chapter{Dithering}
+\skelpar%
 % https://beyondloom.com/blog/dither.html
 % https://tannerhelland.com/2012/12/28/dithering-eleven-algorithms-source-code.html
 % http://www.thetenthplanet.de/archives/5367
+\section{Floyd-Steinberg}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/floyd_dithering_lake_closeup.jpg}\par
+  {\scriptsize{}detail of a standard test image, \myurl{https://sipi.usc.edu/database/database.php?volume=misc&image=12}{\emph{Sailboat on lake}}, with Floyd-Steinberg dithering}
+\end{figure}
+\skelpar
+\attachsource{src/bin/floyddither.rs}
+\begin{minted}{rust}
+fn floyd(image: &mut Image) {
+    let w = image.width;
+    let m = [(0, 7), (w - 2, 3), (w - 1, 5), (w, 1)];
+    let mut e = vec![0.0; w + 1];
+    let bytes = image
+        .bytes
+        .iter()
+        .map(|&byte| {
+            let (r, g, b) = from_u32_rgb(byte);
+            let g: f64 = (0.299 * (r as f64)) + (0.587_f64 * (g as f64)) + (0.114 * (b as f64));
+            let pix = g / 255.0 + {
+                e.push(0.);
+                e.remove(0)
+            };
+            let col = if pix > 0.5 { 1. } else { 0. };
+            let err = (pix - col) / 16.;
+            for (x, y) in m.iter() {
+                e[*x] += err * (*y as f64);
+            }
+            if col.floor() as u32 == 1 {
+                WHITE
+            } else {
+                BLACK
+            }
+        })
+        .collect::<Vec<u32>>();
+    image.bytes = bytes;
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/4.2.06.jpg}
+  \end{minipage}
+  \hspace{.4em}
+  \begin{minipage}{0.48\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/floyd_dithering_lake.png}
+  \end{minipage}
+\end{figure}
+\section{Atkinson dithering}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/atkinson_dithering_lena_closeup.jpg}\par
+  {\scriptsize{}detail of a standard test image, \myurl{https://en.wikipedia.org/wiki/Lenna}{\emph{Lenna}}, with Atkinson dithering}
+\end{figure}
+\skelpar
+
+\attachsource{src/bin/atkinsondither.rs}
+The following code implements Atkinson dithering:\footnote{Algorithm taken from \myurl{https://beyondloom.com/blog/dither.html}{https://beyondloom.com/blog/dither.html}}
+\begin{minted}{rust}
+fn atkinson(image: &mut Image) {
+    let w= image.width;
+    let mut e = vec![0.0;2*w];
+    let m = [0, 1, w-2, w-1, w, 2*w-1];
+    for byte in image.bytes.iter_mut() {
+        let (r,g,b) = from_u32_rgb(*byte);
+        let g:f64 = ((0.299*(r as f64)) ) + ((0.587_f64*(g as f64)) ) + ((0.114*(b as f64)) );
+        let pix = g/255.0 + { e.push(0.); e.remove(0)};
+        let col = if pix > 0.5 { 1. } else { 0. };
+        let err = (pix-col)/8.;
+        for m in m.iter() {
+            e[*m] += err;
+        }
+        *byte = if (col.floor() as u32 == 1) {
+            WHITE
+        } else {
+            BLACK
+        };
+    }
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/lenna.jpg}
+  \end{minipage}
+  \hspace{.4em}
+  \begin{minipage}{0.48\textwidth}
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/atkinson_dithering_lena.png}
+  \end{minipage}
+\end{figure}
 \chapter{Marching squares}
 % https://github.com/jasonwebb/morphogenesis-resources#marching-squares
+\skelpar%
 \clearpage{}
 \stopthumb
 \backmatter

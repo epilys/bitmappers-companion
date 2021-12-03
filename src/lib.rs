@@ -14,6 +14,12 @@ pub const RED: u32 = from_u8_rgb(157, 37, 10);
 pub const WHITE: u32 = from_u8_rgb(255, 255, 255);
 pub const BLACK: u32 = 0;
 
+pub const fn from_u32_rgb(v: u32) -> (u8, u8, u8) {
+    let r = v >> 16;
+    let g = (v >> 8) & 0xff;
+    let b = v & 0xff;
+    (r as u8, g as u8, b as u8)
+}
 #[derive(Clone)]
 pub struct Image {
     pub bytes: Vec<u32>,
@@ -81,6 +87,15 @@ impl Image {
                 } else if let Some(bg) = bg {
                     buffer[(self.y_offset + y) * window_width + self.x_offset + x] = bg;
                 }
+            }
+        }
+    }
+
+    pub fn draw_raw(&self, buffer: &mut Vec<u32>, window_width: usize) {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                buffer[(self.y_offset + y) * window_width + self.x_offset + x] =
+                    self.bytes[y * self.width + x];
             }
         }
     }
