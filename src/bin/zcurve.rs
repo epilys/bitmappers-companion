@@ -113,7 +113,6 @@ fn main() {
 
     image.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
     while window.is_open() && !window.is_key_down(Key::Escape) && !window.is_key_down(Key::Q) {
-
         window
             .update_with_buffer(&buffer, WINDOW_WIDTH, WINDOW_HEIGHT)
             .unwrap();
