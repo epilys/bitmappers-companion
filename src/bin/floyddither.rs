@@ -1,6 +1,5 @@
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
-use std::process::Command;
 
 fn floyd(image: &mut Image) {
     let w = image.width;
@@ -33,28 +32,10 @@ fn floyd(image: &mut Image) {
 
 fn main() {
     const INPUT_FILE: &str = "4.2.06.tiff";
-    let output = Command::new("identify")
-        .args([INPUT_FILE])
-        .output()
-        .expect("failed to execute identify");
-
-    let re = regex::Regex::new(r"\s*(\d+)x(\d+)\s*").unwrap();
-    let identify = String::from_utf8(output.stdout).unwrap();
-    let matches = re.captures(&identify).unwrap();
-    let width = matches.get(1).unwrap().as_str().parse::<usize>().unwrap();
-    let height = matches.get(2).unwrap().as_str().parse::<usize>().unwrap();
+    let mut image = Image::magick_open(INPUT_FILE, 0, 0).unwrap();
+    let width = image.width;
+    let height = image.height;
     let mut buffer: Vec<u32> = vec![WHITE; width * height];
-    let output = Command::new("magick")
-        .args(["convert", INPUT_FILE, "RGB:-"])
-        .output()
-        .expect("failed to execute magick");
-
-    let bytes = output.stdout;
-
-    let bytes = bytes
-        .chunks(3)
-        .map(|c| from_u8_rgb(c[0], c[1], c[2]))
-        .collect::<Vec<u32>>();
 
     let mut window = Window::new(
         "Floyd-Steinberg Dithering - ESC to exit",
@@ -72,9 +53,6 @@ fn main() {
 
     // Limit to max ~60 fps update rate
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
-
-    let mut image = Image::new(width, height, 0, 0);
-    image.bytes = bytes;
 
     floyd(&mut image);
     image.draw_raw(&mut buffer, width);

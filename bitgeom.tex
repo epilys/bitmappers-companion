@@ -284,6 +284,7 @@ pub struct Image {
 
 impl Image {
     pub fn new(width: usize, height: usize, x_offset: usize, y_offset: usize) -> Self;
+    pub fn magick_open(path: &str, x_offset: usize, y_offset: usize) -> Result<Self, Box<dyn Error>>;
     pub fn from_xbm(path: &str, x_offset: usize, y_offset: usize) -> Result<Self, Box<dyn Error>>;
     pub fn draw(&self, buffer: &mut Vec<u32>, fg: u32, bg: Option<u32>, window_width: usize);
     pub fn draw_outline(&mut self);
@@ -384,7 +385,19 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 \end{minted}
 
 \chapter{Loading graphics files in \Rust{}}
-The book's library includes a method to load \texttt{xbm} files on runtime (see \emph{\nameref{ch:xbmtors}} for including them in your binary at compile time). If you have another way to load pictures such as your own code or a picture format library crate, all you have to do is convert the pixel information to an \texttt{Image} whose definition we repeat here:
+The book's library includes a method to load \texttt{xbm} files on runtime (see \emph{\nameref{ch:xbmtors}} for including them in your binary at compile time). If your system has \texttt{ImageMagick} installed and the commands \texttt{identify} and \texttt{magick} are in your \texttt{PATH} environment variable, you can use the \texttt{Image::magick\_open} method:
+
+\begin{minted}{rust}
+  impl Image {
+    ...
+    pub fn magick_open(path: &str, x_offset: usize, y_offset: usize) -> Result<Self, Box<dyn Error>>;
+    ...
+  }
+\end{minted}
+
+It simply converts the image file you pass to it to raw bytes using the invocation \texttt{magick convert \emph{path} RGB:-} which prints raw \texttt{RGB} content to \texttt{stdout}.
+
+If you have another way to load pictures such as your own code or a picture format library crate, all you have to do is convert the pixel information to an \texttt{Image} whose definition we repeat here:
 
 \begin{minted}{rust}
 pub struct Image {

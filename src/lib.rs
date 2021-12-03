@@ -3,6 +3,7 @@ use regex::Regex;
 use std::collections::VecDeque;
 use std::fs::File;
 use std::io::prelude::*;
+use std::process::Command;
 pub type Point = (i64, i64);
 
 pub const fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
@@ -38,6 +39,39 @@ impl Image {
             x_offset,
             y_offset,
         }
+    }
+
+    pub fn magick_open(
+        path: &str,
+        x_offset: usize,
+        y_offset: usize,
+    ) -> Result<Self, Box<dyn ::std::error::Error>> {
+        let output = Command::new("identify").args([path]).output()?;
+
+        let re = regex::Regex::new(r"\s*(\d+)x(\d+)\s*")?;
+        let identify = String::from_utf8(output.stdout)?;
+        let matches = re
+            .captures(&identify)
+            .ok_or("Could not find dimensions in `identify` output")?;
+        let width = matches.get(1).unwrap().as_str().parse::<usize>()?;
+        let height = matches.get(2).unwrap().as_str().parse::<usize>()?;
+        let output = Command::new("magick")
+            .args(["convert", path, "RGB:-"])
+            .output()?;
+
+        let bytes = output.stdout;
+
+        let bytes = bytes
+            .chunks(3)
+            .map(|c| from_u8_rgb(c[0], c[1], c[2]))
+            .collect::<Vec<u32>>();
+        Ok(Image {
+            bytes,
+            width,
+            height,
+            x_offset,
+            y_offset,
+        })
     }
 
     pub fn from_xbm(
