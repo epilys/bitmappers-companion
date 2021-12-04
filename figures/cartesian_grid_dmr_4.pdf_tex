@@ -5,12 +5,12 @@
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
 %%  instead of
-%%   \includegraphics{<filename>.pdf}
+%%   \includegraphics{figures/<filename>.pdf
 %% To scale the image, write
 %%   \def\svgwidth{<desired width>}
 %%   \input{<filename>.pdf_tex}
 %%  instead of
-%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%   \includegraphics[width=<desired width>]{figures/<filename>.pdf
 %%
 %% Images with a different path to the parent latex file can
 %% be accessed with the `import' package (which may need to be
@@ -53,11 +53,11 @@
   \begin{picture}(1,0.88521954)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{cartesian_grid_dmr_4.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{figures/cartesian_grid_dmr_4.pdf}}%
     \put(-0.0101937,0.79521399){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(0,0)\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{cartesian_grid_dmr_4.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{figures/cartesian_grid_dmr_4.pdf}}%
     \put(0.31408715,0.55579817){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}θ\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{cartesian_grid_dmr_4.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{figures/cartesian_grid_dmr_4.pdf}}%
     \put(0.43510047,0.0870469){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}xc\end{tabular}}}}%
     \put(0.22693898,0.10536206){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}rotated\end{tabular}}}}%
   \end{picture}%

@@ -1,16 +1,16 @@
 %% Creator: Inkscape 1.0.2 (e86c870879, 2021-01-15), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'cartesian_grid_dmr_5.pdf' (pdf, eps, ps)
+%% Accompanies image file 'cartesian_grid_dmr_2.pdf' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
 %%  instead of
-%%   \includegraphics{<filename>.pdf}
+%%   \includegraphics{figures/<filename>.pdf
 %% To scale the image, write
 %%   \def\svgwidth{<desired width>}
 %%   \input{<filename>.pdf_tex}
 %%  instead of
-%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%   \includegraphics[width=<desired width>]{figures/<filename>.pdf
 %%
 %% Images with a different path to the parent latex file can
 %% be accessed with the `import' package (which may need to be
@@ -50,16 +50,12 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.91929502)%
+  \begin{picture}(1,0.88521933)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{cartesian_grid_dmr_5.pdf}}%
-    \put(-0.01019369,0.82928949){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(0,0)\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{cartesian_grid_dmr_5.pdf}}%
-    \put(0.31408716,0.58987396){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}θ\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{cartesian_grid_dmr_5.pdf}}%
-    \put(0.48916211,0.09636978){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}xc\end{tabular}}}}%
-    \put(0.41606487,0.0007615){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+ centroid\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=4]{cartesian_grid_dmr_5.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{figures/cartesian_grid_dmr_2.pdf}}%
+    \put(-0.01019368,0.79521375){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}(0,0)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{figures/cartesian_grid_dmr_2.pdf}}%
+    \put(0.30157509,0.49706709){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}θ\end{tabular}}}}%
   \end{picture}%
 \endgroup%

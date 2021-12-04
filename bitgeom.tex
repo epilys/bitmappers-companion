@@ -255,7 +255,7 @@ The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{I
 We will work on the cartesian grid representing the framebuffer that will show us the \pixels{}. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.%
 \begin{figure}%
 \centering
-\input{cartesian_grid.pdf_tex}
+\input{figures/cartesian_grid.pdf_tex}
 \end{figure}%
 %
 We will represent points as pairs of signed integers. When actually drawing them though, negative values and values outside the window's geometry will be ignored (clipped).
@@ -516,7 +516,7 @@ fn main() {
 
 \begin{figure}[H]
 \centering
-\input{fig1.pdf_tex}
+\input{figures/fig1.pdf_tex}
 \end{figure}
 
 Given two points, $K$ and $L$, an elementary application of Pythagoras' Theorem gives the distance between them as
@@ -554,7 +554,7 @@ $$y-y_p=m(x-x_p)$$
 \section{Line through two points}
 \begin{figure}[H]
 \centering
-\input{line_through_points.pdf_tex}
+\input{figures/line_through_points.pdf_tex}
 \end{figure}
 It seems sufficient, given the coordinates of two points $M, N$, to calculate $a, b$ and $c$ to form a line equation:
 
@@ -577,7 +577,7 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \todo[inline]{Add code samples in \emph{Distance from a point to a line}}
 \begin{figure}[H]
 \centering
-\input{point_line_distance.pdf_tex}
+\input{figures/point_line_distance.pdf_tex}
 \end{figure}
 
 \section{Using the implicit equation form}
@@ -652,7 +652,7 @@ amount of points contained in the segment. As shown in the following figure, a s
 
 \begin{figure}[H]
 \centering
-\input{fig2.pdf_tex}
+\input{figures/fig2.pdf_tex}
 \end{figure}
 
 The algorithm presented here was first derived by Bresenham. In the \emph{Image} implementation, it is used in the \texttt{plot\_line\_width} method.
@@ -1305,9 +1305,9 @@ We didn't mention in the beginning that the rotation has to be relative to a \em
 \begin{figure}[H]
 \centering
   \def\svgscale{0.6}
-\input{cartesian_grid_dmr_1.pdf_tex}
+\input{figures/cartesian_grid_dmr_1.pdf_tex}
   \def\svgscale{0.6}
-\input{cartesian_grid_dmr_2.pdf_tex}
+\input{figures/cartesian_grid_dmr_2.pdf_tex}
 \end{figure}
 
 {\centering{}
@@ -1330,7 +1330,7 @@ Here's it visually: First subtract the center point.
 \begin{figure}[H]
 \centering
 \def\svgscale{0.6}
-\input{cartesian_grid_dmr_3.pdf_tex}
+\input{figures/cartesian_grid_dmr_3.pdf_tex}
 \end{figure}
 
 Then, rotate.
@@ -1338,7 +1338,7 @@ Then, rotate.
 \begin{figure}[H]
 \centering
 \def\svgscale{0.6}
-\input{cartesian_grid_dmr_4.pdf_tex}
+\input{figures/cartesian_grid_dmr_4.pdf_tex}
 \end{figure}
 
 And subtract back to the original position.
@@ -1346,7 +1346,7 @@ And subtract back to the original position.
 \begin{figure}[H]
 \centering
 \def\svgscale{0.6}
-\input{cartesian_grid_dmr_5.pdf_tex}
+\input{figures/cartesian_grid_dmr_5.pdf_tex}
 \end{figure}
 
 In code:
