@@ -6,7 +6,7 @@
   \setmainfont{Redaction}
   \usepackage{unicode-math}
   %\setmathfont{Latin Modern Math}
-  \setmathfont{TeX Gyre Pagella Math}
+  \setmathfont{TeX Gyre Schola Math}
   \setmonofont[Scale=1.1]{CMU Typewriter Text}
   \newfontfamily\pixelfont{Redaction35-Regular}
   \newfontfamily\fira[Scale=0.90]{Fira Sans}
@@ -29,6 +29,7 @@
     linkcolor=black,
     urlcolor=black
 }
+\usepackage{wrapfig}
 \usepackage[nobiblatex]{xurl}
 \usepackage{makeidx}
 \makeindex
@@ -593,6 +594,10 @@ $$d=\frac{|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|}{\sqrt{((x_2-x_1)^2+(y_2-y_1)^
 
 $$d=|cos(\hat{θ})(P_{ly}-y_p)-sin(\hat{θ})(P_{lx} - P_x)|$$
 
+\section{Find perpendicular to line that passes through given point}\label{sec:perpendicular}
+Now, we wish to find the equation of the line that passes through $P$ and is perpendicular to $L$. Let's call it $L_{⊥}$. $L$ in implicit form is $ax+by+c=0$. The perpendicular will be:\index{perpendicular}
+
+$$L_{⊥}: bx-ay+(aP_y-bP_x)=0$$
 % From graphic gems vol 2 pdf page 40
 \chapter{Angle between two lines}\index{angle between two lines}
 \todo[inline]{Add \emph{Angle between two lines} code samples}
@@ -1581,40 +1586,56 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \skelpar%
 \chapter{Join segments with round corners}
 % Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
-\begin{figure}[H]
-\centering
-\includegraphics[height=13\baselineskip,keepaspectratio]{figures/fillet_main.pdf}
-\end{figure}
-Round corners are everywhere around us. It is useful to know at least one method of construction. This specific method constructs a circle that has a common point with each given line segment, and calculates the arc that when added to the line segments they are smoothly joined. The excess length, since those common points will be before the end of the line segments, must be erased.
-\begin{figure}[H]
-\centering
-\begin{minipage}{0.8\textwidth}
-  \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_1.pdf}}
-
-  \vspace{\baselineskip}
-  \noindent{\centering{}Beginning with two line segments $P_{1}P_{2}$ and $P_{3}P_{4}$ that make up segments $S_1$ and $S_2$.}
-\end{minipage}
-\end{figure}
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \vspace{-60pt}
+  \begin{center}
+    \includegraphics[width=0.48\textwidth,keepaspectratio]{figures/fillet_main.pdf}
+  \end{center}
+\end{wrapfigure}
+Round corners are everywhere around us. It is useful to know at least one method of construction. This specific method constructs a circle that has a common point with each given line segment, and calculates the arc that when added to the line segments they are smoothly joined. The excess length, since those common points will be before the end of the line segments, must be erased. Therefore, it's best to begin with just the points of the two segments before starting to draw anything.
 
 Since the segments intercept, the round corner will end up beneath the intersection. We wish to find a circle
 that has a common point with each segment and the arc made up from those points and the circle is the round corner we are after.
 
 \begin{figure}[H]
-\begin{minipage}{0.8\textwidth}
-  \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_2.pdf}}
-
-  \vspace{\baselineskip}
-  \noindent{\centering{}Calculate perpendicular lines $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.}
-\end{minipage}
+  \centering{}
+\includegraphics[width=0.5\textwidth,keepaspectratio]{figures/fillet_1.pdf}
 \end{figure}
+
+\noindent{}We are given 4 points, $P_{1}, P_{2}$ and $P_{3}, P_{4}$ that make up segments $S_1$ and $S_2$.
+Begin by finding the midpoints $q_1$ and $q_2$ of segments $S_1$ and $S_2$.\index{midpoint} These will be:
+
+$$q_1 = \frac{P_1 + P_2}{2}$$
+$$q_2 = \frac{P_3 + P_4}{2}$$
+
 \begin{figure}[H]
-  \begin{minipage}{0.8\textwidth}
-    \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}}
-
-    \vspace{\baselineskip}
-    \noindent{\centering{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments.}
-  \end{minipage}
+  \centering{}
+\includegraphics[width=0.5\textwidth,keepaspectratio]{figures/fillet_2.pdf}
 \end{figure}
+
+\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
+
+\begin{figure}[H]
+  \centering{}
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}
+\end{figure}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering{}
+  \includegraphics[width=0.49\textwidth,keepaspectratio]{figures/fillet_3.pdf}
+\end{wrapfigure}
+
+\noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
+
+$$\hat{s} = 90^{\circ} + \hat{a}$$
+$$\hat{a} = arcsin(\frac{dist_x(P_c, q_1)}{r})$$
+
+\noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
+
+$$\hat{e} = arccos(\frac{dist_x(P_c, q_2)}{r})$$
+
+\noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
+
 \todo[inline]{Add \emph{Join segments with round corners} code}
 \chapter{Faster line clipping}
 \todo[inline]{Add \emph{Faster line clipping}}
