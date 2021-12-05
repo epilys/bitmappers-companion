@@ -5,12 +5,12 @@ A small zine/book written in LaTeX. In progress. See Building section below for 
 ## Samples
 
 
-![bezier interactive demo](./bezier_interactive.gif?raw=true)
+![bezier interactive demo](./samples/bezier_interactive.gif?raw=true)
 
 
 <kbd>
 
-![cover_sample](./cover_sample.png?raw=true)
+![cover_sample](./samples/cover_sample.png?raw=true)
 
 </kbd>
 
@@ -18,7 +18,7 @@ A small zine/book written in LaTeX. In progress. See Building section below for 
 
 <kbd>
 
-![thumb_sample](./thumb_sample.png?raw=true)
+![thumb_sample](./samples/thumb_sample.png?raw=true)
 
 </kbd>
 
@@ -26,7 +26,7 @@ A small zine/book written in LaTeX. In progress. See Building section below for 
 
 <kbd>
 
-![frontmatter_sample](./frontmatter_sample.png?raw=true)
+![frontmatter_sample](./samples/frontmatter_sample.png?raw=true)
 
 </kbd>
 
@@ -34,14 +34,14 @@ A small zine/book written in LaTeX. In progress. See Building section below for 
 
 <kbd>
 
-![frontmatter_sample2](./frontmatter_sample2.png?raw=true)
+![frontmatter_sample2](./samples/frontmatter_sample2.png?raw=true)
 
 </kbd>
 --------
 
 <kbd>
 
-![page_sample](./page_sample.png?raw=true)
+![page_sample](./samples/page_sample.png?raw=true)
 
 </kbd>
 
