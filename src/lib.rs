@@ -13,6 +13,7 @@ pub const fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
 pub const AZURE_BLUE: u32 = from_u8_rgb(0, 127, 255);
 pub const RED: u32 = from_u8_rgb(157, 37, 10);
 pub const WHITE: u32 = from_u8_rgb(255, 255, 255);
+pub const GRAY82: u32 = from_u8_rgb(208, 208, 208);
 pub const BLACK: u32 = 0;
 
 pub const fn from_u32_rgb(v: u32) -> (u8, u8, u8) {
@@ -118,6 +119,9 @@ impl Image {
             for x in 0..self.width {
                 if self.bytes[y * self.width + x] == BLACK {
                     buffer[(self.y_offset + y) * window_width + self.x_offset + x] = fg;
+                } else if self.bytes[y * self.width + x] != WHITE {
+                    buffer[(self.y_offset + y) * window_width + self.x_offset + x] =
+                        self.bytes[y * self.width + x];
                 } else if let Some(bg) = bg {
                     buffer[(self.y_offset + y) * window_width + self.x_offset + x] = bg;
                 }
@@ -145,6 +149,15 @@ impl Image {
         }
     }
 
+    pub fn draw_grid(&mut self, step: usize) {
+        for i in (0..(self.height as _)).step_by(step) {
+            self.plot_line_width_color((0, i), (self.width as i64 - 1, i), 0., Some(GRAY82));
+        }
+        for i in (0..(self.width as _)).step_by(step) {
+            self.plot_line_width_color((i, self.height as i64 - 1), (i, 0), 0., Some(GRAY82));
+        }
+    }
+
     pub fn clear(&mut self) {
         for i in self.bytes.iter_mut() {
             *i = WHITE;
@@ -160,6 +173,15 @@ impl Image {
         self.bytes[y * self.width + x] = BLACK;
     }
 
+    pub fn plot_color(&mut self, x: i64, y: i64, color: Option<u32>) {
+        if x < 0 || y < 0 || y >= (self.height as i64) || x >= (self.width as i64) {
+            //eprintln!("invalid plot() coors: ({}, {})", x, y);
+            return;
+        }
+        let (x, y): (usize, usize) = (x as _, y as _);
+        self.bytes[y * self.width + x] = color.unwrap_or(BLACK);
+    }
+
     pub fn get(&self, x: i64, y: i64) -> Option<u32> {
         if x < 0 || y < 0 || y >= (self.height as i64) || x >= (self.width as i64) {
             return None;
@@ -170,6 +192,18 @@ impl Image {
 
     pub fn plot_circle(&mut self, center: Point, r: i64, _wd: f64) {
         self.plot_ellipse(center, (r, r), [true, true, true, true], _wd)
+    }
+
+    pub fn plot_square(&mut self, center: Point, r: i64, wd: f64) {
+        let (cx, cy) = center;
+        let a = (cx - r, cy - r);
+        let b = (cx + r, cy - r);
+        let c = (cx + r, cy + r);
+        let d = (cx - r, cy + r);
+        self.plot_line_width(a, b, wd);
+        self.plot_line_width(b, c, wd);
+        self.plot_line_width(c, d, wd);
+        self.plot_line_width(d, a, wd);
     }
 
     pub fn plot_ellipse(
@@ -223,7 +257,17 @@ impl Image {
         }
     }
 
-    pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64), wd: f64) {
+    pub fn plot_line_width(&mut self, a: (i64, i64), b: (i64, i64), wd: f64) {
+        self.plot_line_width_color(a, b, wd, None)
+    }
+
+    pub fn plot_line_width_color(
+        &mut self,
+        (x1, y1): (i64, i64),
+        (x2, y2): (i64, i64),
+        wd: f64,
+        color: Option<u32>,
+    ) {
         /* Bresenham's line algorithm */
         let mut d;
         let mut x: i64;
@@ -255,7 +299,7 @@ impl Image {
             /* x step */
             d = ay - ax / 2;
             loop {
-                self.plot(x, y);
+                self.plot_color(x, y, color);
                 {
                     let total = |_x| {
                         if dy == 0 {
@@ -271,7 +315,7 @@ impl Image {
                             break;
                         }
                         _x += 1;
-                        self.plot(_x, y);
+                        self.plot_color(_x, y, color);
                     }
                     let mut _x = x;
                     loop {
@@ -280,7 +324,7 @@ impl Image {
                             break;
                         }
                         _x -= 1;
-                        self.plot(_x, y);
+                        self.plot_color(_x, y, color);
                     }
                 }
                 if x == x2 {
@@ -296,9 +340,8 @@ impl Image {
         } else {
             /* y step */
             d = ax - ay / 2;
-            let delta = double_d / 3;
             loop {
-                self.plot(x, y);
+                self.plot_color(x, y, color);
                 {
                     let total = |_x| {
                         if dy == 0 {
@@ -314,7 +357,7 @@ impl Image {
                             break;
                         }
                         _x += 1;
-                        self.plot(_x, y);
+                        self.plot_color(_x, y, color);
                     }
                     let mut _x = x;
                     loop {
@@ -323,7 +366,7 @@ impl Image {
                             break;
                         }
                         _x -= 1;
-                        self.plot(_x, y);
+                        self.plot_color(_x, y, color);
                     }
                 }
                 if y == y2 {
@@ -516,11 +559,11 @@ pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
 }
 
 pub struct BitmapFont {
-    image: Image,
-    x_offset: usize,
-    y_offset: usize,
-    glyph_width: usize,
-    glyph_height: usize,
+    pub image: Image,
+    pub x_offset: usize,
+    pub y_offset: usize,
+    pub glyph_width: usize,
+    pub glyph_height: usize,
 }
 
 impl BitmapFont {

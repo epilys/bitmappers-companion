@@ -4,6 +4,10 @@ A small zine/book written in LaTeX. In progress. See Building section below for 
 
 ## Samples
 
+
+![bezier interactive demo](./bezier_interactive.gif?raw=true)
+
+
 <kbd>
 
 ![cover_sample](./cover_sample.png?raw=true)
@@ -52,6 +56,8 @@ To run the rust example binaries, first you can inspect them with `ls ./src/bin/
 $ ls ./src/bin
 atkinsondither.rs
 beams.rs
+bezierglyph.rs
+bezier.rs
 boundingcircle.rs
 bresenham.rs
 distance_between_two_points.rs
