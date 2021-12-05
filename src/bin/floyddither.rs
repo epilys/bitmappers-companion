@@ -31,7 +31,7 @@ fn floyd(image: &mut Image) {
 }
 
 fn main() {
-    const INPUT_FILE: &str = "4.2.06.tiff";
+    const INPUT_FILE: &str = "./testimages/4.2.06.tiff";
     let mut image = Image::magick_open(INPUT_FILE, 0, 0).unwrap();
     let width = image.width;
     let height = image.height;

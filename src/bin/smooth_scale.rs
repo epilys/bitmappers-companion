@@ -258,7 +258,7 @@ fn main() {
     // Limit to max ~60 fps update rate
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
-    let mut original = Image::from_xbm("./xface.xbm", 100, 100).unwrap();
+    let mut original = Image::from_xbm("./testimages/xface.xbm", 100, 100).unwrap();
     original.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 
     let mut scaled = Image::new(original.width * 8, original.width * 8, 0, 100);
