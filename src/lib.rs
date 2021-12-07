@@ -90,7 +90,7 @@ impl Image {
   ^\s*\x23\s*define\s+.+?_height\s+(?P<h>\d\d*)$
   \s*
   ^\s*static(\s+unsigned){0,1}\s+char\s+.+?_bits..\s*=\s*\{(?P<b>[^}]+)\};
-",
+  ",
         )
         .unwrap();
         let caps = re
@@ -534,6 +534,39 @@ impl Image {
                 font.glyph_height,
             );
         }
+    }
+
+    pub fn resize(
+        &self,
+        scaled_width: usize,
+        scaled_height: usize,
+        x_offset: usize,
+        y_offset: usize,
+    ) -> Image {
+        let mut scaled = Image::new(scaled_width, scaled_height, x_offset, y_offset);
+        let mut sx: i64; //source
+        let mut sy: i64; //source
+        let mut dx: i64; //destination
+        let mut dy: i64 = 0; //destination
+
+        let og_height = self.height as i64;
+        let og_width = self.width as i64;
+        let scaled_height = scaled.height as i64;
+        let scaled_width = scaled.width as i64;
+
+        while dy < scaled_height {
+            sy = (dy * og_height) / scaled_height;
+            dx = 0;
+            while dx < scaled_width {
+                sx = (dx * og_width) / scaled_width;
+                if self.get(sx, sy) == Some(BLACK) {
+                    scaled.plot(dx, dy);
+                }
+                dx += 1;
+            }
+            dy += 1;
+        }
+        scaled
     }
 }
 

@@ -10,3 +10,4 @@ edition = "2021"
 minifb = "*"
 rand ="*"
 regex = "1"
+rust_decimal = { version = "1.18.0" , features = ["maths", ]}
