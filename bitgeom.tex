@@ -535,6 +535,12 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
     f64::sqrt((xlk*xlk + ylk*ylk) as f64)
 }
 \end{minted}
+\chapter{Moving a point to a distance at an angle}
+
+Moving a point $P=(x,y)$ at distance $d$ at an angle of $r$ radians is solved with simple trigonometry:
+
+$$P'=(x+d\times{}cosr, y+d\times{}sinr)$$
+
 \chapter{Equations of a line}\label{ch:equations-lines}
 There are several ways to describe a line mathematically. We'll list the convenient ones for drawing \pixels{}.
 
