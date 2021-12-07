@@ -63,8 +63,9 @@ fn main() {
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
     let mut image = Image::new(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
-    /* Construct an I glyph: */
     let mut curves = vec![];
+    /*
+    /* Construct an I glyph: */
     curves.push(Bezier::new(vec![(180, 75), (180, 350)]));
     curves.push(Bezier::new(vec![(130, 65), (166, 60), (180, 75)]));
     curves.push(Bezier::new(vec![(230, 75), (230, 350)]));
@@ -77,6 +78,32 @@ fn main() {
     curves.push(Bezier::new(vec![(280, 65), (280, 50)]));
     curves.push(Bezier::new(vec![(130, 360), (130, 370)]));
     curves.push(Bezier::new(vec![(280, 360), (280, 370)]));
+    */
+    /* Construct an R glyph: */
+    curves.push(Bezier::new(vec![(54, 72), (55, 298)]));
+    curves.push(Bezier::new(vec![(27, 328), (61, 333), (55, 299)]));
+    curves.push(Bezier::new(vec![(26, 328), (27, 338)]));
+    curves.push(Bezier::new(vec![(27, 339), (124, 339)]));
+    curves.push(Bezier::new(vec![(98, 306), (97, 209)]));
+    curves.push(Bezier::new(vec![(97, 301), (98, 334), (123, 330)]));
+    curves.push(Bezier::new(vec![(123, 330), (124, 337)]));
+    curves.push(Bezier::new(vec![(12, 53), (54, 55), (53, 72)]));
+    curves.push(Bezier::new(vec![(11, 52), (174, 53)]));
+    curves.push(Bezier::new(vec![(174, 55), (251, 63), (266, 124)]));
+    curves.push(Bezier::new(vec![(183, 192), (265, 182), (266, 127)]));
+    curves.push(Bezier::new(vec![(100, 180), (101, 78)]));
+    curves.push(Bezier::new(vec![(100, 79), (125, 78)]));
+    curves.push(Bezier::new(vec![(126, 79), (209, 67), (216, 120)]));
+    curves.push(Bezier::new(vec![(136, 177), (217, 178), (218, 122)]));
+    curves.push(Bezier::new(vec![(105, 176), (135, 176)]));
+    curves.push(Bezier::new(vec![(96, 209), (138, 209)]));
+    curves.push(Bezier::new(vec![(140, 210), (183, 201), (203, 243)]));
+    curves.push(Bezier::new(vec![(205, 245), (215, 296), (241, 327)]));
+    curves.push(Bezier::new(vec![(187, 192), (244, 197), (252, 237)]));
+    curves.push(Bezier::new(vec![(253, 241), (263, 304), (290, 317)]));
+    curves.push(Bezier::new(vec![(241, 327), (287, 359), (339, 301)]));
+    curves.push(Bezier::new(vec![(292, 317), (316, 318), (332, 294)]));
+    curves.push(Bezier::new(vec![(335, 295), (339, 303)]));
     enum DragMode {
         Off { selected: Option<usize> },
         On { b: usize, i: usize, x: i64, y: i64 },
@@ -90,6 +117,33 @@ fn main() {
         image.clear();
         image.draw_grid(10);
         image.draw(&mut buffer, BLACK, Some(WHITE), WINDOW_WIDTH);
+        if window.is_key_down(Key::Key3) {
+            if let Some((x, y)) = window.get_mouse_pos(MouseMode::Clamp) {
+                let x = x as i64;
+                let y = y as i64;
+                curves.push(Bezier::new(vec![(x, x), (x + 50, y), (x + 150, y)]));
+            }
+        }
+        if window.is_key_down(Key::Key2) {
+            if let Some((x, y)) = window.get_mouse_pos(MouseMode::Clamp) {
+                let x = x as i64;
+                let y = y as i64;
+                curves.push(Bezier::new(vec![(x, x), (x + 50, y)]));
+            }
+        }
+        if window.is_key_down(Key::Delete) {
+            match &mut state {
+                DragMode::Off { ref mut selected } if selected.is_some() => {
+                    curves.remove(selected.unwrap());
+                    *selected = None;
+                }
+                DragMode::On { ref mut b, .. } => {
+                    curves.remove(*b);
+                    state = DragMode::Off { selected: None };
+                }
+                _ => {}
+            }
+        }
         match &mut state {
             DragMode::Off { selected } => {
                 let mut selected = selected.clone();
@@ -183,5 +237,10 @@ fn main() {
         let millis = std::time::Duration::from_millis(100);
 
         std::thread::sleep(millis);
+    }
+
+    println!("Final geometry:");
+    for c in curves {
+        println!("{:?}", c.points);
     }
 }
