@@ -544,7 +544,7 @@ The \emph{slope intercept form} describes any line that intercepts the $y$ axis 
 
 $$y=ax+b$$
 
-The \emph{parametric} form... % TODO
+The \emph{parametric} form\ldots{} % TODO
 
 %% TODO: add conversion between forms
 
@@ -646,6 +646,13 @@ $$ (\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2})$$
 Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
 \chapter{Normal to a line through a point}
 \todo[inline]{Add \emph{Normal to a line through a point}}
+\skelpar%
+\chapter{Angle Sectioning}
+\section{Bisection}
+\section{Trisection}
+% http://www.geom.uiuc.edu/docs/forum/angtri/
+If the title startled you, be assured it's not a joke. It's totally possible to trisect an angle\ldots{} with a ruler. The adage that angle trisection is impossible refers to using only a compass and unmarked straightedge.
+
 \skelpar%
 \clearpage{}
 \myaddthumb{Points and Line Segments}{segments}
@@ -1140,6 +1147,10 @@ fn main() {
 \todo[inline]{Add \emph{Parametric elliptical arcs}}
 % Graphics gems vol 3. pdf page 196
 \skelpar%
+\chapter{Squircle}
+\todo[inline]{Add \emph{Squircle}}
+% https://en.wikipedia.org/wiki/Squircle
+\skelpar%
 \chapter{Bézier curves}
 \begin{figure}[H]
 \centering
@@ -1147,11 +1158,33 @@ fn main() {
 {\noindent{}Two \emph{Bézier} curves joined together as displayed in graphics software.}
 \end{figure}
 \skelpar%
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_step_0.1.pdf}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_step_0.3.pdf}
+  \end{minipage}
+  \par
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_step_0.7.pdf}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_step_0.9.pdf}
+  \end{minipage}\par
+  \vspace{1em}
+  {\noindent{}Computing curve points for values of $t \in [0, 1]$}
+\end{figure}
 \clearpage{}
 \myaddthumb{Points, Lines and Shapes}{shapes}
 \part{Points, Lines and Shapes}
 %\chapter{Triangles}
 %\section{Making a triangle from a point and given angles}
+%\section{Reuleaux triangle}
+%https://en.wikipedia.org/wiki/Reuleaux_triangle
 %\chapter{Rectangles, parallelograms}
 \chapter{Union, intersection and difference of polygons}
 \todo[inline]{Add \emph{Union, intersection and difference of polygons}}
@@ -1652,6 +1685,9 @@ $$\hat{e} = arccos(\frac{dist_x(P_c, q_2)}{r})$$
 \todo[inline]{Add \emph{Faster line clipping}}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
 \skelpar%
+\chapter{Tilings}
+\todo[inline]{Add \emph{Tilings}}
+\section{Hexagon Tiling}
 \chapter{Space-filling Curves}
 \todo[inline]{Add \emph{Space-filling Curves}}
 % https://en.wikipedia.org/wiki/Space-filling_tree maybe?
