@@ -40,6 +40,33 @@ fn draw_curve_point(points: &[Point], t: f64) -> Option<Point> {
 }
 
 fn main() {
+    let args = std::env::args().skip(1).collect::<Vec<String>>();
+    if !args.is_empty() && args.iter().any(|s| s == "--help") {
+        if args.iter().any(|s| s != "--help") {
+            eprintln!(
+                "WARNING: Ignoring other arguments and startup because --help was specified."
+            );
+        }
+        println!("Usage: ./bezierglyph [--svg [FILE]|--help], if FILE is not specified or is \"-\" the SVG is written in stdout.");
+        return;
+    }
+    let svg_output = !args.is_empty() && args.iter().any(|s| s == "--svg");
+
+    let svg_path: Option<std::path::PathBuf> = if let Some(path) = args
+        .iter()
+        .position(|s| s == "--svg")
+        .and_then(|pos| args.get(pos + 1).filter(|p| p.as_str() != "-"))
+    {
+        let p = std::path::PathBuf::from(path);
+        if p.exists() {
+            eprintln!("{} already exists.", path);
+            return;
+        }
+        Some(p)
+    } else {
+        None
+    };
+
     let mut bizcat = Image::new(BIZCAT_WIDTH, BIZCAT_HEIGHT, 0, 0);
     bizcat.bytes = bits_to_bytes(BIZCAT_BITS, BIZCAT_WIDTH);
     let bizcat = BitmapFont::new(bizcat, (8, 16), 0, 0);
@@ -240,7 +267,60 @@ fn main() {
     }
 
     println!("Final geometry:");
-    for c in curves {
+    for c in &curves {
         println!("{:?}", c.points);
+    }
+
+    if svg_output {
+        let mut output = vec![];
+        output.push(format!(
+            r#"<svg width="{}" height="{}" xmlns="http://www.w3.org/2000/svg">"#,
+            WINDOW_WIDTH, WINDOW_HEIGHT
+        ));
+        for c in &curves {
+            match c.points.len() {
+                3 => {
+                    output.push(format!(
+                        r#"  <path d="M {} {} Q {} {} {} {}" stroke="black" fill="transparent"/>"#,
+                        c.points[0].0,
+                        c.points[0].1,
+                        c.points[1].0,
+                        c.points[1].1,
+                        c.points[2].0,
+                        c.points[2].1
+                    ));
+                }
+                2 => {
+                    output.push(format!(
+                        r#"  <path d="M {} {} L {} {}" stroke="black" fill="transparent"/>"#,
+                        c.points[0].0, c.points[0].1, c.points[1].0, c.points[1].1
+                    ));
+                }
+                _ => {}
+            }
+        }
+
+        output.push("</svg>".to_string());
+        match svg_path {
+            Some(path) => {
+                use std::fs::File;
+                use std::io::prelude::*;
+                let mut file = match File::create(&path) {
+                    Err(err) => panic!("\nCouldn't create {}: {}.", path.display(), err),
+                    Ok(file) => file,
+                };
+
+                match file.write_all(output.join("\n").as_bytes()) {
+                    Err(err) => panic!("\nCouldn't write to {}: {}.", path.display(), err),
+                    Ok(_) => println!("\nSVG output saved at {}.", path.display()),
+                }
+            }
+            None => {
+                println!("\nSVG output:");
+                for o in &output {
+                    println!("{}", o);
+                }
+            }
+        }
     }
 }
