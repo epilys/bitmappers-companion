@@ -360,7 +360,7 @@ Running this will show you something like this:
 \includegraphics{figures/introduction.png}
 \end{figure}
 
-\chapter{Bits to byte \pixels{}}
+\chapter{Bits to byte \pixels{}}\label{ch:bitstobytes}
 Let's define a way to convert bit information to a byte vector:
 
 \begin{minted}{rust}
@@ -541,7 +541,7 @@ Moving a point $P=(x,y)$ at distance $d$ at an angle of $r$ radians is solved wi
 
 $$P'=(x+d\times{}cosr, y+d\times{}sinr)$$
 
-Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{ch:equations-circles} \pageref{ch:equations-circles}}} see this is how the points of a circle are calculated.
+Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{ch:equations-circles}} page \pageref{ch:equations-circles}} see this is how the points of a circle are calculated.
 
 \chapter{Equations of a line}\label{ch:equations-lines}
 There are several ways to describe a line mathematically. We'll list the convenient ones for drawing \pixels{}.
@@ -600,7 +600,7 @@ With $P=(x_0, y_0)$, $P_1 = (x_1, y_1)$ and $P_2 = (x_2, y_2)$.
 $$d=\frac{|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|}{\sqrt{((x_2-x_1)^2+(y_2-y_1)^2}}$$
 \section{Using an $L$ defined by a point $P_l$ and angle $\hat{θ}$}
 
-$$d=|cos(\hat{θ})(P_{ly}-y_p)-sin(\hat{θ})(P_{lx} - P_x)|$$
+$$d=\left|cos(\hat{θ})(P_{ly}-y_p)-sin(\hat{θ})(P_{lx} - P_x)\right|$$
 
 \section{Find perpendicular to line that passes through given point}\label{sec:perpendicular}
 Now, we wish to find the equation of the line that passes through $P$ and is perpendicular to $L$. Let's call it $L_{⊥}$. $L$ in implicit form is $ax+by+c=0$. The perpendicular will be:\index{perpendicular}
@@ -616,15 +616,15 @@ $$L_{⊥}: bx-ay+(aP_y-bP_x)=0$$
 By angle we mean the angle formed by the two directions of the lines; and direction vectors start from the origin (in the figure, they are the \textcolor{red}{red arrows}). So if we want any of the other three angles, we already know them from basic geometry as shown in the figure above.
 
 If you prefer using the implicit equation, bring the two lines $L_1$ and $L_2$ to that form ($a_1x+b_1y+c=0$ and $a_2x+b_2y+c_2=0$) and you can directly find $\hat{θ}$ with the formula:
-$$\hat{θ} = arccos\frac{a_{1}a_{2}+b_{1}b_{2}}{\sqrt{(a_1^2 + b_1^2)(a_2^2+b_2^2)}}$$
+$$\hat{θ} = arccos\frac{a_{1}a_{2}+b_{1}b_{2}}{\sqrt{\left(a_1^2 + b_1^2\right)\left(a_2^2+b_2^{2}\right)}}$$
 For the following parametric equations of $L_1$, $L_2$:
 
-$$ L_{1} = (\{x=x_1 +f_1t\}, \{y=y_1+g_1t\})$$
-$$ L_{2} = (\{x=x_2 +f_2s\}, \{y=y_2+g_2s\})$$
+$$ L_{1} = \left(\{x=x_1 +f_1t\}, \{y=y_1+g_1t\}\right)$$
+$$ L_{2} = \left(\{x=x_2 +f_2s\}, \{y=y_2+g_2s\}\right)$$
 
 the formula is:
 
-$$\hat{θ} = arccos\frac{f_{1}f_{2}+g_{1}g_{2}}{\sqrt{(f_1^2 + g_1^2)(f_2^2+g_2^2)}}$$
+$$\hat{θ} = arccos\frac{f_{1}f_{2}+g_{1}g_{2}}{\sqrt{\left(f_1^2 + g_1^2\right)\left(f_2^2+g_2^2\right)}}$$
 
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
 \todo[inline]{Add \emph{Intersection of two lines} code}
@@ -638,7 +638,7 @@ $$a_1b_2-a_2b_1 \neq{} 0$$
 
 If they are not parallel, $P$ is:
 
-$$P = (\frac{b_1c_2-b_2c_1}{a_1b_2-a_2b_1}, \frac{a_2c_1-a_1c_2}{a_1b_2-a_2b_1})$$
+$$P = \left(\frac{b_1c_2-b_2c_1}{a_1b_2-a_2b_1}, \frac{a_2c_1-a_1c_2}{a_1b_2-a_2b_1}\right)$$
 
 \chapter{Line equidistant from two points}
 \begin{figure}[H]
@@ -649,7 +649,7 @@ Let's name this line $L$. From the previous chapter we know how to get the line 
 
 Thankfully that midpoint also satisfies $L$'s equation, $ax+by+c$. The midpoint's coordinates are intuitively:\index{midpoint}
 
-$$ (\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2})$$
+$$ \left(\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2}\right)$$
 
 Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
 \chapter{Normal to a line through a point}
@@ -870,8 +870,10 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \skelpar%
 \chapter{Equations of a circle}\label{ch:equations-circles}
 \todo[inline]{Add \emph{Equations of a circle}}
+\index{circle!equations}%
 \skelpar%
 \chapter{Bounding circle}
+\index{circle!bounding}%
 % From graphic gems vol 2 pdf page 46
 % From Υπολογιστική Γεωμετρία 4.7 page 85 Μικρότατοι περικλείοντες δίσκοι
 \attachsource{src/bin/boundingcircle.rs}
@@ -888,7 +890,7 @@ A bounding circle is a circle that includes all the points in a given set. Usual
 
 We can use the following methodology to find the bounding circle: start from two points and the circle they make up, and for each of the rest of the points check if the circle includes them. If not, make a bounding circle that includes every point up to the current one. To do this, we need some primitive operations.
 
-We will need a way to construct a circle out of two points:\index{circle out of two points}
+We will need a way to construct a circle out of two points:\index{circle!out of two points}
 
 \begin{figure}[H]
 \centering
@@ -906,7 +908,7 @@ We will need a way to construct a circle out of two points:\index{circle out of 
   );
 \end{minted}
 
-And a way to make a circle out of three points:\index{circle out of three points}
+And a way to make a circle out of three points:\index{circle!out of three points}
 
 \begin{figure}[H]
 \centering
@@ -1344,7 +1346,7 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
   y_{p'} = x_{p}s+y_{p}c.
 \end{equation*}
 
-Let's load an \texttt{xface}. We will use \texttt{bits\_to\_bytes} (See Introduction).
+Let's load an \texttt{xface}. We will use \texttt{bits\_to\_bytes} (See \emph{\nameref{ch:bitstobytes}}, page \pageref{ch:bitstobytes}).
 %
 \attachsource{src/bin/rotation.rs}%
 %
@@ -1727,11 +1729,11 @@ $$q_2 = \frac{P_3 + P_4}{2}$$
 \noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
 
 $$\hat{s} = 90^{\circ} + \hat{a}$$
-$$\hat{a} = arcsin(\frac{dist_x(P_c, q_1)}{r})$$
+$$\hat{a} = arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
 
 \noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
 
-$$\hat{e} = arccos(\frac{dist_x(P_c, q_2)}{r})$$
+$$\hat{e} = arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
 
 \noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
 
@@ -1964,14 +1966,57 @@ fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
 \end{minted}
 \begin{figure}[H]
   \centering
-  \includegraphics[keepaspectratio,scale=1]{figures/zcurve.png}
+  \includegraphics[width=0.3\textwidth,keepaspectratio]{figures/zcurve.png}
 \end{figure}
-\section{flowsnake curve}
-\todo[inline]{Add \emph{flowsnake curve}}
+\clearpage{}
+\section{Flowsnake curve}
 % https://en.wikipedia.org/wiki/Gosper_curve
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{\textwidth}
+  \begin{minipage}{0.30\textwidth}
+    \hfill
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/gosper1.pdf}
+    \hfill
+  \end{minipage}
+  \hspace{0.028\textwidth}
+  \begin{minipage}{0.30\textwidth}
+    \hfill
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/gosper2.pdf}
+    \hfill
+  \end{minipage}
+  \hspace{0.028\textwidth}
+  \begin{minipage}{0.30\textwidth}
+    \hfill
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/gosper3.pdf}
+    \hfill
+  \end{minipage}
+  \end{minipage}\par
+  \vspace{1em}
+  {\noindent{}The first three orders of the Gosper curve.}
+\end{figure}
+As a fractal curve, the \emph{flowsnake curve} or \emph{Gosper curve} is defined by a set of recursive rules for drawing it. There are four kind of rules and two of them define rulesets (i.e. they are non-terminal steps).
+
+% TODO add the lsystem rules here
+\begin{align*}
+A\mapsto{}&\,A{-}B{-}{-}B{+}A{+}{+}AA{+}B{-}\\
+B\mapsto{}&{+}A{-}BB{-}{-}B{-}A{+}{+}A{+}B
+\end{align*}
 \skelpar%
+\clearpage{}
+\thispagestyle{empty}
+\hfill
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,keepaspectratio]{figures/gosper4.pdf}\par
+  \vspace{1em}
+  {\noindent{}The fourth order Gosper curve consists of a minimum of 2057 distinct line segments (but our algorithm draws 36015)}
+\end{figure}
+\hfill
+\clearpage{}
 \chapter{Dithering}
-\skelpar%
+\clearpage{}
+%\skelpar%
 % https://beyondloom.com/blog/dither.html
 % https://tannerhelland.com/2012/12/28/dithering-eleven-algorithms-source-code.html
 % http://www.thetenthplanet.de/archives/5367
