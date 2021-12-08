@@ -1,0 +1,27 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 54 72 L 55 298" stroke="black" fill="transparent"/>
+  <path d="M 26 328 L 27 338" stroke="black" fill="transparent" />
+  <path d="M 27 339 L 124 339" stroke="black" fill="transparent" />
+  <path d="M 98 306 L 97 209" stroke="black" fill="transparent" />
+  <path d="M 335 295 L 339 303" stroke="black" fill="transparent" />
+  <path d="M 123 330 L 124 337" stroke="black" fill="transparent" />
+  <path d="M 11 52 L 174 53" stroke="black" fill="transparent" />
+  <path d="M 100 180 L 101 78" stroke="black" fill="transparent" />
+  <path d="M 100 79 L 125 78" stroke="black" fill="transparent" />
+  <path d="M 105 176 L 135 176" stroke="black" fill="transparent" />
+  <path d="M 96 209 L 138 209" stroke="black" fill="transparent" />
+
+  <path d="M 27 328 Q 61 333 55 299" stroke="black" fill="transparent" />
+  <path d="M 97 301 Q 98 334 123 330" stroke="black" fill="transparent" />
+  <path d="M 12 53 Q 54 55 53 72" stroke="black" fill="transparent" />
+  <path d="M 174 55 Q 251 63 266 124" stroke="black" fill="transparent" />
+  <path d="M 183 192 Q 265 182 266 127" stroke="black" fill="transparent" />
+  <path d="M 126 79 Q 209 67 216 120" stroke="black" fill="transparent" />
+  <path d="M 136 177 Q 217 178 218 122" stroke="black" fill="transparent" />
+  <path d="M 140 210 Q 183 201 203 243" stroke="black" fill="transparent" />
+  <path d="M 205 245 Q 215 296 241 327" stroke="black" fill="transparent" />
+  <path d="M 187 192 Q 244 197 252 237" stroke="black" fill="transparent" />
+  <path d="M 253 241 Q 263 304 290 317" stroke="black" fill="transparent" />
+  <path d="M 241 327 Q 287 359 339 301" stroke="black" fill="transparent" />
+  <path d="M 292 317 Q 316 318 332 294" stroke="black" fill="transparent" />
+</svg>

@@ -1161,9 +1161,13 @@ fn main() {
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_path.pdf}\par
-{\noindent{}Two \emph{Bézier} curves joined together as displayed in graphics software.}
+{\noindent{}Two cubic \emph{Bézier} curves joined together as displayed in graphics software.}
 \end{figure}
 \skelpar%
+\skelpar%
+\section{Quadratic Bézier curves}
+\subsection{Drawing the quadratic}
+To actually draw a curve, i.e. with points $P_1,P_2,P_3$ we will use \emph{de Casteljau's algorithm}\index{de Casteljau's algorithm}. The gist behind the algorithm is that the length of the curve is visited at specific percentages (e.g. 0\%, 0.2\%, 0.4\% \ldots{} 99.8\%, 100\%), meaning we will have that many steps, and for each such percentage $t$ we calculate a line starting at the $t$-nth point of $P_{1}P_{2}$ and ending at the $t$-nth point of $P_{2}P_{3}$. The $t$-eth point of that line also belongs to the curve, so we plot it.
 \begin{figure}[H]
   \centering
   \begin{minipage}{0.49\textwidth}
@@ -1182,7 +1186,44 @@ fn main() {
     \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_step_0.9.pdf}
   \end{minipage}\par
   \vspace{1em}
-  {\noindent{}Computing curve points for values of $t \in [0, 1]$}
+  {\noindent{}Computing curve points for values of $t \in [0, 1]$ with de Casteljau's algorithm}
+\end{figure}
+
+Let's draw the curve $P_1= (25, 115), P_2 = (225, 180), P_3 = (250, 25)$
+\attachsource{src/bin/bezier.rs}
+\begin{minted}{rust}
+\end{minted}
+The result:
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/quadratic_drawn.png}
+\end{figure}
+The \texttt{minifb} library allows to track user input, so we detect user clicks and the mouse's position; thus we can interactively modify a curve with some modifications in the code:
+\begin{minted}{rust}
+\end{minted}
+\skelpar%
+\begin{figure}[H]
+\centering
+  \includegraphics[scale=0.9,keepaspectratio]{figures/quadratic_interactive.png}\par
+  \vspace{1em}
+  {\noindent{}Interactively modifying a curve with the \texttt{bezier.rs} tool.}
+\end{figure}%
+We can go one step further and insult type designers\footnote{who use cubic Béziers or other fancier curves (\emph{splines})} and use the tool to make a font glyph.
+\attachsource{src/bin/bezierglyph.rs}
+\begin{minted}{rust}
+\end{minted}
+Of course, it requires effort to match the beginning and end of each curve that makes up the glyph. That's why font designing tools have \emph{point snapping} to ensure curve continuation. But for a quick font designer app prototype, it's good enough.
+\begin{figure}[H]
+\centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/quadratic_glyph.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.49\textwidth}
+    \fbox{\includegraphics[width=\textwidth,keepaspectratio]{figures/Rglyph.pdf}}
+  \end{minipage}\par
+  \vspace{1em}
+  {\noindent{}\emph{Left}: A font glyph drawn with the interactive \texttt{bezierglyph.rs} tool. \emph{Right}: the same glyph exported to \texttt{SVG}.}
 \end{figure}
 \clearpage{}
 \myaddthumb{Points, Lines and Shapes}{shapes}
