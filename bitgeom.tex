@@ -172,6 +172,13 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 \pagenumbering{arabic}
 
   \usepackage[textsize=tiny]{todonotes}
+
+
+
+\DeclareRobustCommand{\Caption}[1]{\par%
+  \vspace{1em}
+  {\noindent{}#1}}
+
 \begin{document}
 \pagestyle{plain}
   \assignpagestyle{\chapter}{plain}
@@ -560,7 +567,7 @@ The \emph{parametric} form\ldots{} % TODO
 
 $$y-y_p=m(x-x_p)$$
 
-\section{Line through two points}
+\section{Line through two points}\label{sec:linethroughtwopoints}
 \begin{figure}[H]
 \centering
 \input{figures/line_through_points.pdf_tex}
@@ -643,15 +650,53 @@ $$P = \left(\frac{b_1c_2-b_2c_1}{a_1b_2-a_2b_1}, \frac{a_2c_1-a_1c_2}{a_1b_2-a_2
 \chapter{Line equidistant from two points}
 \begin{figure}[H]
 \centering
-\includegraphics[height=10\baselineskip,keepaspectratio]{figures/equidistant.pdf}
+\includegraphics[height=8\baselineskip,keepaspectratio]{figures/equidistant.pdf}
 \end{figure}
-Let's name this line $L$. From the previous chapter we know how to get the line that's created by the two points $M$ and $N$. If only we knew how to get a perpendicular line over the midpoint of a line segment!\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}}
+Let's name this line $L$. From previous chapter\footnote{See \emph{\nameref{sec:linethroughtwopoints}}, page \pageref{sec:linethroughtwopoints}} we know how to get the line $L$ that's created by the two points $M$ and $N$:
+%
+$$L: (y_M - y_N)x + (x_N-x_M)y+(x_{M}y_{N}-x_{N}y_{M})=0$$%
+%
+We need the perpendicular line over the midpoint of $L$.\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}} The midpoint also satisfies $L$'s equation. The midpoint's coordinates are intuitively:\index{midpoint}
 
-Thankfully that midpoint also satisfies $L$'s equation, $ax+by+c$. The midpoint's coordinates are intuitively:\index{midpoint}
+$$P_{mid} = \left(\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2}\right)$$
 
-$$ \left(\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2}\right)$$
+The perpendicular's $L_{⊥}$ equation is
 
-Putting them into the equation we can generate a triple of $(a', b', c')$ and then normalize it to get $L$.
+$$L_{EQ} = L_{⊥}: yx-ay+\left(aP_{mid_y}-bP_{mid_x}\right)=0$$
+
+\noindent{}The code:
+
+\attachsource{src/bin/equidistant.rs}
+\begin{minted}{rust}
+fn find_equidistant(point_a: Point, point_b: Point) -> (i64, i64, i64) {
+    let (xa, ya) = point_a;
+    let (xb, yb) = point_b;
+    let midpoint = ((xa + xb) / 2, (ya + yb) / 2);
+
+    let al = ya - yb;
+    let bl = xb - xa;
+
+    // If we had subpixel accuracy, we could do:
+    //assert_eq!(al*midpoint.0+bl*midpoint.1, -cl);
+
+    let a = bl;
+    let b = -1 * al;
+    let c = (al * midpoint.1) - (bl * midpoint.0);
+
+    (a, b, c)
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/equidistant1.png}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/equidistant2.png}
+  \end{minipage}
+  \Caption{The \texttt{src/bin/equidistant.rs} example has two interactive points and computes their $L_{EQ}$.}
+\end{figure}
 \chapter{Normal to a line through a point}
 \todo[inline]{Add \emph{Normal to a line through a point}}
 \skelpar%
