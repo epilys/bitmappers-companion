@@ -654,8 +654,11 @@ fn find_angle((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> f
   \end{minipage}
   \Caption{The \texttt{src/bin/anglebetweenlines.rs} example has two interactive lines and computes their angle with 64bit floating point accuracy.}
 \end{figure}
+%
+%
+%
+%
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
-\todo[inline]{Add \emph{Intersection of two lines} code}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth,keepaspectratio]{figures/intersection_lines.pdf}
@@ -668,6 +671,35 @@ If they are not parallel, $P$ is:
 
 $$P = \left(\frac{b_1c_2-b_2c_1}{a_1b_2-a_2b_1}, \frac{a_2c_1-a_1c_2}{a_1b_2-a_2b_1}\right)$$
 
+\noindent{}The code:
+
+\attachsource{src/bin/lineintersection.rs}
+\begin{minted}{rust}
+fn find_intersection((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> Option<Point> {
+    let denom = a1 * b2 - a2 * b1;
+
+    if denom == 0 {
+        return None;
+    }
+
+    Some(((b1 * c2 - b2 * c1) / denom, (a2 * c1 - a1 * c2) / denom))
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/lineintersection1.png}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/lineintersection2.png}
+  \end{minipage}
+  \Caption{The \texttt{src/bin/lineintersection.rs} example has two interactive lines and computes their point of intersection.}
+\end{figure}
+%
+%
+%
+%
 \chapter{Line equidistant from two points}
 \begin{figure}[H]
 \centering
