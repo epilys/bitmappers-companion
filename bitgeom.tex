@@ -260,7 +260,7 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 \chapter{Data representation}\label{ch:intro-library}
 The data structures we're going to use is \emph{Point} and \emph{Image}. \emph{Image} represents a \bitmap{}, although we will use full RGB colors for our points therefore the size of a \pixel{} in memory will be \texttt{u8} instead of 1 bit.
 
-We will work on the cartesian grid representing the framebuffer that will show us the \pixels{}. The \emph{origin} of this grid (i.e. the center) is at $(0,0)$.%
+We will work on the cartesian grid representing the framebuffer that will show us the \pixels{}. The \emph{origin} of this grid (i.e.\ the center) is at $(0,0)$.%
 \begin{figure}%
 \centering
 \input{figures/cartesian_grid.pdf_tex}
@@ -520,7 +520,7 @@ fn main() {
 \clearpage{}
 \myaddthumb{Points And Lines}{lines}
 \part{Points And Lines}
-\chapter{Distance between two points}
+\chapter{Distance between two points}\index{distance!between two points}
 
 \begin{figure}[H]
 \centering
@@ -542,7 +542,7 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
     f64::sqrt((xlk*xlk + ylk*ylk) as f64)
 }
 \end{minted}
-\chapter{Moving a point to a distance at an angle}
+\chapter{Moving a point to a distance at an angle}\index{distance!moving a point}
 
 Moving a point $P=(x,y)$ at distance $d$ at an angle of $r$ radians is solved with simple trigonometry:
 
@@ -550,10 +550,10 @@ $$P'=(x+d\times{}cosr, y+d\times{}sinr)$$
 
 Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{ch:equations-circles}} page \pageref{ch:equations-circles}} see this is how the points of a circle are calculated.
 
-\chapter{Equations of a line}\label{ch:equations-lines}
+\chapter{Equations of a line}\label{ch:equations-lines}\index{line!equations}
 There are several ways to describe a line mathematically. We'll list the convenient ones for drawing \pixels{}.
 
-The equation that describes every possible line on a two dimensional grid is the \emph{implicit} form $ax+by=c, (a,b) \neq{} (0,0)$. We can generate equivalent equations by adding the equation to itself, i.e. $ax+by=c \equiv 2ax+2by=2c \equiv a'x+b'y=c', a'=2a, b'=2b, c'=2c$ as many times as we want. To "minimize" the constants $a,b,c$ we want to satisfy the relationship $a^{2}+b^{2}=1$, and thus can convert the equivalent equations into one representative equation by multiplying the two sides with $\frac{1}{\sqrt{a^2+b^2}}$; this is called the normalized equation. % TODO: why? add footnote: in the normalized form, a is the cosine of the angle the normal vector makes with the x axis, and b the cosine of the angle with the y axis. and c = - (dist of line to the origin)
+The equation that describes every possible line on a two dimensional grid is the \emph{implicit} form $ax+by=c, (a,b) \neq{} (0,0)$. We can generate equivalent equations by adding the equation to itself, i.e.\ $ax+by=c \equiv 2ax+2by=2c \equiv a'x+b'y=c', a'=2a, b'=2b, c'=2c$ as many times as we want. To "minimize" the constants $a,b,c$ we want to satisfy the relationship $a^{2}+b^{2}=1$, and thus can convert the equivalent equations into one representative equation by multiplying the two sides with $\frac{1}{\sqrt{a^2+b^2}}$; this is called the normalized equation. % TODO: why? add footnote: in the normalized form, a is the cosine of the angle the normal vector makes with the x axis, and b the cosine of the angle with the y axis. and c = - (dist of line to the origin)
 
 The \emph{slope intercept form} describes any line that intercepts the $y$ axis at $b \in{} \mathbb{R}$ with a specific slope $a$:
 
@@ -563,11 +563,11 @@ The \emph{parametric} form\ldots{} % TODO
 
 %% TODO: add conversion between forms
 
-\section{Line through a point $P=(x_p,y_p)$ and a slope $m$}
+\section{Line through a point $P=(x_p,y_p)$ and a slope $m$}\index{line!through point and slope}
 
 $$y-y_p=m(x-x_p)$$
 
-\section{Line through two points}\label{sec:linethroughtwopoints}
+\section{Line through two points}\label{sec:linethroughtwopoints}\index{line!through two points}
 \begin{figure}[H]
 \centering
 \input{figures/line_through_points.pdf_tex}
@@ -589,7 +589,7 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \begin{minted}{rust}
 \end{minted}
 
-\chapter{Distance from a point to a line}
+\chapter{Distance from a point to a line}\index{distance!point from a line}
 \todo[inline]{Add code samples in \emph{Distance from a point to a line}}
 \begin{figure}[H]
 \centering
@@ -614,7 +614,7 @@ Now, we wish to find the equation of the line that passes through $P$ and is per
 
 $$L_{⊥}: bx-ay+(aP_y-bP_x)=0$$
 % From graphic gems vol 2 pdf page 40
-\chapter{Angle between two lines}\index{angle between two lines}
+\chapter{Angle between two lines}\index{angle!between two lines}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth,keepaspectratio]{figures/line_angles.pdf}
@@ -658,7 +658,7 @@ fn find_angle((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> f
 %
 %
 %
-\chapter{Intersection of two lines}\label{ch:intersection-lines}
+\chapter{Intersection of two lines}\label{ch:intersection-lines}\index{line!intersection}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth,keepaspectratio]{figures/intersection_lines.pdf}
@@ -700,7 +700,7 @@ fn find_intersection((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64
 %
 %
 %
-\chapter{Line equidistant from two points}
+\chapter{Line equidistant from two points}\index{line!equidistant}\index{equidistant line}
 \begin{figure}[H]
 \centering
 \includegraphics[height=8\baselineskip,keepaspectratio]{figures/equidistant.pdf}
@@ -754,8 +754,9 @@ fn find_equidistant(point_a: Point, point_b: Point) -> (i64, i64, i64) {
 \todo[inline]{Add \emph{Normal to a line through a point}}
 \skelpar%
 \chapter{Angle Sectioning}
-\section{Bisection}
-\section{Trisection}
+\section{Bisection}\index{angle!bisectioning}
+\skelpar%
+\section{Trisection}\index{angle!trisectioning}
 % http://www.geom.uiuc.edu/docs/forum/angtri/
 If the title startled you, be assured it's not a joke. It's totally possible to trisect an angle\ldots{} with a ruler. The adage that angle trisection is impossible refers to using only a compass and unmarked straightedge.
 
@@ -1251,7 +1252,7 @@ fn main() {
 \clearpage{}
 \myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
-\chapter{Parametric elliptical arcs}
+\chapter{Parametric elliptical arcs}\index{curves!elliptical}
 \todo[inline]{Add \emph{Parametric elliptical arcs}}
 % Graphics gems vol 3. pdf page 196
 \skelpar%
@@ -1259,7 +1260,7 @@ fn main() {
 \todo[inline]{Add \emph{Squircle}}
 % https://en.wikipedia.org/wiki/Squircle
 \skelpar%
-\chapter{Bézier curves}
+\chapter{Bézier curves}\index{curves!Bézier}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth,keepaspectratio]{figures/bezier_path.pdf}\par
@@ -1267,9 +1268,9 @@ fn main() {
 \end{figure}
 \skelpar%
 \skelpar%
-\section{Quadratic Bézier curves}
+\section{Quadratic Bézier curves}\index{curves!Bézier!quadratic}
 \subsection{Drawing the quadratic}
-To actually draw a curve, i.e. with points $P_1,P_2,P_3$ we will use \emph{de Casteljau's algorithm}\index{de Casteljau's algorithm}. The gist behind the algorithm is that the length of the curve is visited at specific percentages (e.g. 0\%, 0.2\%, 0.4\% \ldots{} 99.8\%, 100\%), meaning we will have that many steps, and for each such percentage $t$ we calculate a line starting at the $t$-nth point of $P_{1}P_{2}$ and ending at the $t$-nth point of $P_{2}P_{3}$. The $t$-eth point of that line also belongs to the curve, so we plot it.
+To actually draw a curve, i.e.\ with points $P_1,P_2,P_3$ we will use \emph{de Casteljau's algorithm}\index{de Casteljau's algorithm}. The gist behind the algorithm is that the length of the curve is visited at specific percentages (e.g.\ 0\%, 0.2\%, 0.4\% \ldots{} 99.8\%, 100\%), meaning we will have that many steps, and for each such percentage $t$ we calculate a line starting at the $t$-nth point of $P_{1}P_{2}$ and ending at the $t$-nth point of $P_{2}P_{3}$. The $t$-eth point of that line also belongs to the curve, so we plot it.
 \begin{figure}[H]
   \centering
   \begin{minipage}{0.49\textwidth}
@@ -1328,6 +1329,10 @@ Of course, it requires effort to match the beginning and end of each curve that 
   {\noindent{}\emph{Left}: A font glyph drawn with the interactive \texttt{bezierglyph.rs} tool. \emph{Right}: the same glyph exported to \texttt{SVG}.}
 \end{figure}
 \clearpage{}
+\section{Cubic Bézier curves}\index{curves!Bézier!cubic}
+\skelpar%
+\section{Weighted Béziers}\index{curves!Bézier!weighted}
+\skelpar%
 \myaddthumb{Points, Lines and Shapes}{shapes}
 \part{Points, Lines and Shapes}
 \chapter{Rectangles and parallelograms}
@@ -1335,24 +1340,24 @@ Of course, it requires effort to match the beginning and end of each curve that 
 \section{From a center point}
 \skelpar%
 \section{From a corner point}
-\chapter{Triangles}
+\chapter{Triangles}\index{triangle}
 \skelpar%
-\section{Making a triangle from a point and given angles}
+\section{Making a triangle from a point and given angles}\index{triangle!from point and angles}
 \skelpar%
 %\section{Reuleaux triangle}
 %https://en.wikipedia.org/wiki/Reuleaux_triangle
-\chapter{Union, intersection and difference of polygons}
+\chapter{Union, intersection and difference of polygons}\index{polygon!boolean operations}
 \todo[inline]{Add \emph{Union, intersection and difference of polygons}}
 % Graphics gems vol 2. pdf page 63
 \skelpar%
-\chapter{Centroid of polygon}\index{centroid}
+\chapter{Centroid of polygon}\index{centroid|see {polygon!centroid}}\index{polygon!centroid}\index{centroid!polygon}
 \todo[inline]{Add \emph{Centroid of polygon}}
 % Graphics gems vol 4. pdf page 14
 \skelpar%
-\chapter{Polygon clipping}%
+\chapter{Polygon clipping}\index{polygon!clipping}
 % https://github.com/jasonwebb/morphogenesis-resources#polygon-clipping
 \skelpar%
-\chapter{Triangle filling}
+\chapter{Triangle filling}\index{triangle!filling}\index{flood filling!triangle filling}
 \todo[inline]{Add \emph{Triangle filling} explanation}
 \sourceinlib{}%
 The book's library methods include a \texttt{fill\_triangle} method:
@@ -1415,7 +1420,7 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 }
 \end{minted}
 
-\chapter{Flood filling}
+\chapter{Flood filling}\index{flood filling}\index{bucket filling|see {flood filling}}\index{area filling|see {flood filling}}
 \todo[inline]{Add \emph{Flood filling}}
 \skelpar%
 % Graphics gems vol 1. pdf page 296 "SEED FILL"
@@ -1423,7 +1428,7 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 \clearpage{}
 \myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
 \part{Vectors, matrices and trans\-for\-ma\-tions}
-\chapter{Rotation of a \bitmap{}}
+\chapter{Rotation of a \bitmap{}}\index{rotation}
 
 \[
   p' =
@@ -1514,7 +1519,7 @@ We didn't mention in the beginning that the rotation has to be relative to a \em
 \noindent(the distance to the origin (actually 0 \pixels{}) has been exaggerated for the sake of the example)
 }
 
-Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.\index{centroid}
+Usually, we want to rotate something relative to itself. The right point to choose is the \emph{centroid} of the object.\index{centroid!rectangle}
 
 If we have a list of $n$ points, the centroid is calculated as:
 
@@ -1577,7 +1582,7 @@ The result: \includegraphics{figures/ch11-3.png}
 \todo[inline]{Add \emph{90\textdegree{} Rotation of a \bitmap{} by parallel recursive subdivision}}
 % Graphics gems vol 2. pdf page 113 
 \skelpar%
-\chapter{Magnification/Scaling}
+\chapter{Magnification/Scaling}\index{magnification}\index{scaling}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/scaled_dmr.png}
@@ -1620,12 +1625,12 @@ while dy < scaled_height {
 }
 scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \end{minted}
-\section{Smoothing enlarged \bitmaps{}}
+\section{Smoothing enlarged \bitmaps{}}\index{smoothing}
 \todo[inline]{Add \emph{Smoothing enlarged \bitmaps{}}}
 % https://en.wikipedia.org/wiki/Hqx
 % Graphics gems vol 1. pdf page 189 "SMOOTHING ENLARGED MONOCHROME IMAGES"
 \skelpar%
-\section{Stretching lines of \bitmaps{}}
+\section{Stretching lines of \bitmaps{}}\index{stretching}
 \todo[inline]{Add \emph{Stretching lines of \bitmaps{}}}
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpar%
@@ -1775,7 +1780,7 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
     \includegraphics[width=0.48\textwidth,keepaspectratio]{figures/join_beams.pdf}
 \end{figure}
 \skelpar%
-\chapter{Composing monochrome \bitmaps{} with separate alpha channel data}
+\chapter{Composing monochrome \bitmaps{} with separate alpha channel data}\index{alpha channel}
 \todo[inline]{Add \emph{Composing monochrome \bitmaps{} with separate alpha channel data}}
 % Graphics gems vol 3. pdf page 64 "COMPOSING BW BITMAPS
 \skelpar%
@@ -1843,14 +1848,14 @@ $$\hat{e} = arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
 \chapter{Tilings}
 \todo[inline]{Add \emph{Tilings}}
 \section{Hexagon Tiling}
-\chapter{Space-filling Curves}
+\chapter{Space-filling Curves}\index{curves!space-filling}
 \todo[inline]{Add \emph{Space-filling Curves}}
 % https://en.wikipedia.org/wiki/Space-filling_tree maybe?
 % Spiral tilings? https://isohedral.ca/escher-like-spiral-tilings/
 % Graphics gems vol 2. pdf page 58
 \skelpar%
 \clearpage{}
-\section{Hilbert curve}
+\section{Hilbert curve}\index{Hilbert curve}\index{curves!Hilbert curve}
 \todo[inline]{Add \emph{Hilbert curve} explanation}
 \begin{figure}[H]
 \centering
@@ -1961,14 +1966,14 @@ And switching two lines from the function to
  + row = (step / 10);
 \end{minted}
 You can draw a Sierpinshi curve of order $n$ by calling \texttt{curve(\&mut image, 0,n+1, 0, 0)}.
-\section{Peano curve}
+\section{Peano curve}\index{Peano curve}\index{curves!Peano curve}
 \todo[inline]{Add \emph{Peano curve}}
 \section{Z-order curve}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,keepaspectratio]{figures/Zordercurve.pdf}
 \end{figure}
-Drawing the Z-order curve is really simple: first, have a counter variable that starts from zero and is incremented by one at each step. Then, you extract the $(x, y)$ coordinates the new step represents from its binary representation. The bits for the $x$ coordinate are located at the odd bits, and for $y$ at the even bits. I.e. the values are interleaved as bits in the value of the step:
+Drawing the Z-order curve is really simple: first, have a counter variable that starts from zero and is incremented by one at each step. Then, you extract the $(x, y)$ coordinates the new step represents from its binary representation. The bits for the $x$ coordinate are located at the odd bits, and for $y$ at the even bits. I.e.\ the values are interleaved as bits in the value of the step:
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,keepaspectratio]{figures/zcurvebits.pdf}
@@ -2067,7 +2072,7 @@ fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
   \includegraphics[width=0.3\textwidth,keepaspectratio]{figures/zcurve.png}
 \end{figure}
 \clearpage{}
-\section{Flowsnake curve}
+\section{Flowsnake curve}\index{Flowsnake curve}\index{Gosper curve|see {Flowsnake curve}}\index{curves!Flowsnake curve}
 % https://en.wikipedia.org/wiki/Gosper_curve
 \begin{figure}[H]
   \centering
@@ -2093,7 +2098,7 @@ fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
   \vspace{1em}
   {\noindent{}The first three orders of the Gosper curve.}
 \end{figure}
-As a fractal curve, the \emph{flowsnake curve} or \emph{Gosper curve} is defined by a set of recursive rules for drawing it. There are four kind of rules and two of them define rulesets (i.e. they are non-terminal steps).
+As a fractal curve, the \emph{flowsnake curve} or \emph{Gosper curve} is defined by a set of recursive rules for drawing it. There are four kind of rules and two of them define rulesets (i.e.\ they are non-terminal steps).
 
 % TODO add the lsystem rules here
 \begin{align*}
@@ -2112,13 +2117,13 @@ B\mapsto{}&{+}A{-}BB{-}{-}B{-}A{+}{+}A{+}B
 \end{figure}
 \hfill
 \clearpage{}
-\chapter{Dithering}
+\chapter{Dithering}\index{dithering}
 \clearpage{}
 %\skelpar%
 % https://beyondloom.com/blog/dither.html
 % https://tannerhelland.com/2012/12/28/dithering-eleven-algorithms-source-code.html
 % http://www.thetenthplanet.de/archives/5367
-\section{Floyd-Steinberg}
+\section{Floyd-Steinberg}\index{dithering!Floyd-Steinberg}\index{Floyd-Steinberg dithering}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,keepaspectratio]{figures/floyd_dithering_lake_closeup.jpg}\par
@@ -2166,7 +2171,7 @@ fn floyd(image: &mut Image) {
     \includegraphics[width=\textwidth,keepaspectratio]{figures/floyd_dithering_lake.png}
   \end{minipage}
 \end{figure}
-\section{Atkinson dithering}
+\section{Atkinson dithering}\index{dithering!Atkinson}\index{Atkinson dithering}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,keepaspectratio]{figures/atkinson_dithering_lena_closeup.jpg}\par
@@ -2208,7 +2213,7 @@ fn atkinson(image: &mut Image) {
   \includegraphics[width=\textwidth,keepaspectratio]{figures/atkinson_dithering_lena.png}
   \end{minipage}
 \end{figure}
-\chapter{Marching squares}
+\chapter{Marching squares}\index{marching squares}\index{contour|see {marching squares}}
 % https://github.com/jasonwebb/morphogenesis-resources#marching-squares
 \skelpar%
 \clearpage{}
