@@ -615,7 +615,6 @@ Now, we wish to find the equation of the line that passes through $P$ and is per
 $$L_{⊥}: bx-ay+(aP_y-bP_x)=0$$
 % From graphic gems vol 2 pdf page 40
 \chapter{Angle between two lines}\index{angle between two lines}
-\todo[inline]{Add \emph{Angle between two lines} code samples}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth,keepaspectratio]{figures/line_angles.pdf}
@@ -633,6 +632,28 @@ the formula is:
 
 $$\hat{θ} = arccos\frac{f_{1}f_{2}+g_{1}g_{2}}{\sqrt{\left(f_1^2 + g_1^2\right)\left(f_2^2+g_2^2\right)}}$$
 
+\noindent{}The code:
+
+\attachsource{src/bin/anglebetweenlines.rs}
+\begin{minted}{rust}
+fn find_angle((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> f64 {
+    let nom = (a1 * a2 + b1 * b2) as f64;
+    let denom = ((a1 * a1 + b1 * b1) * (a2 * a2 + b2 * b2)) as f64;
+
+    f64::acos(nom / f64::sqrt(denom))
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/anglelines1.png}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/anglelines2.png}
+  \end{minipage}
+  \Caption{The \texttt{src/bin/anglebetweenlines.rs} example has two interactive lines and computes their angle with 64bit floating point accuracy.}
+\end{figure}
 \chapter{Intersection of two lines}\label{ch:intersection-lines}
 \todo[inline]{Add \emph{Intersection of two lines} code}
 \begin{figure}[H]
