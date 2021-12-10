@@ -2,6 +2,8 @@
 
 A small zine/book written in LaTeX. In progress. See Building section below for how to build.
 
+[View current PDF build here](./build/bitgeom.pdf?raw=true)
+
 
 <details>
 <summary>Click to show planned contents</summary>
