@@ -606,7 +606,6 @@ Which is what we were after. We finish by normalising what we found with $\frac{
 \end{minted}
 
 \chapter{Distance from a point to a line}\index{distance!point from a line}
-\todo[inline]{Add code samples in \emph{Distance from a point to a line}}
 \begin{figure}[H]
 \centering
 \input{figures/point_line_distance.pdf_tex}
@@ -625,10 +624,53 @@ $$d=\frac{|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|}{\sqrt{((x_2-x_1)^2+(y_2-y_1)^
 
 $$d=\left|cos(\hat{θ})(P_{ly}-y_p)-sin(\hat{θ})(P_{lx} - P_x)\right|$$
 
-\section{Find perpendicular to line that passes through given point}\label{sec:perpendicular}
-Now, we wish to find the equation of the line that passes through $P$ and is perpendicular to $L$. Let's call it $L_{⊥}$. $L$ in implicit form is $ax+by+c=0$. The perpendicular will be:\index{perpendicular}
+\section*{The code}
+This function uses the implicit form.
+\sourceinlib%
+\begin{minted}{rust}
+type Line = (i64, i64, i64);
+pub fn distance_line_to_point((x, y): Point, (a, b, c): Line) -> f64 {
+    let d = f64::sqrt((a * a + b * b) as f64);
+    if d == 0.0 {
+        0.
+    } else {
+        (a * x + b * y + c) as f64 / d
+    }
+}
+\end{minted}
+
+\chapter{Perpendicular Lines}\label{ch:perpendicular}\index{perpendicular}\index{line!perpendicular}
+\section{Find perpendicular to line that passes through given point}
+Now, we wish to find the equation of the line that passes through $P$ and is perpendicular to $L$. Let's call it $L_{⊥}$. $L$ in implicit form is $ax+by+c=0$. The perpendicular will be:
 
 $$L_{⊥}: bx-ay+(aP_y-bP_x)=0$$
+
+\subsection*{The code}
+\sourceinlib%
+\begin{minted}{rust}
+type Line = (i64, i64, i64);
+fn perpendicular((a, b, c): Line, p: Point) -> Line {
+    (b, -1 * a, a * p.1 - b * p.0)
+}
+\end{minted}
+
+\section{Find point in line that belongs to the perpendicular of given point}
+\subsection*{The code}
+\sourceinlib%
+\begin{minted}{rust}
+fn point_perpendicular((a, b, c): Line, p: Point) -> Point {
+    let d = (a * a + b * b) as f64;
+    if d == 0. {
+        return (0, 0);
+    }
+    let cp = a * p.1 - b * p.0;
+    (
+        ((-a * c - b * cp) as f64 / d) as i64,
+        ((a * cp - b * c) as f64 / d) as i64,
+    )
+}
+\end{minted}
+
 % From graphic gems vol 2 pdf page 40
 \chapter{Angle between two lines}\index{angle!between two lines}
 \begin{figure}[H]
@@ -725,7 +767,7 @@ Let's name this line $L$. From previous chapter\footnote{See \emph{\nameref{sec:
 %
 $$L: (y_M - y_N)x + (x_N-x_M)y+(x_{M}y_{N}-x_{N}y_{M})=0$$%
 %
-We need the perpendicular line over the midpoint of $L$.\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}} The midpoint also satisfies $L$'s equation. The midpoint's coordinates are intuitively:\index{midpoint}
+We need the perpendicular line over the midpoint of $L$.\footnote{See \emph{\nameref{ch:perpendicular}}, page \pageref{ch:perpendicular}} The midpoint also satisfies $L$'s equation. The midpoint's coordinates are intuitively:\index{midpoint}
 
 $$P_{mid} = \left(\frac{x_M + x_N}{2}, \frac{y_M + y_N}{2}\right)$$
 
@@ -1783,8 +1825,8 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \clearpage{}
 \myaddthumb{Addendum}{ad\-den\-dum}
 \part{Addendum}
-\section{Faster Drawing a line segment from its two endpoints using Symmetry}
-\todo[inline]{Add \emph{Faster Drawing a line segment from its two endpoints using Symmetry}}
+\chapter{Faster drawing a line segment from its two endpoints using symmetry}
+\todo[inline]{Add \emph{Faster drawing a line segment from its two endpoints using symmetry}}
 % From graphic gems vol 1 p 103 (pdf page 128)
 \skelpar%
 
@@ -1853,7 +1895,7 @@ $$m_2 = \frac{P_3 + P_4}{2}$$
 \attachsource{src/bin/roundcorner.rs}\noindent{}The code:
 \begin{minted}{rust}
 \end{minted}
-%\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
+%\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{ch:perpendicular}}, page \pageref{ch:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
 %
 %\begin{figure}[H]
 %  \centering{}

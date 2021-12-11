@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::process::Command;
 pub type Point = (i64, i64);
+pub type Line = (i64, i64, i64);
 
 pub const fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
     let (r, g, b) = (r as u32, g as u32, b as u32);
@@ -636,4 +637,29 @@ impl BitmapFont {
         );
         Some(glyph)
     }
+}
+
+pub fn distance_line_to_point((x, y): Point, (a, b, c): Line) -> f64 {
+    let d = f64::sqrt((a * a + b * b) as f64);
+    if d == 0.0 {
+        0.
+    } else {
+        (a * x + b * y + c) as f64 / d
+    }
+}
+
+pub fn perpendicular((a, b, c): Line, p: Point) -> Line {
+    (b, -1 * a, a * p.1 - b * p.0)
+}
+
+pub fn point_perpendicular((a, b, c): Line, p: Point) -> Point {
+    let d = (a * a + b * b) as f64;
+    if d == 0. {
+        return (0, 0);
+    }
+    let cp = a * p.1 - b * p.0;
+    (
+        ((-a * c - b * cp) as f64 / d) as i64,
+        ((a * cp - b * c) as f64 / d) as i64,
+    )
 }
