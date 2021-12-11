@@ -179,6 +179,22 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
   \vspace{1em}
   {\noindent{}#1}}
 
+\usepackage{scalerel}
+
+\DeclareRobustCommand\archat[1]{%
+\begin{array}{c}
+\stretchto{
+  \scaleto{
+    \scalerel*[\widthof{#1}]{\frown}
+    {\rule[-\textheight/2]{1ex}{\textheight}} %WIDTH-LIMITED BIG WEDGE
+  }{1.25\textheight} % THIS STRETCHES THE WEDGE A LITTLE EXTRA WIDE
+}{0.5ex}\\           % THIS SQUEEZES THE WEDGE TO 0.5ex HEIGHT
+#1\\                   % THIS STACKS THE WEDGE ATOP THE ARGUMENT
+\rule{0ex}{.01ex}
+\end{array}
+}
+
+
 \begin{document}
 \pagestyle{plain}
   \assignpagestyle{\chapter}{plain}
@@ -1801,46 +1817,70 @@ Round corners are everywhere around us. It is useful to know at least one method
 Since the segments intercept, the round corner will end up beneath the intersection. We wish to find a circle
 that has a common point with each segment and the arc made up from those points and the circle is the round corner we are after.
 
-\begin{figure}[H]
-  \centering{}
-\includegraphics[width=0.5\textwidth,keepaspectratio]{figures/fillet_1.pdf}
-\end{figure}
-
+\begin{figure}[H]%
+  \centering{}%
+\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_1.pdf}%
+\end{figure}%
+%
 \noindent{}We are given 4 points, $P_{1}, P_{2}$ and $P_{3}, P_{4}$ that make up segments $S_1$ and $S_2$.
-Begin by finding the midpoints $q_1$ and $q_2$ of segments $S_1$ and $S_2$.\index{midpoint} These will be:
+Begin by finding the midpoints $m_1$ and $m_2$ of segments $S_1$ and $S_2$.\index{midpoint} These will be:
 
-$$q_1 = \frac{P_1 + P_2}{2}$$
-$$q_2 = \frac{P_3 + P_4}{2}$$
+$$m_1 = \frac{P_1 + P_2}{2}$$
+$$m_2 = \frac{P_3 + P_4}{2}$$
+
+\noindent{}Then, find the signed distances (i.e.\ don't use the absolute value of distance) $d_1$ of $m_1$ from $S_2$ and $d_2$ of $m_2$ from $S_1$.
+
+\noindent{}Construct parallel lines $l_1$ to $S_1$ that is $d_1$ pixels away. Repeat with $l_2$ for $S_2$ and $d_2$.
+
+\noindent{}Their intersection is the circle's center, $P_c$.%
+
+\noindent{}The intersection of $l_1$, $l_2$ with the two segments are the points where we should clip or extend the segments: $q_1$ and $q_2$.
 
 \begin{figure}[H]
   \centering{}
-\includegraphics[width=0.5\textwidth,keepaspectratio]{figures/fillet_2.pdf}
+\includegraphics[width=0.8\textwidth,keepaspectratio]{figures/fillet_2.pdf}
 \end{figure}
 
-\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
+\noindent{}The starting angle is found by calculating the angle of $q_1P_c$ with the $x$-axis with the \texttt{atan2} math library procedure.
 
 \begin{figure}[H]
   \centering{}
-  \includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}
+  \includegraphics[width=0.8\textwidth,keepaspectratio]{figures/fillet_3.pdf}
 \end{figure}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\noindent{}The \emph{subtended} angle\footnote{the \emph{subtended} angle of an arc $\archat{AC}$ to a point $P$ is the angle between $PA$ and $PC$: \raisebox{-1em}{\includegraphics[scale=4]{figures/subtended_angle.pdf}}} of the arc from the center $P_c$ is found by calculating the dot product of $q_1P_c$ and $q_2P_c$:
+
+\attachsource{src/bin/roundcorner.rs}\noindent{}The code:
+\begin{minted}{rust}
+\end{minted}
+%\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{sec:perpendicular}}, page \pageref{sec:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
+%
+%\begin{figure}[H]
+%  \centering{}
+%  \includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}
+%\end{figure}
+%
+%
+%\noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
+%
+%$$\hat{s} = 90^{\circ} + \hat{a}$$
+%$$\hat{a} = arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
+%
+%\noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
+%
+%$$\hat{e} = arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
+%
+%\noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
+
+\begin{figure}[H]
   \centering{}
-  \includegraphics[width=0.49\textwidth,keepaspectratio]{figures/fillet_3.pdf}
-\end{wrapfigure}
-
-\noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
-
-$$\hat{s} = 90^{\circ} + \hat{a}$$
-$$\hat{a} = arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
-
-\noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
-
-$$\hat{e} = arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
-
-\noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
-
-\todo[inline]{Add \emph{Join segments with round corners} code}
+  \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/roundcorner1.png}
+  \Caption{The \texttt{src/bin/roundcorner.rs} example has two interactive lines and computes the joining fillet.}
+\end{figure}
+%
+%
+%
+%
 \chapter{Faster line clipping}
 \todo[inline]{Add \emph{Faster line clipping}}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
