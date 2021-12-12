@@ -562,7 +562,7 @@ pub fn distance_between_two_points(p_k: Point, p_l: Point) -> f64 {
 
 Moving a point $P=(x,y)$ at distance $d$ at an angle of $r$ radians is solved with simple trigonometry:
 
-$$P'=(x+d\times{}cosr, y+d\times{}sinr)$$
+$$P'=(x+d\times{}\cos{}r, y+d\times{}\sin{}r)$$
 
 Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{ch:equations-circles}} page \pageref{ch:equations-circles}} see this is how the points of a circle are calculated.
 
@@ -622,7 +622,7 @@ With $P=(x_0, y_0)$, $P_1 = (x_1, y_1)$ and $P_2 = (x_2, y_2)$.
 $$d=\frac{|(x_2-x_1)(y_1-y_0)-(x_1-x_0)(y_2-y_1)|}{\sqrt{((x_2-x_1)^2+(y_2-y_1)^2}}$$
 \section{Using an $L$ defined by a point $P_l$ and angle $\hat{θ}$}
 
-$$d=\left|cos(\hat{θ})(P_{ly}-y_p)-sin(\hat{θ})(P_{lx} - P_x)\right|$$
+$$d=\left|\cos{}(\hat{θ})(P_{ly}-y_p)-\sin{}(\hat{θ})(P_{lx} - P_x)\right|$$
 
 \section*{The code}
 This function uses the implicit form.
@@ -680,7 +680,7 @@ fn point_perpendicular((a, b, c): Line, p: Point) -> Point {
 By angle we mean the angle formed by the two directions of the lines; and direction vectors start from the origin (in the figure, they are the \textcolor{red}{red arrows}). So if we want any of the other three angles, we already know them from basic geometry as shown in the figure above.
 
 If you prefer using the implicit equation, bring the two lines $L_1$ and $L_2$ to that form ($a_1x+b_1y+c=0$ and $a_2x+b_2y+c_2=0$) and you can directly find $\hat{θ}$ with the formula:
-$$\hat{θ} = arccos\frac{a_{1}a_{2}+b_{1}b_{2}}{\sqrt{\left(a_1^2 + b_1^2\right)\left(a_2^2+b_2^{2}\right)}}$$
+$$\hat{θ} = \arccos{}\frac{a_{1}a_{2}+b_{1}b_{2}}{\sqrt{\left(a_1^2 + b_1^2\right)\left(a_2^2+b_2^{2}\right)}}$$
 For the following parametric equations of $L_1$, $L_2$:
 
 $$ L_{1} = \left(\{x=x_1 +f_1t\}, \{y=y_1+g_1t\}\right)$$
@@ -688,7 +688,7 @@ $$ L_{2} = \left(\{x=x_2 +f_2s\}, \{y=y_2+g_2s\}\right)$$
 
 the formula is:
 
-$$\hat{θ} = arccos\frac{f_{1}f_{2}+g_{1}g_{2}}{\sqrt{\left(f_1^2 + g_1^2\right)\left(f_2^2+g_2^2\right)}}$$
+$$\hat{θ} = \arccos\frac{f_{1}f_{2}+g_{1}g_{2}}{\sqrt{\left(f_1^2 + g_1^2\right)\left(f_2^2+g_2^2\right)}}$$
 
 \noindent{}The code:
 
@@ -1314,10 +1314,6 @@ fn main() {
 \todo[inline]{Add \emph{Parametric elliptical arcs}}
 % Graphics gems vol 3. pdf page 196
 \skelpar%
-\chapter{Squircle}
-\todo[inline]{Add \emph{Squircle}}
-% https://en.wikipedia.org/wiki/Squircle
-\skelpar%
 \chapter{Bézier curves}\index{curves!Bézier}
 \begin{figure}[H]
 \centering
@@ -1491,8 +1487,8 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 \[
   p' =
   \begin{bmatrix}
-    cosθ & -sinθ\\
-    sinθ & cosθ
+    \cos{}θ & -\sin{}θ\\
+    \sin{}θ & \cos{}θ
   \end{bmatrix}
   \begin{bmatrix}
     x_{p}\\
@@ -1501,8 +1497,8 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 \]
 
 \begin{equation*}
-  c = cosθ,\\\\
-  s = sinθ,\\
+  c = \cos{}θ,\\\\
+  s = \sin{}θ,\\
   x_{p'} = x_{p}c-y_{p}s,\\
   y_{p'} = x_{p}s+y_{p}c.
 \end{equation*}
@@ -1810,13 +1806,13 @@ sheared.draw_outline();
 \end{figure}
 Shearing is a delta movement in one dimension, thus the point before moving and the point after form an angle with the $x$ axis. To move a point $(x, 0)$ by 30\textdegree{} forward we will have the new point $(x+f, 0)$ where $f$ is the shear factor. These two points and $(x, h)$ where $h$ is the height of the \bitmap{} form a triangle, thus the following are true:
 
-$$cot\theta{} = \frac{h}{f}$$
+$$\cot\theta{} = \frac{h}{f}$$
 
 Therefore to find your factor for any angle $\theta{}$ replace its cotangent in the following formula:
 
-$$f = \frac{h}{cot\theta{}}$$
+$$f = \frac{h}{\cot\theta{}}$$
 
-For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to the right, since rotations are always clockwise) we need $cot(-30deg) = -\sqrt{3}$ and $f=-\frac{h}{\sqrt{3}}$.
+For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to the right, since rotations are always clockwise) we need $\cot(-30deg) = -\sqrt{3}$ and $f=-\frac{h}{\sqrt{3}}$.
 
 \chapter{Projections}
 \todo[inline]{Add \emph{Projections}}
@@ -1829,7 +1825,6 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \todo[inline]{Add \emph{Faster drawing a line segment from its two endpoints using symmetry}}
 % From graphic gems vol 1 p 103 (pdf page 128)
 \skelpar%
-
 \chapter{Joining the ends of two wide line segments together}
 \todo[inline]{Add \emph{Joining the ends of two wide line segments together}}
 % Graphics gems vol 1. pdf page 132 "AN ALGORITHM FOR FILLING IN 2D WIDE LINE BEVEL JOINTS"
@@ -1846,7 +1841,7 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \todo[inline]{Add \emph{Orthogonal connection of two points}}
 % Graphics gems vol 3. pdf page 205 "SIMPLE CONNECTION ALGORITHM FOR 2D DRAWING"
 \skelpar%
-\chapter{Join segments with round corners}
+\chapter{Join segments with round corners}\label{ch:roundcorners}
 % Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
 \begin{wrapfigure}{r}{0.5\textwidth}
     \vspace{-60pt}
@@ -1906,11 +1901,11 @@ $$m_2 = \frac{P_3 + P_4}{2}$$
 %\noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
 %
 %$$\hat{s} = 90^{\circ} + \hat{a}$$
-%$$\hat{a} = arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
+%$$\hat{a} = \arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
 %
 %\noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
 %
-%$$\hat{e} = arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
+%$$\hat{e} = \arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
 %
 %\noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
 
@@ -1919,6 +1914,88 @@ $$m_2 = \frac{P_3 + P_4}{2}$$
   \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/roundcorner1.png}
   \Caption{The \texttt{src/bin/roundcorner.rs} example has two interactive lines and computes the joining fillet.}
 \end{figure}
+%
+%
+%
+\chapter{Squircle}
+\begin{figure}[H]
+\centering
+\includegraphics[height=5\baselineskip,keepaspectratio]{figures/squircle.pdf}
+\end{figure}
+\attachsource{src/bin/squircle.rs}
+A \emph{squircle} is a compromise between a square and a circle. It is purported to be more pleasing to the eye because the rounding corner is smoother than that of a circle arc (like the result of \emph{\nameref{ch:roundcorners}}, page \pageref{ch:roundcorners}).
+
+A way to describe a squircle is as a superellipse, meaning a generalization of the ellipse equation $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ by making the exponent parametric:
+$${\left| x-a \right|}^{n} + {\left| y-b \right|}^{n} = 1$$
+The squircle as a superellipse is usually defined for $n=4$.
+\section*{The code}
+\begin{minted}{rust}
+pub fn plot_squircle(
+    image: &mut Image,
+    (xm, ym): (i64, i64),
+    width: i64,
+    height: i64,
+    n: i32,
+    _wd: f64,
+) {
+    let r = width / 2;
+    let w = width / 2;
+    let h = height / 2;
+
+    let mut prev_pos = (xm - w, xm - h);
+
+    for i in 0..(2 * r + 1) {
+        let x: i64 = (i - r) + w;
+        let y: i64 = ((r as f64).powi(n) - (i as f64 - r as f64).abs().powi(n)).powf(1. / n as f64)
+            as i64
+            + h;
+        if i != 0 {
+            image.plot_line_width(prev_pos, (xm - x as i64, ym - y), _wd);
+        }
+        prev_pos = (xm - x as i64, ym - y);
+    }
+    for i in (2 * r)..(4 * r + 1) {
+        let x: i64 = (3 * r - i) + w;
+        let y = -1
+            * (((r as f64).powi(n) - ((3 * r - i) as f64).abs().powi(n)).powf(1. / n as f64))
+                as i64
+            + h;
+        image.plot_line_width(prev_pos, (xm - x as i64, ym - y), _wd);
+        prev_pos = (xm - x as i64, ym - y);
+    }
+}
+\end{minted}
+%\thispagestyle{empty}
+\section*{Different values of $n$}
+Increasing $n$ in \texttt{src/bin/squircle.rs} makes the hyperellipse corners approach the square's.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/squircle_1.png}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/squircle_2.png}
+  \end{minipage}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/squircle_3.png}
+  \end{minipage}
+  \hspace{.1em}
+  \begin{minipage}{0.49\textwidth}
+    \includegraphics[width=\textwidth,keepaspectratio]{figures/squircle_4.png}
+  \end{minipage}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.49\textwidth,keepaspectratio]{figures/squircle_8.png}\par
+\end{figure}
+%
+%
+%
+%
 %
 %
 %

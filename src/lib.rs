@@ -207,6 +207,16 @@ impl Image {
         self.plot_line_width(d, a, wd);
     }
 
+    pub fn plot_triangle(&mut self, center: Point, d: i64, wd: f64) {
+        let (cx, cy) = center;
+        let a = (cx - d, cy - d);
+        let b = (cx + d, cy - d);
+        let c = (cx + d, cy + d);
+        self.plot_line_width(a, b, wd);
+        self.plot_line_width(b, c, wd);
+        self.plot_line_width(c, a, wd);
+    }
+
     pub fn plot_ellipse(
         &mut self,
         (xm, ym): (i64, i64),
