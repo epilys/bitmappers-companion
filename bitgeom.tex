@@ -14,6 +14,7 @@
   \newfontfamily\pixeltitle[Scale=3.5]{Redaction35-Bold}
   \newfontfamily\reduxtitle[Scale=3.5]{Redaction-Bold}
   \newfontfamily\cm{CMU Serif}
+  \newfontfamily\symbola[Scale=5]{Symbola}
   \usepackage{microtype}
   \usepackage{graphicx}
   \usepackage{dot2texi}
@@ -194,6 +195,11 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 \end{array}
 }
 
+\DeclareRobustCommand\TheEnd{%
+\par%
+\thispagestyle{empty}%
+{\vfill{}\noindent{}\centering{}\symbola{}⸎\par}%
+}
 
 \begin{document}
 \pagestyle{plain}
@@ -2376,6 +2382,7 @@ fn atkinson(image: &mut Image) {
 \chapter{Marching squares}\index{marching squares}\index{contour|see {marching squares}}
 % https://github.com/jasonwebb/morphogenesis-resources#marching-squares
 \skelpar%
+\TheEnd{}
 \clearpage{}
 \stopthumb
 \backmatter
