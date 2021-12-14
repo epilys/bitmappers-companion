@@ -1568,6 +1568,40 @@ Of course, it requires effort to match the beginning and end of each curve that 
 \skelpar%
 \section{Weighted Béziers}\index{curves!Bézier!weighted}
 \skelpar%
+\chapter{Archimedean spiral}
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=12\baselineskip,keepaspectratio]{figures/archspiral.pdf}
+\end{figure}
+\section*{The code}
+\skelpar
+\attachsource{src/bin/archimedeanspiral.rs}
+\begin{minted}{rust}
+pub fn arch(image: &mut Image, center: Point) {
+    let a = 1.0_f64;
+    let b = 9.0_f64;
+
+    // max_angle = number of spirals * 2pi.
+    let max_angle = 5.0_f64 * 2.0_f64 * std::f64::consts::PI;
+
+    let mut theta = 0.0_f64;
+    let (dx, dy) = center;
+    let mut prev_point = center;
+    while theta < max_angle {
+        theta = theta + 0.002_f64;
+
+        let r = a + b * theta;
+        let x = (r * theta.cos()) as i64 + dx;
+        let y = (r * theta.sin()) as i64 + dy;
+        image.plot_line_width(prev_point, (x, y), 1.0);
+        prev_point = (x, y);
+    }
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1,keepaspectratio]{figures/archspiral.png}
+\end{figure}
 \clearpage{}
 \myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
 \part{Vectors, matrices and trans\-for\-ma\-tions}
