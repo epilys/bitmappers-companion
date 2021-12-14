@@ -572,6 +572,13 @@ $$P'=(x+d\times{}\cos{}r, y+d\times{}\sin{}r)$$
 
 Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{ch:equations-circles}} page \pageref{ch:equations-circles}} see this is how the points of a circle are calculated.
 
+\begin{minted}{rust}
+pub fn move_point(p: Point, d: f64, r: f64) -> Point {
+  let (x, y) = p;
+  (x + (d * f64::cos(r)).round() as i64, y + (d * f64::sin(r)).round() as i64)
+}
+\end{minted}
+
 \chapter{Equations of a line}\label{ch:equations-lines}\index{line!equations}
 There are several ways to describe a line mathematically. We'll list the convenient ones for drawing \pixels{}.
 
@@ -607,10 +614,40 @@ Substituting $t$ in one of the equations we get:
 
 $$(y_M - y_N)x + (x_N-x_M)y+(x_{M}y_{N}-x_{N}y_{M})=0$$
 
-Which is what we were after. We finish by normalising what we found with $\frac{1}{\sqrt{a^2+b^2}}$:
-\begin{minted}{rust}
-\end{minted}
+Which is what we were after. We should finish by normalising what we found with $\frac{1}{\sqrt{a^2+b^2}}$, but our coordinates are integers and have no decimal or floating point accuracy.
 
+\begin{minted}{rust}
+fn find_line(point_a: Point, point_b: Point) -> (i64, i64, i64) {
+    let (xa, ya) = point_a;
+    let (xb, yb) = point_b;
+    let a = yb - ya;
+    let b = xa - xb;
+    let c = xb * ya - xa * yb;
+
+    (a, b, c)
+}
+\end{minted}
+%
+%
+%
+\chapter{Drawing a line}\index{line!drawing}
+\begin{minted}{rust}
+fn plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
+    let x = if a != 0 { -1 * (c) / a } else { 0 };
+    let mut prev_point = (x, 0);
+    for y in 0..(WINDOW_HEIGHT as i64) {
+        // ax+by+c =0 =>
+        // x=(-c-by)/a
+        let x = if a != 0 { -1 * (c + b * y) / a } else { 0 };
+        let new_point = (x, y);
+        image.plot_line_width(prev_point, new_point, 1.0);
+        prev_point = new_point;
+    }
+}
+\end{minted}
+%
+%
+%
 \chapter{Distance from a point to a line}\index{distance!point from a line}
 \begin{figure}[H]
 \centering
@@ -1022,8 +1059,7 @@ In $L_{34}$ substitute point $\textbf{1}$ to compute $r_1$, and do the same for 
 
 If $r_1 \neq{} 0$, $r_2 \neq{} 0$ and $sgn(r_1)==sign(r_2)$ the line segments don't intersect, so stop.
 
-At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (Refer to \emph{\nameref{ch:intersection-lines}}.)
-\todo[inline]{Add code sample in \emph{Intersection of two line segments}}
+At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find their intersection point. (See \emph{\nameref{ch:intersection-lines}} page \pageref{ch:intersection-lines})
 \section{\emph{Fast} intersection of two line segments}
 % Graphics gems vol 3. pdf page 231
 \skelpar%
@@ -1410,9 +1446,55 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 \myaddthumb{Curves other than circles}{curves}
 \part{Curves other than circles}
 \chapter{Parametric elliptical arcs}\index{curves!elliptical}
-\todo[inline]{Add \emph{Parametric elliptical arcs}}
-% Graphics gems vol 3. pdf page 196
-\skelpar%
+\begin{figure}[H]
+  \centering
+  \includegraphics[keepaspectratio]{figures/parellarc.png}
+  \Caption{$P$, $Q$ and $K$ are the arc's control points.}
+\end{figure}
+This algorithm\footnote{\emph{Graphics Gems III} page 164} draws an elliptical arc starting from point $P$ and ending at $Q$. The control point $K$ mirrors the ellipse's center $J$: drawing the quadrilateral $PKQJ$ would appear as a lozenge, or rhombus.
+
+The parameter $t$ defines the step angle in radians and is limited to $0<t\leq{}1$. For each point calculation, the point is $t$ radians away from the previous one, so to increase the amount of points calculated keep $t$ small.
+\attachsource{src/bin/parellarc.rs}
+\begin{minted}{rust}
+fn parellarc(image: &mut Image, p: Point, q: Point, k: Point, t: f64) {
+    if t <= 0. || t > 1. {
+        return;
+    }
+
+    let mut v = ((k.0 - q.0) as f64, (k.1 - q.1) as f64);
+
+    let mut u = ((k.0 - p.0) as f64, (k.1 - p.1) as f64);
+
+    let j = ((p.0 as f64 - v.0 + 0.5), (p.1 as f64 - v.1 + 0.5));
+
+    u = (
+        (u.0 * f64::sqrt(1. - t * t * 0.25) - v.0 * t * 0.5),
+        (u.1 * f64::sqrt(1. - t * t * 0.25) - v.1 * t * 0.5),
+    );
+
+    let n = (std::f64::consts::FRAC_PI_2 / t).floor() as u64;
+
+    let mut prev_pos = p;
+    for _ in 0..n {
+        let x = (v.0 + j.0).round() as i64;
+        let y = (v.1 + j.1).round() as i64;
+        let new_point = (x, y);
+        image.plot_line_width(prev_pos, new_point, 1.);
+        prev_pos = new_point;
+
+        u.0 -= v.0 * t;
+        v.0 += u.0 * t;
+        u.1 -= v.1 * t;
+        v.1 += u.1 * t;
+    }
+}
+\end{minted}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[keepaspectratio]{figures/parellarc2.png}
+  \Caption{Changing $n$ to $\frac{2\pi{}}{t}$ draws the entire ellipse.}
+\end{figure}
 \chapter{Bézier curves}\index{curves!Bézier}
 \begin{figure}[H]
 \centering
