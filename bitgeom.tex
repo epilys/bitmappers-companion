@@ -851,6 +851,17 @@ fn find_equidistant(point_a: Point, point_b: Point) -> (i64, i64, i64) {
   \end{minipage}
   \Caption{The \texttt{src/bin/equidistant.rs} example has two interactive points and computes their $L_{EQ}$.}
 \end{figure}
+%
+%
+%
+%
+%
+\chapter{Reflection of point on line}\index{line!reflection of point}\index{reflection of point}\index{point!reflection on line}\index{mirroring!point to line}
+\todo[inline]{Add \emph{Mirror-reflection of point to line}}
+\skelpar%
+%
+%
+%
 \chapter{Normal to a line through a point}
 \todo[inline]{Add \emph{Normal to a line through a point}}
 \skelpar%
@@ -1369,6 +1380,7 @@ fn main() {
 \skelpar%
 \chapter{Centroid of polygon}\index{centroid|see {polygon!centroid}}\index{polygon!centroid}\index{centroid!polygon}
 \todo[inline]{Add \emph{Centroid of polygon}}
+% http://paulbourke.net/geometry/polygonmesh/
 % Graphics gems vol 4. pdf page 14
 \skelpar%
 \chapter{Polygon clipping}\index{polygon!clipping}
@@ -1811,7 +1823,7 @@ scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 \todo[inline]{Add \emph{Stretching lines of \bitmaps{}}}
 % Graphics gems vol 3. pdf page 34 "FAST BITMAP STRETCHING"
 \skelpar%
-\chapter{Mirroring}
+\chapter{Mirroring}\index{mirroring}
 \todo[inline]{Add screenshots and figure and code in \emph{Mirroring}}
 Mirroring to an axis is the transformation of one coordinate to its equidistant value across the axis:
 
@@ -2382,7 +2394,7 @@ fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
 \end{figure}
 As a fractal curve, the \emph{flowsnake curve} or \emph{Gosper curve} is defined by a set of recursive rules for drawing it. There are four kind of rules and two of them define rulesets (i.e.\ they are non-terminal steps).
 
-% TODO add the lsystem rules here
+% http://paulbourke.net/fractals/lsys/index.html L-System User Notes
 \begin{align*}
 A\mapsto{}&\,A{-}B{-}{-}B{+}A{+}{+}AA{+}B{-}\\
 B\mapsto{}&{+}A{-}BB{-}{-}B{-}A{+}{+}A{+}B
