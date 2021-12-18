@@ -333,6 +333,10 @@ impl Image {
 }
 \end{minted}
 
+An RGB color with coordinates $(r, g, b)$ where $r, g, b: \textrm{\texttt{u8} values}$ is represented as a \texttt{u32} number with the red component shifted 16 bits to to the left, the green component 8 bits, and the final 8 bits are the blue component. It's essentially laying the $r, g, b$ values sequentially and forming a 32 bit value out of three 8 bit values.
+
+Our \texttt{Image::plot(x, y)} function sets the $(x, y)$ pixel to black. To do that we set the element \texttt{y * width + x} of the \texttt{Image's} buffer to the black color as RGB.
+
 \chapter{Displaying {\pixels{}} to your screen}
 A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
 %
@@ -389,7 +393,17 @@ Running this will show you something like this:
 \includegraphics{figures/introduction.png}
 \end{figure}
 
+By drawing each individual pixel with the \texttt{Image::plot} and \texttt{Image::plot\_color} functions, we can draw any possible RGB picture of the buffer size. In this book's chapters, we will usually calculate pixels by using discrete calculations of each pixels as integers, or by using rational values (with 64 bit floating point representation) and then calculating their integer values with the \texttt{floor} function. This can also be done by casting an \texttt{f64} type to \texttt{i64} with \texttt{as}: 
+
+\begin{minted}{rust}
+  let val: f64 = 5.5;
+  let val: i64 = val as i64;
+  assert_eq!(5i64, val);
+\end{minted}
+
 \chapter{Bits to byte \pixels{}}\label{ch:bitstobytes}
+If we worked with 1 bit images (black and white) it could be a more space-efficient representation to store the pixels as bits: 8 pixels in 1 byte. For this book we accept that our images can have RGB colors. The \texttt{xbm} format stores pixels like that, and we might wish to convert them to our representation.
+
 Let's define a way to convert bit information to a byte vector:
 
 \begin{minted}{rust}
