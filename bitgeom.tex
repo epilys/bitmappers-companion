@@ -1594,40 +1594,6 @@ Of course, it requires effort to match the beginning and end of each curve that 
 \skelpar%
 \section{Weighted Béziers}\index{curves!Bézier!weighted}
 \skelpar%
-\chapter{Archimedean spiral}
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=12\baselineskip,keepaspectratio]{figures/archspiral.pdf}
-\end{figure}
-\section*{The code}
-\skelpar
-\attachsource{src/bin/archimedeanspiral.rs}
-\begin{minted}{rust}
-pub fn arch(image: &mut Image, center: Point) {
-    let a = 1.0_f64;
-    let b = 9.0_f64;
-
-    // max_angle = number of spirals * 2pi.
-    let max_angle = 5.0_f64 * 2.0_f64 * std::f64::consts::PI;
-
-    let mut theta = 0.0_f64;
-    let (dx, dy) = center;
-    let mut prev_point = center;
-    while theta < max_angle {
-        theta = theta + 0.002_f64;
-
-        let r = a + b * theta;
-        let x = (r * theta.cos()) as i64 + dx;
-        let y = (r * theta.sin()) as i64 + dy;
-        image.plot_line_width(prev_point, (x, y), 1.0);
-        prev_point = (x, y);
-    }
-}
-\end{minted}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=1,keepaspectratio]{figures/archspiral.png}
-\end{figure}
 \clearpage{}
 \myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
 \part{Vectors, matrices and trans\-for\-ma\-tions}
@@ -2153,9 +2119,149 @@ Increasing $n$ in \texttt{src/bin/squircle.rs} makes the hyperellipse corners ap
 \todo[inline]{Add \emph{Faster line clipping}}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
 \skelpar%
-\chapter{Tilings}
+%
+%
+%
+\chapter{Archimedean spiral}
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=12\baselineskip,keepaspectratio]{figures/archspiral.pdf}
+\end{figure}
+\section*{The code}
+\skelpar
+\attachsource{src/bin/archimedeanspiral.rs}
+\begin{minted}{rust}
+pub fn arch(image: &mut Image, center: Point) {
+    let a = 1.0_f64;
+    let b = 9.0_f64;
+
+    // max_angle = number of spirals * 2pi.
+    let max_angle = 5.0_f64 * 2.0_f64 * std::f64::consts::PI;
+
+    let mut theta = 0.0_f64;
+    let (dx, dy) = center;
+    let mut prev_point = center;
+    while theta < max_angle {
+        theta = theta + 0.002_f64;
+
+        let r = a + b * theta;
+        let x = (r * theta.cos()) as i64 + dx;
+        let y = (r * theta.sin()) as i64 + dy;
+        image.plot_line_width(prev_point, (x, y), 1.0);
+        prev_point = (x, y);
+    }
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1,keepaspectratio]{figures/archspiral.png}
+\end{figure}
+%
+%
+%
+\chapter{Tilings}\index{tiling}
 \todo[inline]{Add \emph{Tilings}}
-\section{Hexagon Tiling}
+\clearpage{}
+\section{Truchet Tiling}\index{tiling!Truchet}\index{Truchet tiling}
+Truchet tiling is a repetition of four specific tiles in any specific order. It can be random or deterministic.
+\begin{figure}[H]
+\centering
+  \begin{minipage}{\textwidth}
+\centering
+  \begin{minipage}{0.20\textwidth}
+    \hfill
+  \fbox{\includegraphics[height=5\baselineskip,keepaspectratio]{figures/truchet_tile.pdf}}
+    \hfill
+  \end{minipage}
+  \hspace{0.028\textwidth}
+  \begin{minipage}{0.20\textwidth}
+    \hfill
+  \rotatebox{90}{\fbox{\includegraphics[height=5\baselineskip,keepaspectratio]{figures/truchet_tile.pdf}}}
+    \hfill
+  \end{minipage}
+  \hspace{0.028\textwidth}
+  \begin{minipage}{0.20\textwidth}
+    \hfill
+  \rotatebox{180}{\fbox{\includegraphics[height=5\baselineskip,keepaspectratio]{figures/truchet_tile.pdf}}}
+    \hfill
+  \end{minipage}
+  \hspace{0.028\textwidth}
+  \begin{minipage}{0.20\textwidth}
+    \hfill
+  \rotatebox{270}{\fbox{\includegraphics[height=5\baselineskip,keepaspectratio]{figures/truchet_tile.pdf}}}
+    \hfill
+  \end{minipage}
+  \end{minipage}
+  \Caption{The four tiles}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\includegraphics[width=0.8\textwidth,keepaspectratio]{figures/truchet.png}}
+  \Caption{Random arrangement of truchet tiles using \texttt{rand}.}
+\end{figure}
+\subsection*{The code}
+\attachsource{src/bin/floyddither.rs}
+
+\begin{minted}{rust}
+fn truchet(image: &mut Image, size: i64) {
+    let mut x = 0;
+    let mut y = 0;
+    #[repr(u8)]
+    enum Tile {
+        A = 0,
+        B,
+        C,
+        D,
+    }
+    let tiles = [Tile::A, Tile::B, Tile::C, Tile::D];
+    let width = image.width as i64;
+    let height = image.height as i64;
+    let mut rng = thread_rng();
+    while y < height {
+        while x < width {
+            let t = tiles.choose(&mut rng).unwrap();
+            let (a, b, c) = match t {
+                Tile::A => {
+                    let a = (x, y + size);
+                    let b = (x + size, y + size);
+                    let c = (x + size, y);
+                    (a, b, c)
+                }
+                Tile::B => {
+                    let a = (x, y);
+                    let b = (x, y + size);
+                    let c = (x + size, y + size);
+                    (a, b, c)
+                }
+                Tile::C => {
+                    let a = (x, y);
+                    let b = (x + size, y);
+                    let c = (x, y + size);
+                    (a, b, c)
+                }
+                Tile::D => {
+                    let a = (x, y);
+                    let b = (x + size, y);
+                    let c = (x + size, y + size);
+                    (a, b, c)
+                }
+            };
+            image.plot_line_width(a, b, 1.);
+            image.plot_line_width(b, c, 1.);
+            image.plot_line_width(c, a, 1.);
+            let c = ((a.0 + b.0 + c.0) / 3, (a.1 + b.1 + c.1) / 3);
+            image.flood_fill(c.0, c.1);
+            x += size;
+        }
+        x = 0;
+        y += size;
+    }
+}
+\end{minted}
+\clearpage{}
+\section{Hexagon tiling}\index{tiling!hexagon}\index{hexagon tiling}
+\clearpage{}
 \chapter{Space-filling Curves}\index{curves!space-filling}
 \todo[inline]{Add \emph{Space-filling Curves}}
 % https://en.wikipedia.org/wiki/Space-filling_tree maybe?
