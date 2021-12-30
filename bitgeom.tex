@@ -871,8 +871,50 @@ fn find_equidistant(point_a: Point, point_b: Point) -> (i64, i64, i64) {
 %
 %
 \chapter{Reflection of point on line}\index{line!reflection of point}\index{reflection of point}\index{point!reflection on line}\index{mirroring!point to line}
-\todo[inline]{Add \emph{Mirror-reflection of point to line}}
-\skelpar%
+\begin{figure}[H]
+\centering
+\includegraphics[height=8\baselineskip,keepaspectratio]{figures/mirror.pdf}
+\end{figure}
+Line $PP'$ will be perpendicular to $L: ax+by+c=0$, meaning they will satisfy the equation $L_{⊥}: bx-ay+(aP_y-bP_x)=0$.\footnote{See \emph{\nameref{ch:perpendicular}}, page \pageref{ch:perpendicular}} We will find the middlepoint $P_m$· $L$ and $L_{⊥}$ intercept at $P_m$, so substituting $L_{⊥}$'s $y$ to $L$ gives:
+
+\begin{align*}
+  &a\textbf{x} + b\left(\frac{b\textbf{x}+(aP_y-bP_x)}{a}\right)+c=0\\
+\implies{}&a\textbf{x} + \frac{b^2}{a}\textbf{x}+bP_y-\frac{b^2}{a}P_x+c=0\\
+\implies{}&(a +\frac{b^2}{a})\textbf{x}=\frac{b^2}{a}P_x-c-bP_y\\
+\implies{}&\textbf{x}=\left(\frac{\frac{b^2}{a}P_x-c-bP_y}{a +\frac{b^2}{a}}\right)
+\end{align*}
+
+\noindent{}$P_{m_{y}}$ is found by substituting $P_{m_x}$ to $L$. Now, knowing $\textrm{length of } PP_m = \textrm{length of } P_mP'$, we can find $P'_x$ and $P'_y$:
+
+\begin{align*}
+&P_{m_x}-P_x =P'_x-P_{m_x}\\
+&P_{m_y}-P_y=P'_y-P_{m_y}\\
+\implies{}&P'_x=2P_{m_x}-P_x\\
+&P'_y=2P_{m_y}-P_y
+\end{align*}
+
+\section*{The code}
+\attachsource{src/bin/mirror.rs}
+\begin{minted}{rust}
+fn find_mirror(point: Point, l: Line) -> Point {
+    let (x, y) = point;
+    let (a, b, c) = l;
+    let (a, b, c) = (a as f64, b as f64, c as f64);
+
+    let b2a = (b * b) / a;
+    let mx = (b2a * x as f64 - c - b * y as f64) / (a + b2a);
+    let my = (-a * mx - c) / b;
+    let (mx, my) = (mx as i64, my as i64);
+
+    (2 * mx - x, 2 * my - y)
+}
+\end{minted}
+
+\begin{figure}[H]
+  \centering{}
+  \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/mirror.png}
+  \Caption{The \texttt{src/bin/mirror.rs} example lets you drag a point and draws its reflection across a line.}
+\end{figure}
 %
 %
 %
