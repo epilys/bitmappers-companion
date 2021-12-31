@@ -2202,7 +2202,6 @@ pub fn arch(image: &mut Image, center: Point) {
 %
 %
 \chapter{Tilings}\index{tiling}
-\todo[inline]{Add \emph{Tilings}}
 \clearpage{}
 \section{Truchet Tiling}\index{tiling!Truchet}\index{Truchet tiling}
 Truchet tiling is a repetition of four specific tiles in any specific order. It can be random or deterministic.
@@ -2301,6 +2300,59 @@ fn truchet(image: &mut Image, size: i64) {
     }
 }
 \end{minted}
+\clearpage{}
+\section{Pythagorean Tiling}\index{tiling!Pythagorean}\index{Pythagorean tiling}
+Pythagorean tiling consists of two squares, one filled and one blank and is described by the ratio of their sizes.
+\begin{figure}[H]
+\centering
+  \fbox{\includegraphics[height=12\baselineskip,keepaspectratio]{figures/pythagorean.pdf}}
+  \Caption{Pythagorean tiling using the golden ratio $\phi \equiv{} \frac{1+\sqrt{5}}{2}$}
+\end{figure}
+
+\subsection*{The code}
+\attachsource{src/bin/pythagorean.rs}
+
+\begin{minted}{rust}
+fn pythagorean(image: &mut Image, size_a: i64, size_b: i64) {
+    let width = image.width as i64;
+    let height = image.height as i64;
+    let times = 4 * width / (size_a + size_b);
+    for i in -times..times {
+        let mut x = -width + i * (size_b - size_a);
+        let mut y = -height - i * (size_b + size_a);
+        while y < 2 * height && x < 2 * width {
+            // Draw the first smaller and filled rectangle
+            let a = (x, y);
+            let b = (x + size_a, y);
+            let c = (x + size_a, y + size_a);
+            let d = (x, y + size_a);
+            image.plot_line_width(a, b, 0.);
+            image.plot_line_width(b, c, 0.);
+            image.plot_line_width(c, d, 0.);
+            image.plot_line_width(d, a, 0.);
+            // Calculate the center point of the rectangle in order to start flood filling from it
+            let (cx, cy) = ((a.0 + b.0 + c.0 + d.0) / 4, (a.1 + b.1 + c.1 + d.1) / 4);
+            image.flood_fill(cx, cy);
+            x += size_a;
+            // Draw the second bigger rectangle
+            let a = b;
+            let b = (a.0 + size_b, y);
+            let c = (a.0 + size_b, y + size_b);
+            let d = (a.0, y + size_b);
+            image.plot_line_width(a, b, 1.);
+            image.plot_line_width(b, c, 1.);
+            image.plot_line_width(c, d, 1.);
+            image.plot_line_width(d, a, 1.);
+            y += size_b;
+        }
+    }
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \fbox{\includegraphics[width=0.8\textwidth,keepaspectratio]{figures/pythagorean.png}}
+  \Caption{The output of \texttt{src/bin/pythagorean.rs}}
+\end{figure}
 \clearpage{}
 \section{Hexagon tiling}\index{tiling!hexagon}\index{hexagon tiling}
 \clearpage{}
