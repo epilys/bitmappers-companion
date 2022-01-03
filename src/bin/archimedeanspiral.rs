@@ -1,5 +1,5 @@
 use bitmappers_companion::*;
-use minifb::{CursorStyle, Key, MouseButton, MouseMode, Window, WindowOptions};
+use minifb::{Key, Window, WindowOptions};
 
 const WINDOW_WIDTH: usize = 400;
 const WINDOW_HEIGHT: usize = 400;

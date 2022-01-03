@@ -2,7 +2,6 @@ use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-use std::f64::consts::{FRAC_PI_2, PI};
 
 include!("../me.xbm.rs");
 

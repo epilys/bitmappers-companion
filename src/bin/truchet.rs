@@ -2,8 +2,6 @@ use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-use rust_decimal::prelude::*;
-use std::collections::VecDeque;
 
 const WINDOW_WIDTH: usize = 1000;
 const WINDOW_HEIGHT: usize = 1000;

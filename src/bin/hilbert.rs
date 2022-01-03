@@ -1,6 +1,5 @@
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
-use std::f64::consts::FRAC_PI_2;
 
 const WINDOW_WIDTH: usize = 200;
 const WINDOW_HEIGHT: usize = 200;

@@ -1,6 +1,5 @@
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
-use std::f64::consts::FRAC_PI_2;
 
 pub fn bits_to_bytes(bits: &[u8], width: usize) -> Vec<u32> {
     let mut ret = Vec::with_capacity(bits.len() * 8);
