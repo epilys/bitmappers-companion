@@ -26,7 +26,6 @@ use RuleTile::*;
 type Rule<const D: usize> = [[RuleTile; D]; D];
 
 fn matches<const D: usize>(_self: &Rule<D>, buffer: &Image, (x, y): (i64, i64)) -> bool {
-    let ret = true;
     for (row, tilerow) in _self.iter().enumerate() {
         let row = row as i64;
 
@@ -130,7 +129,7 @@ fn smooth<const D: usize>(_self: &Rule<D>, rule_idx: usize, orig: &Image, buffer
                     buffer.plot_line_width(a, b, 1.);
                     buffer.plot_line_width(b, c, 1.);
                     buffer.plot_line_width(c, a, 1.);
-                    let centroid = ((a.0 + b.0 + c.0) / 3, (a.1 + b.1 + c.1) / 3);
+                    let _centroid = ((a.0 + b.0 + c.0) / 3, (a.1 + b.1 + c.1) / 3);
                     buffer.fill_triangle(a, b, c);
                 }
                 //for row in 0..scale_down {
@@ -280,10 +279,10 @@ fn main() {
     for (i, rul) in rule_1_set.iter().enumerate() {
         smooth(rul, i, &original, &mut scaled);
     }
-    for (i, rul) in rule_2_set.iter().enumerate() {
+    for (_i, _rul) in rule_2_set.iter().enumerate() {
         //smooth(&rul, i, &original, &mut scaled);
     }
-    for (i, rul) in rule_3_set.iter().enumerate() {
+    for (_i, _rul) in rule_3_set.iter().enumerate() {
         //smooth(&rul, i, &original, &mut scaled);
     }
     scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);

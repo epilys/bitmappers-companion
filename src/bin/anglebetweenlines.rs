@@ -5,7 +5,7 @@ const WINDOW_WIDTH: usize = 300;
 const WINDOW_HEIGHT: usize = 300;
 include!("../bizcat.xbm.rs");
 
-fn find_angle((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> f64 {
+fn find_angle((a1, b1, _c1): (i64, i64, i64), (a2, b2, _c2): (i64, i64, i64)) -> f64 {
     let nom = (a1 * a2 + b1 * b2) as f64;
     let denom = ((a1 * a1 + b1 * b1) * (a2 * a2 + b2 * b2)) as f64;
 

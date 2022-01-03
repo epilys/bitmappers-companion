@@ -657,7 +657,7 @@ pub fn distance_line_to_point((x, y): Point, (a, b, c): Line) -> f64 {
     }
 }
 
-pub fn perpendicular((a, b, c): Line, p: Point) -> Line {
+pub fn perpendicular((a, b, _c): Line, p: Point) -> Line {
     (b, -a, a * p.1 - b * p.0)
 }
 

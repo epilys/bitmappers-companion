@@ -52,7 +52,7 @@ fn main() {
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
     let mut p_m = (35, 35);
-    let p_n = (128, 250);
+    let _p_n = (128, 250);
     let l = (-57, 174, -19470);
 
     let mut image = Image::new(WINDOW_WIDTH, WINDOW_WIDTH, 0, 0);
