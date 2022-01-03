@@ -80,7 +80,7 @@ fn main() {
         image.write_str(
             &bizcat,
             "Click and drag the points!",
-            (1 * WINDOW_WIDTH as i64 / 4, 3 * WINDOW_HEIGHT as i64 / 4),
+            (WINDOW_WIDTH as i64 / 4, 3 * WINDOW_HEIGHT as i64 / 4),
         );
         image.draw(&mut buffer, BLACK, Some(WHITE), WINDOW_WIDTH);
         match &mut state {
