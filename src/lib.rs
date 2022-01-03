@@ -341,11 +341,11 @@ impl Image {
                     return;
                 }
                 if d >= 0 {
-                    y = y + sy;
-                    d = d - ax;
+                    y += sy;
+                    d -= ax;
                 }
-                x = x + sx;
-                d = d + ay;
+                x += sx;
+                d += ay;
             }
         } else {
             /* y step */
@@ -383,11 +383,11 @@ impl Image {
                     return;
                 }
                 if d >= 0 {
-                    x = x + sx;
-                    d = d - ay;
+                    x += sx;
+                    d -= ay;
                 }
-                y = y + sy;
-                d = d + ax;
+                y += sy;
+                d += ax;
             }
         }
     }
