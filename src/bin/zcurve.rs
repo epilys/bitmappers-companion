@@ -11,6 +11,9 @@ fn zcurve(img: &mut Image, x_offset: i64, y_offset: i64) {
     let mut b: u64 = 0;
 
     let mut prev_pos = (sx + x_offset, sy + y_offset);
+
+    // allow for readability, since the bit pattern in the zcurve is 3 bits long
+    #[allow(clippy::unusual_byte_groupings)]
     loop {
         let next = b + 1;
         sx = 0;
