@@ -1,4 +1,3 @@
-use regex;
 use regex::Regex;
 use std::collections::VecDeque;
 use std::fs::File;
