@@ -15,7 +15,7 @@ pub fn distance_line_to_point((x, y): Point, (a, b, c): Line) -> f64 {
     }
 }
 
-fn find_angle((a1, b1, _c1): (i64, i64, i64), (a2, b2, _c2): (i64, i64, i64)) -> f64 {
+fn _find_angle((a1, b1, _c1): (i64, i64, i64), (a2, b2, _c2): (i64, i64, i64)) -> f64 {
     let nom = (a1 * a2 + b1 * b2) as f64;
     let denom = ((a1 * a1 + b1 * b1) * (a2 * a2 + b2 * b2)) as f64;
 
@@ -32,7 +32,7 @@ fn find_line(point_a: Point, point_b: Point) -> (i64, i64, i64) {
     (a, b, c)
 }
 
-fn find_intersection((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> Point {
+fn _find_intersection((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> Point {
     let denom = a1 * b2 - a2 * b1;
 
     if denom == 0 {
@@ -42,7 +42,7 @@ fn find_intersection((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64
     ((b1 * c2 - b2 * c1) / denom, (a2 * c1 - a1 * c2) / denom)
 }
 
-fn plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
+fn _plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
     let x = if a != 0 { -c / a } else { 0 };
     let mut prev_point = (x, 0);
     for y in 0..(WINDOW_HEIGHT as i64) {
@@ -57,7 +57,7 @@ fn plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
     }
 }
 
-fn perpendicular((a, b, _c): (i64, i64, i64), p: Point) -> (i64, i64, i64) {
+fn _perpendicular((a, b, _c): (i64, i64, i64), p: Point) -> (i64, i64, i64) {
     (b, -a, a * p.1 - b * p.0)
 }
 
@@ -73,7 +73,7 @@ fn point_perpendicular((a, b, c): Line, p: Point) -> Point {
     )
 }
 
-fn arctan2(x: i64, y: i64) -> f64 {
+fn _arctan2(x: i64, y: i64) -> f64 {
     let mut r = 0.;
     if y.abs() < x.abs() {
         if x != 0 {

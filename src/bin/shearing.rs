@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use bitmappers_companion::*;
 use minifb::{Key, Window, WindowOptions};
 
