@@ -110,6 +110,7 @@ fn min_circle_w_points(points: &[Point], q1: Point, q2: Point) -> Circle {
     );
 
     let mut d_prev = d_0;
+    #[allow(clippy::needless_range_loop)]
     for k in 0..points.len() {
         //image.plot_circle((d_prev.0.0+45, d_prev.0.1+45), d_prev.1 as _, 0.);
         let p_k = points[k];
