@@ -163,13 +163,14 @@ fn min_circle_w_3_points(q1: Point, q2: Point, q3: Point) -> Circle {
     let c1 = c1 as i64;
     let c2 = c2 as i64;
     let c3 = c3 as i64;
-    return (
+
+    (
         (
             ((c2 + c3) * q1.0 + (c3 + c1) * q2.0 + (c1 + c2) * q3.0) / ((2. * c) as i64),
             ((c2 + c3) * q1.1 + (c3 + c1) * q2.1 + (c1 + c2) * q3.1) / ((2. * c) as i64),
         ),
         f64::sqrt((d_1 + d_2) * (d_2 + d_3) * (d_3 + d_1) / (4. * c)),
-    );
+    )
 }
 
 fn main() {
