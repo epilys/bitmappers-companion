@@ -28,7 +28,7 @@ type Rule<const D: usize> = [[RuleTile; D]; D];
 fn matches<const D: usize>(_self: &Rule<D>, buffer: &Image, (x, y): (i64, i64)) -> bool {
     let mut row = 0;
     let mut col = 0;
-    let mut ret = true;
+    let ret = true;
     for tilerow in _self {
         for tile in tilerow {
             if *tile as u8 != Ignore as u8 && buffer.get(x + col, y + row).is_none() {
@@ -258,7 +258,7 @@ fn main() {
     // Limit to max ~60 fps update rate
     window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
-    let mut original = Image::from_xbm("./testimages/xface.xbm", 100, 100).unwrap();
+    let original = Image::from_xbm("./testimages/xface.xbm", 100, 100).unwrap();
     original.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 
     let mut scaled = Image::new(original.width * 8, original.width * 8, 0, 100);

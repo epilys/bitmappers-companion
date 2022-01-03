@@ -139,8 +139,8 @@ fn draw_arc(image: &mut Image, p: Point, r: f64, startangle: f64, angle: f64) {
 
 fn round_corner(
     image: &mut Image,
-    (mut p1, mut p2): (Point, Point),
-    (mut p3, mut p4): (Point, Point),
+    (p1, mut p2): (Point, Point),
+    (mut p3, p4): (Point, Point),
 ) {
     const R: f64 = 20.;
 

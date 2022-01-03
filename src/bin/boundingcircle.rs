@@ -103,7 +103,7 @@ fn min_circle_w_point(points: &[Point], q: Point) -> Circle {
 }
 
 fn min_circle_w_points(points: &[Point], q1: Point, q2: Point) -> Circle {
-    let mut points = points.to_vec();
+    let points = points.to_vec();
 
     let d_0 = (
         (((q1.0 + q2.0) / 2), (q1.1 + q2.1) / 2),
