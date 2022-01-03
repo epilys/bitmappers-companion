@@ -102,7 +102,7 @@ impl Image {
             .name("b")
             .unwrap()
             .as_str()
-            .split(",")
+            .split(',')
             .map(|h| u8::from_str_radix(&h.trim()["0x".len()..], 16))
             .collect::<Result<Vec<u8>, _>>()?;
         Ok(Image {
