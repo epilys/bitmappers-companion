@@ -156,9 +156,9 @@ fn min_circle_w_3_points(q1: Point, q2: Point, q3: Point) -> Circle {
     let d_2 = q13 * q12;
     let d_3 = q13 * q23;
 
-    let c1 = (d_2 * d_3);
-    let c2 = (d_3 * d_1);
-    let c3 = (d_1 * d_2);
+    let c1 = d_2 * d_3;
+    let c2 = d_3 * d_1;
+    let c3 = d_1 * d_2;
     let c = c1 + c2 + c3;
     let c1 = c1 as i64;
     let c2 = c2 as i64;
