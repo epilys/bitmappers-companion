@@ -79,7 +79,7 @@ fn smooth<const D: usize>(_self: &Rule<D>, rule_idx: usize, orig: &Image, buffer
     std::dbg!(is_reflection);
     while y < og_height {
         while x < og_width {
-            if matches(&_self, &orig, (x, y)) {
+            if matches(_self, orig, (x, y)) {
                 let (dx, dy) = (scale_down * x, scale_down * y);
                 let region_width = scale_down * (D as i64);
                 std::dbg!(region_width);
@@ -289,7 +289,7 @@ fn main() {
     scaled.x_offset += 380;
 
     for (i, rul) in rule_1_set.iter().enumerate() {
-        smooth(&rul, i, &original, &mut scaled);
+        smooth(rul, i, &original, &mut scaled);
     }
     for (i, rul) in rule_2_set.iter().enumerate() {
         //smooth(&rul, i, &original, &mut scaled);
