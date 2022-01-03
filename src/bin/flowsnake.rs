@@ -40,7 +40,6 @@ fn gosper(img: &mut Image, x_offset: i64, y_offset: i64, order: usize, step_size
     let mut stack = VecDeque::from(a_production(order));
 
     let mut angle: Decimal = -Decimal::HALF_PI;
-    let step_size: Decimal = Decimal::from(step_size);
 
     let sixty_degrees: Decimal = Decimal::from_str("1.047197551196597746154214").unwrap();
 
