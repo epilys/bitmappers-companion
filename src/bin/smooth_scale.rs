@@ -127,7 +127,7 @@ fn smooth<const D: usize>(_self: &Rule<D>, rule_idx: usize, orig: &Image, buffer
                 c.0 -= 1;
                 c.1 -= 1;
 
-                if !(which_triangle == 2 && !is_reflection) {
+                if which_triangle != 2 || is_reflection {
                     buffer.plot_line_width(a, b, 1.);
                     buffer.plot_line_width(b, c, 1.);
                     buffer.plot_line_width(c, a, 1.);
