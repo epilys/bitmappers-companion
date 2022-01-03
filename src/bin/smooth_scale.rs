@@ -236,9 +236,9 @@ fn main() {
             for el in row {
                 print!("{:?}", el as u8);
             }
-            println!("");
+            println!();
         }
-        println!("");
+        println!();
     }
     let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
     let mut window = Window::new(
