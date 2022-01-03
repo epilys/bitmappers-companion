@@ -29,9 +29,9 @@ const WINDOW_HEIGHT: usize = 150;
 fn shear_x((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
     (x_p + (l * (y_p as f64)) as i64, y_p)
 }
-fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
-    (x_p, (l * (x_p as f64)) as i64 + y_p)
-}
+//fn shear_y((x_p, y_p): (i64, i64), l: f64) -> (i64, i64) {
+//    (x_p, (l * (x_p as f64)) as i64 + y_p)
+//}
 
 fn main() {
     let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];

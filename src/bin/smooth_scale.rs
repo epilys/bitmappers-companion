@@ -129,7 +129,6 @@ fn smooth<const D: usize>(_self: &Rule<D>, rule_idx: usize, orig: &Image, buffer
                     buffer.plot_line_width(a, b, 1.);
                     buffer.plot_line_width(b, c, 1.);
                     buffer.plot_line_width(c, a, 1.);
-                    let _centroid = ((a.0 + b.0 + c.0) / 3, (a.1 + b.1 + c.1) / 3);
                     buffer.fill_triangle(a, b, c);
                 }
                 //for row in 0..scale_down {
@@ -219,15 +218,7 @@ fn main() {
     let rule_1_set: [Rule<3>; 8] = gen_ruleset(RULE_1);
     let rule_2_set: [Rule<4>; 8] = gen_ruleset(RULE_2);
     let rule_3_set: [Rule<5>; 8] = gen_ruleset(RULE_3);
-    for rul in rule_2_set {
-        for row in rul {
-            for el in row {
-                print!("{:?}", el as u8);
-            }
-            println!();
-        }
-        println!();
-    }
+
     let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
     let mut window = Window::new(
         "Test - ESC to exit",
@@ -279,12 +270,15 @@ fn main() {
     for (i, rul) in rule_1_set.iter().enumerate() {
         smooth(rul, i, &original, &mut scaled);
     }
-    for (_i, _rul) in rule_2_set.iter().enumerate() {
-        //smooth(&rul, i, &original, &mut scaled);
+
+    for (i, rul) in rule_2_set.iter().enumerate() {
+        smooth(rul, i, &original, &mut scaled);
     }
-    for (_i, _rul) in rule_3_set.iter().enumerate() {
-        //smooth(&rul, i, &original, &mut scaled);
+
+    for (i, rul) in rule_3_set.iter().enumerate() {
+        smooth(rul, i, &original, &mut scaled);
     }
+
     scaled.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
 
     while window.is_open() && !window.is_key_down(Key::Escape) && !window.is_key_down(Key::Q) {

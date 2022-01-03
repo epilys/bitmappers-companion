@@ -40,7 +40,7 @@ pub fn plot_squircle(
     for i in (2 * r)..(4 * r + 1) {
         let x: i64 = (3 * r - i) + w;
         let y = -(((r as f64).powi(n) - ((3 * r - i) as f64).abs().powi(n)).powf(1. / n as f64))
-                as i64
+            as i64
             + h;
         image.plot_line_width(prev_pos, (xm - x as i64, ym - y), _wd);
         prev_pos = (xm - x as i64, ym - y);
