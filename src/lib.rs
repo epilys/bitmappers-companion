@@ -617,7 +617,7 @@ impl BitmapFont {
         y_offset: usize,
     ) -> Self {
         Self {
-            image: image,
+            image,
             x_offset,
             y_offset,
             glyph_width,
