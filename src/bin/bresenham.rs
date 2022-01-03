@@ -140,10 +140,10 @@ fn main() {
     let point_l = (50, 0);
 
     println!("r = {}", distance_between_two_points(point_k, point_l));
-    let point_k = (5, 23 - 15);
-    let point_l = (45, 36 - 15);
-    let point_k = (4, 45 - 15);
-    let point_l = (44, 16 - 15);
+    let _point_k = (5, 23 - 15);
+    let _point_l = (45, 36 - 15);
+    let _point_k = (4, 45 - 15);
+    let _point_l = (44, 16 - 15);
     let point_k = (45 - 15, 4);
     let point_l = (45 - 15, 45);
     plot_line_width(&mut image, point_k, point_l, 5.0);

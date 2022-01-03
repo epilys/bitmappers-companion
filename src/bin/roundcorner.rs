@@ -15,7 +15,7 @@ pub fn distance_line_to_point((x, y): Point, (a, b, c): Line) -> f64 {
     }
 }
 
-fn find_angle((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64)) -> f64 {
+fn find_angle((a1, b1, _c1): (i64, i64, i64), (a2, b2, _c2): (i64, i64, i64)) -> f64 {
     let nom = (a1 * a2 + b1 * b2) as f64;
     let denom = ((a1 * a1 + b1 * b1) * (a2 * a2 + b2 * b2)) as f64;
 
@@ -57,7 +57,7 @@ fn plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
     }
 }
 
-fn perpendicular((a, b, c): (i64, i64, i64), p: Point) -> (i64, i64, i64) {
+fn perpendicular((a, b, _c): (i64, i64, i64), p: Point) -> (i64, i64, i64) {
     (b, -a, a * p.1 - b * p.0)
 }
 
@@ -145,8 +145,8 @@ fn round_corner(
     let l1 = find_line(p1, p2);
     let l2 = find_line(p3, p4);
 
-    let (a1, b1, c1) = l1;
-    let (a2, b2, c2) = l2;
+    let (a1, b1, _c1) = l1;
+    let (a2, b2, _c2) = l2;
 
     let m1 = ((p1.0 + p2.0) / 2, (p1.1 + p2.1) / 2);
     let m2 = ((p3.0 + p4.0) / 2, (p3.1 + p4.1) / 2);
@@ -213,7 +213,7 @@ fn round_corner(
 fn main() {
     let mut bizcat = Image::new(BIZCAT_WIDTH, BIZCAT_HEIGHT, 0, 0);
     bizcat.bytes = bits_to_bytes(BIZCAT_BITS, BIZCAT_WIDTH);
-    let bizcat = BitmapFont::new(bizcat, (8, 16), 0, 0);
+    let _bizcat = BitmapFont::new(bizcat, (8, 16), 0, 0);
 
     let mut buffer: Vec<u32> = vec![WHITE; WINDOW_WIDTH * WINDOW_HEIGHT];
     let mut window = Window::new(
