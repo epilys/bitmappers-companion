@@ -321,7 +321,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t >= delta {
+                        if t < -delta || t >= delta {
                             break;
                         }
                         _x += 1;
@@ -330,7 +330,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t >= delta {
+                        if t < -delta || t >= delta {
                             break;
                         }
                         _x -= 1;
@@ -363,7 +363,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t >= delta {
+                        if t < -delta || t >= delta {
                             break;
                         }
                         _x += 1;
@@ -372,7 +372,7 @@ impl Image {
                     let mut _x = x;
                     loop {
                         let t = total(_x);
-                        if t < -1 * delta || t >= delta {
+                        if t < -delta || t >= delta {
                             break;
                         }
                         _x -= 1;
@@ -658,7 +658,7 @@ pub fn distance_line_to_point((x, y): Point, (a, b, c): Line) -> f64 {
 }
 
 pub fn perpendicular((a, b, c): Line, p: Point) -> Line {
-    (b, -1 * a, a * p.1 - b * p.0)
+    (b, -a, a * p.1 - b * p.0)
 }
 
 pub fn point_perpendicular((a, b, c): Line, p: Point) -> Point {

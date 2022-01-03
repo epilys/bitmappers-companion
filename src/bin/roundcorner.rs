@@ -43,13 +43,13 @@ fn find_intersection((a1, b1, c1): (i64, i64, i64), (a2, b2, c2): (i64, i64, i64
 }
 
 fn plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
-    let x = if a != 0 { -1 * (c) / a } else { 0 };
+    let x = if a != 0 { -c / a } else { 0 };
     let mut prev_point = (x, 0);
     for y in 0..(WINDOW_HEIGHT as i64) {
         // ax+by+c =0 =>
         // x=(-c-by)/a
 
-        let x = if a != 0 { -1 * (c + b * y) / a } else { 0 };
+        let x = if a != 0 { -(c + b * y) / a } else { 0 };
         let new_point = (x, y);
         image.plot_line_width(prev_point, new_point, 1.0);
         prev_point = new_point;
@@ -58,7 +58,7 @@ fn plot_line(image: &mut Image, (a, b, c): (i64, i64, i64)) {
 }
 
 fn perpendicular((a, b, c): (i64, i64, i64), p: Point) -> (i64, i64, i64) {
-    (b, -1 * a, a * p.1 - b * p.0)
+    (b, -a, a * p.1 - b * p.0)
 }
 
 fn point_perpendicular((a, b, c): Line, p: Point) -> Point {

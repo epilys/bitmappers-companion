@@ -46,7 +46,7 @@ pub fn plot_line_width(_self: &mut Image, (x1, y1): (i64, i64), (x2, y2): (i64, 
                 let mut _x = x;
                 loop {
                     let t = total(_x);
-                    if t < -1 * delta || t > delta {
+                    if t < -delta || t > delta {
                         break;
                     }
                     _x += 1;
@@ -55,7 +55,7 @@ pub fn plot_line_width(_self: &mut Image, (x1, y1): (i64, i64), (x2, y2): (i64, 
                 let mut _x = x;
                 loop {
                     let t = total(_x);
-                    if t < -1 * delta || t > delta {
+                    if t < -delta || t > delta {
                         break;
                     }
                     _x -= 1;
@@ -82,7 +82,7 @@ pub fn plot_line_width(_self: &mut Image, (x1, y1): (i64, i64), (x2, y2): (i64, 
                 let mut _x = x;
                 loop {
                     let t = total(_x);
-                    if t < -1 * delta || t > delta {
+                    if t < -delta || t > delta {
                         break;
                     }
                     _x += 1;
@@ -91,7 +91,7 @@ pub fn plot_line_width(_self: &mut Image, (x1, y1): (i64, i64), (x2, y2): (i64, 
                 let mut _x = x;
                 loop {
                     let t = total(_x);
-                    if t < -1 * delta || t > delta {
+                    if t < -delta || t > delta {
                         break;
                     }
                     _x -= 1;
