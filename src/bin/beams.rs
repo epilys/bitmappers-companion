@@ -35,18 +35,18 @@ fn main() {
     image.draw_outline();
 
     /* beam A */
-    let _0 = (40, 23);
-    let _1 = (95, 96);
-    image.plot_line_width((1, 50), _0, 1.0);
-    image.plot_line_width(_0, _1, 1.0);
-    image.plot_line_width((1, 160), _1, 1.0);
+    let b0 = (40, 23);
+    let b1 = (95, 96);
+    image.plot_line_width((1, 50), b0, 1.0);
+    image.plot_line_width(b0, b1, 1.0);
+    image.plot_line_width((1, 160), b1, 1.0);
 
     /* beam B */
-    let _2 = (98, 23);
-    let _3 = (60, 96);
-    image.plot_line_width((150, 50), _2, 1.0);
-    image.plot_line_width(_2, _3, 1.0);
-    image.plot_line_width((150, 148), _3, 1.0);
+    let b2 = (98, 23);
+    let b3 = (60, 96);
+    image.plot_line_width((150, 50), b2, 1.0);
+    image.plot_line_width(b2, b3, 1.0);
+    image.plot_line_width((150, 148), b3, 1.0);
 
     while window.is_open() && !window.is_key_down(Key::Escape) && !window.is_key_down(Key::Q) {
         image.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
