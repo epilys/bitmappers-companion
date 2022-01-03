@@ -294,6 +294,7 @@ We will represent points as pairs of signed integers. When actually drawing them
 %
 \begin{minted}{rust}
 pub type Point = (i64, i64);
+pub type Line = (i64, i64, i64);
 
 pub const fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
     let (r, g, b) = (r as u32, g as u32, b as u32);
@@ -335,7 +336,7 @@ impl Image {
 
 An RGB color with coordinates $(r, g, b)$ where $r, g, b: \textrm{\texttt{u8} values}$ is represented as a \texttt{u32} number with the red component shifted 16 bits to to the left, the green component 8 bits, and the final 8 bits are the blue component. It's essentially laying the $r, g, b$ values sequentially and forming a 32 bit value out of three 8 bit values.
 
-Our \texttt{Image::plot(x, y)} function sets the $(x, y)$ pixel to black. To do that we set the element \texttt{y * width + x} of the \texttt{Image's} buffer to the black color as RGB.
+Our \texttt{Image::plot(x,y)} function sets the $(x, y)$ pixel to black. To do that we set the element \texttt{y * width + x} of the \texttt{Image's} buffer to the black color as RGB.
 
 \chapter{Displaying {\pixels{}} to your screen}
 A way to display an \emph{Image} is to use the \texttt{minifb} crate which allows you to create a window and draw \pixels{} directly on it. Here's how you could set it up:
@@ -1421,13 +1422,55 @@ fn main() {
 \part{Points, Lines and Shapes}
 \chapter{Rectangles and parallelograms}
 \skelpar%
-\section{From a center point}
+\section{Squares}
+\subsection{From a center point}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1,keepaspectratio]{figures/square_from_center_point.pdf}
+\Caption{Square from given center point $P_{center}$ and radius $r$}
+\end{figure}
+\begin{minted}{rust}
+fn plot_square(image: &mut Image, center: Point, r: i64, wd: f64) {
+  let (cx, cy) = center;
+  let a = (cx - r, cy - r);
+  let b = (cx + r, cy - r);
+  let c = (cx + r, cy + r);
+  let d = (cx - r, cy + r);
+  image.plot_line_width(a, b, wd);
+  image.plot_line_width(b, c, wd);
+  image.plot_line_width(c, d, wd);
+  image.plot_line_width(d, a, wd);
+}
+\end{minted}
+\subsection{From a corner point}
+\begin{minted}{rust}
+fn calc_center_point(p: Point, top: bool, right: bool, r: i64) -> Point {
+    let (x, y) = p;
+    match (top, right) {
+        // Top right
+        (true, true) => (x - r, y + r),
+        // Top left
+        (true, false) => (x + r, y + r),
+        // Bottom right
+        (false, true) => (x - r, y - r),
+        // Bottom left
+        (false, false) => (x + r, y - r),
+    }
+}
+
+let r = 50;
+let center_p = calc_center_point((155, 215), false, false, r);
+//image.plot_circle(center_p, 3, 1.0);
+plot_square(&mut image, center_p, r, 1.0);
+\end{minted}
+\section{Rectangles}
 \skelpar%
-\section{From a corner point}
 \chapter{Triangles}\index{triangle}
 \skelpar%
 \section{Making a triangle from a point and given angles}\index{triangle!from point and angles}
 \skelpar%
+\begin{minted}{rust}
+\end{minted}
 %\section{Reuleaux triangle}
 %https://en.wikipedia.org/wiki/Reuleaux_triangle
 \chapter{Squircle}
