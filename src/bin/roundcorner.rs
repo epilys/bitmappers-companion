@@ -84,17 +84,15 @@ fn arctan2(x: i64, y: i64) -> f64 {
                 r += 2. * std::f64::consts::PI;
             }
         }
-    } else {
-        if y != 0 {
-            r = f64::atan(x as f64 / y as f64);
-            if y > 0 {
-                r = std::f64::consts::FRAC_PI_2 - r;
-            } else {
-                r = 3. * std::f64::consts::FRAC_PI_2 - r;
-            }
+    } else if y != 0 {
+        r = f64::atan(x as f64 / y as f64);
+        if y > 0 {
+            r = std::f64::consts::FRAC_PI_2 - r;
         } else {
-            r = std::f64::consts::FRAC_PI_2;
+            r = 3. * std::f64::consts::FRAC_PI_2 - r;
         }
+    } else {
+        r = std::f64::consts::FRAC_PI_2;
     }
     r
 }
