@@ -26,11 +26,13 @@ use RuleTile::*;
 type Rule<const D: usize> = [[RuleTile; D]; D];
 
 fn matches<const D: usize>(_self: &Rule<D>, buffer: &Image, (x, y): (i64, i64)) -> bool {
-    let mut row = 0;
-    let mut col = 0;
     let ret = true;
-    for tilerow in _self {
-        for tile in tilerow {
+    for (row, tilerow) in _self.iter().enumerate() {
+        let row = row as i64;
+
+        for (col, tile) in tilerow.iter().enumerate() {
+            let col = col as i64;
+
             if *tile as u8 != Ignore as u8 && buffer.get(x + col, y + row).is_none() {
                 return false;
             }
@@ -47,10 +49,7 @@ fn matches<const D: usize>(_self: &Rule<D>, buffer: &Image, (x, y): (i64, i64)) 
                 }
                 Blank | Filled | Ignore => {}
             }
-            col += 1;
         }
-        col = 0;
-        row += 1;
     }
     true
 }
@@ -177,28 +176,18 @@ fn gen_ruleset<const D: usize>(rule: Rule<D>) -> [Rule<D>; 8] {
     {
         let e = 1;
         let eo = e - 1;
-        let mut row = 0;
-        let mut col = 0;
-        for y in 0..D {
-            for x in (0..D).rev() {
+        for (row, y) in (0..D).enumerate() {
+            for (col, x) in (0..D).rev().enumerate() {
                 ret[e][row][col] = ret[eo][y][x];
-                col += 1;
             }
-            col = 0;
-            row += 1;
         }
     }
     for e in 2..4 {
         let eo = e - 2;
-        let mut row = 0;
-        let mut col = 0;
-        for y in (0..D).rev() {
-            for x in 0..D {
+        for (row, y) in (0..D).rev().enumerate() {
+            for (col, x) in (0..D).enumerate() {
                 ret[e][row][col] = ret[eo][y][x];
-                col += 1;
             }
-            col = 0;
-            row += 1;
         }
     }
     for e in 4..8 {
