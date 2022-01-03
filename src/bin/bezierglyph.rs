@@ -173,7 +173,7 @@ fn main() {
         }
         match &mut state {
             DragMode::Off { selected } => {
-                let mut selected = selected.clone();
+                let mut selected = *selected;
                 if let Some((x, y)) = window.get_mouse_pos(MouseMode::Clamp) {
                     let x = x as i64;
                     let y = y as i64;
