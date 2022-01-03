@@ -66,11 +66,11 @@ pub fn plot_line_width(_self: &mut Image, (x1, y1): (i64, i64), (x2, y2): (i64, 
                 return;
             }
             if d >= 0 {
-                y = y + sy;
-                d = d - ax;
+                y += sy;
+                d -= ax;
             }
-            x = x + sx;
-            d = d + ay;
+            x += sx;
+            d += ay;
         }
     } else {
         d = ax - ay / 2;
@@ -102,11 +102,11 @@ pub fn plot_line_width(_self: &mut Image, (x1, y1): (i64, i64), (x2, y2): (i64, 
                 return;
             }
             if d >= 0 {
-                x = x + sx;
-                d = d - ay;
+                x += sx;
+                d -= ay;
             }
-            y = y + sy;
-            d = d + ax;
+            y += sy;
+            d += ax;
         }
     }
 }

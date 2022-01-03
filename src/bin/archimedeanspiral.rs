@@ -15,7 +15,7 @@ pub fn arch(image: &mut Image, center: Point) {
     let (dx, dy) = center;
     let mut prev_point = center;
     while theta < max_angle {
-        theta = theta + 0.002_f64;
+        theta += 0.002_f64;
 
         let r = a + b * theta;
         let x = (r * theta.cos()) as i64 + dx;

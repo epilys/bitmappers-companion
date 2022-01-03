@@ -79,9 +79,9 @@ fn arctan2(x: i64, y: i64) -> f64 {
         if x != 0 {
             r = f64::atan(y as f64 / x as f64);
             if x < 0 {
-                r = r + std::f64::consts::PI;
+                r += std::f64::consts::PI;
             } else if y < 0 {
-                r = r + 2. * std::f64::consts::PI;
+                r += 2. * std::f64::consts::PI;
             }
         }
     } else {
