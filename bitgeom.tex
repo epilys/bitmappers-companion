@@ -53,8 +53,10 @@
   \usepackage{metalogo}
   \usepackage{csquotes}
   \usepackage[compact,nostruts,medium,noindentafter]{titlesec}
+  \titleformat{\chapter}[display]%
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{0pt}{\Huge}
   \newcommand{\chapterbreak}{}
-  %\titlespacing*{\chapter}{0pt}{0pt}{0pt}
+  \titlespacing*{\chapter}{0pt}{-50pt}{40pt}
   \newcommand\makeskelfig{%
     \begin{figure}[H]
   {\centering%
