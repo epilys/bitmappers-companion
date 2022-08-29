@@ -26,7 +26,7 @@ fn atkinson(image: &mut Image) {
 }
 
 fn main() {
-    const INPUT_FILE: &str = "./figures/lenna.png";
+    const INPUT_FILE: &str = "./figures/peppers.png";
     let mut image = Image::magick_open(INPUT_FILE, 0, 0).unwrap();
     let width = image.width;
     let height = image.height;
