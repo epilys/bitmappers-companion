@@ -587,7 +587,7 @@ Moving a point $P=(x,y)$ at distance $d$ at an angle of $r$ radians is solved wi
 
 $$P'=(x+d\times{}\cos{}r, y+d\times{}\sin{}r)$$
 
-Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{ch:equations-circles}} page \pageref{ch:equations-circles}} see this is how the points of a circle are calculated.
+Why? The problem is equivalent to calculating the point of a circle with $P$ as the center, $d$ the radius at angle $r$ and as we will later\footnote{\emph{\nameref{sec:equations-circles}} page \pageref{sec:equations-circles}} see this is how the points of a circle are calculated.
 
 \begin{minted}{rust}
 pub fn move_point(p: Point, d: f64, r: f64) -> Point {
@@ -921,20 +921,17 @@ fn find_mirror(point: Point, l: Line) -> Point {
 %
 %
 %
-\chapter{Normal to a line through a point}
-\todo[inline]{Add \emph{Normal to a line through a point}}
-\skelpar%
 \chapter{Angle sectioning}
 \section{Bisection}\index{angle!bisectioning}
+\todo[inline]{Add \emph{angle bisectioning}}
 \skelpar%
 \section{Trisection}\index{angle!trisectioning}
+\todo[inline]{Add \emph{angle trisectioning}}
 % http://www.geom.uiuc.edu/docs/forum/angtri/
 If the title startled you, be assured it's not a joke. It's totally possible to trisect an angle\ldots{} with a ruler. The adage that angle trisection is impossible refers to using only a compass and unmarked straightedge.
 
 \skelpar%
 \clearpage{}
-\myaddthumb{Points and Line Segments}{segments}
-\part{Points And Line Segments}
 \chapter{Drawing a line segment from its two endpoints}
 
 For any line segment with any slope, \pixels{} must be matched with the infinite
@@ -1117,6 +1114,7 @@ pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64), _w
 
 \chapter{Intersection of two line segments}
 % Graphics gems vol 2. pdf page 37
+% https://observablehq.com/@toja/line-box-intersection?collection=%40toja%2Fgeometry
 Let points $\textbf{1}=(x_1,y_1)$, $\textbf{2} = (x_2, y_2)$, $\textbf{3} = (x_3, y_3)$ and $\textbf{4} = (x_4, y_4)$ and $\textbf{1,2}$, $\textbf{3,4}$ two line segments they form. We wish to find their intersection:
 
 First, get the equation of line $L_{12}$ and line $L_{34}$ from chapter \emph{\nameref{ch:equations-lines}}.
@@ -1134,14 +1132,105 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 % Graphics gems vol 3. pdf page 231
 \skelpar%
 \clearpage{}
-\myaddthumb{Points, Lines and Circles}{circles}
-\part{Points, Lines and Circles}
+\myaddthumb{Shapes}{shapes}
+\part{Shapes}
 \skelpar%
-\chapter{Equations of a circle}\label{ch:equations-circles}
-\todo[inline]{Add \emph{Equations of a circle}}
+\chapter{Circles and Ellipses}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5,keepaspectratio]{figures/circle_parts.pdf}
+\includegraphics[scale=0.5,keepaspectratio]{figures/circle_parts2.pdf}
+  {\par\scriptsize{}\textbf{Parts of a circle}. Figures reproduced from \emph{K. Morling - GEOMETRIC and ENGINEERING DRAWING, second edition, 1974}}
+\end{figure}
+\section{Equations of a circle and an ellipse}\label{sec:equations-circles}
+\todo[inline]{Add \emph{Equations of a circle and an ellipse}}
 \index{circle!equations}%
+\index{ellipse!equations}%
 \skelpar%
-\chapter{Bounding circle}
+\section{Constructions of Circles and Ellipses}
+\index{circle!constructions}%
+\index{ellipses!constructions}%
+\subsection{Construction with given center and radius/radiii.}
+We present a very easy algorithm that can draw an ellipse with inputs center $x_c, y_c$ and radii $a, b$. An advantage of this algorithm is that at every step you are computing a point in all four quadrants due to symmetry, so, if you wish you can only draw specific quadrants and skip others.
+
+To draw a circle with centre $P = (x,y)$ and radius $r$, you will need to call this algorithm with $x_c=x, y_c=y$ and radii $a = r, b = r$.
+
+\sourceinlib%
+\begin{minted}{rust}
+fn plot_circle(center: Point, r: i64) {
+    plot_ellipse(center, (r, r), [true, true, true, true])
+}
+
+fn plot_ellipse(
+    (xm, ym): (i64, i64),
+    (a, b): (i64, i64),
+    quadrants: [bool; 4],
+) {
+    let mut x = -a;
+    let mut y = 0;
+    let mut e2 = b;
+    let mut dx = (1 + 2 * x) * e2 * e2;
+    let mut dy = x * x;
+    let mut err = dx + dy;
+    loop {
+        if quadrants[0] {
+            plot(xm - x, ym + y); /*   I. Quadrant */
+        }
+        if quadrants[1] {
+            plot(xm + x, ym + y); /*  II. Quadrant */
+        }
+        if quadrants[2] {
+            plot(xm + x, ym - y); /* III. Quadrant */
+        }
+        if quadrants[3] {
+            plot(xm - x, ym - y); /*  IV. Quadrant */
+        }
+        e2 = 2 * err;
+        if e2 >= dx {
+            x += 1;
+            dx += 2 * b * b;
+            err += dx;
+            //err += dx += 2*(long)b*b; }    /* x step */
+        }
+        if e2 <= dy {
+            y += 1;
+            dy += 2 * a * a;
+            err += dy;
+            //err += dy += 2*(long)a*a; }    /* y step */
+        }
+        if x > 0 {
+            break;
+        }
+    }
+    while y < b {
+        /* to early stop for flat ellipses with a=1, */
+        y += 1;
+        plot(xm, ym + y); /* -> finish tip of ellipse */
+        plot(xm, ym - y);
+    }
+}
+\end{minted}
+\subsection{Circle from three given points}\index{circle!out of three points}
+The naive way: Calculate the lines defined by the line segments created by taking a point and one of each of the rest. The order and pairings don't matter. The intersection point of their perpendiculars that pass through the middle of those line segments is the circle's center.
+\subsection{Circle inscribed in given polygon (e.g. a triangle) as list of vertices}
+Bisect any two angles and take the intersection point of the bisecting lines. This point, called the 
+\emph{incentre} is the centre of the circle and the distance of the centre from the line defined by any side is the radius.
+\subsection{Circumscribed circle of given regular polygon (e.g. a triangle) as list of vertices}
+Just like with three points, take the perpendicular lines through the middle point of any of two sides. Their intersection point, called the \emph{circumcentre} is the center of the circumscribed circle. The radius is the distance of the centre from any vertice.
+\subsection{Circle that passes through given point $Α$ and point $Β$ on line $L$}
+\todo[inline]{Add \emph{Circle that passes through given point $Α$ and point $Β$ on line $L$}}
+\skelpar%
+\subsection{Tangent line of given circle}
+\todo[inline]{Add \emph{Tangent line of given circle}}
+\skelpar%
+\subsection{Tangent line of given circle that passes through point $P$}
+\todo[inline]{Add \emph{Tangent line of given circle that passes through point $P$}}
+\skelpar%
+\subsection{Tangent line common to two given circles}
+\todo[inline]{Add \emph{Tangent line common to two given circles}}
+\skelpar%
+\clearpage{}
+\section{Bounding circle}
 \index{circle!bounding}%
 % From graphic gems vol 2 pdf page 46
 % From Υπολογιστική Γεωμετρία 4.7 page 85 Μικρότατοι περικλείοντες δίσκοι
@@ -1420,8 +1509,6 @@ fn main() {
 }
 \end{minted}
 \clearpage{}
-\myaddthumb{Points, Lines and Shapes}{shapes}
-\part{Points, Lines and Shapes}
 \chapter{Rectangles and parallelograms}
 \skelpar%
 \section{Squares}
@@ -1470,6 +1557,7 @@ plot_square(&mut image, center_p, r, 1.0);
 \chapter{Triangles}\index{triangle}
 \skelpar%
 \section{Making a triangle from a point and given angles}\index{triangle!from point and angles}
+\todo[inline]{Add \emph{Making a triangle from a point and given angles}}
 \skelpar%
 \begin{minted}{rust}
 \end{minted}
@@ -1481,7 +1569,7 @@ plot_square(&mut image, center_p, r, 1.0);
 \includegraphics[height=5\baselineskip,keepaspectratio]{figures/squircle.pdf}
 \end{figure}
 \attachsource{src/bin/squircle.rs}
-A \emph{squircle} is a compromise between a square and a circle. It is purported to be more pleasing to the eye because the rounding corner is smoother than that of a circle arc (like the result of \emph{\nameref{ch:roundcorners}}, page \pageref{ch:roundcorners}).
+A \emph{squircle} is a compromise between a square and a circle. It is purported to be more pleasing to the eye because the rounding corner is smoother than that of a circle arc (like the result of \emph{\nameref{sec:roundcorners}}, page \pageref{sec:roundcorners}).
 
 A way to describe a squircle is as a superellipse, meaning a generalization of the ellipse equation $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ by making the exponent parametric:
 $${\left| x-a \right|}^{n} + {\left| y-b \right|}^{n} = 1$$
@@ -1558,8 +1646,15 @@ Increasing $n$ in \texttt{src/bin/squircle.rs} makes the hyperellipse corners ap
 %
 %
 %
+\chapter{Polygons with rounded edges}\index{polygon!rounded edges}\index{polygon!smooth edges}
+%https://observablehq.com/@daformat/rounding-polygon-corners
+% https://observablehq.com/@mateh/continuous-curvature superformula
+\todo[inline]{Add \emph{Polygons with rounded edges}}
+\skelpar%
+\skelpar%
 \chapter{Union, intersection and difference of polygons}\index{polygon!boolean operations}
 \todo[inline]{Add \emph{Union, intersection and difference of polygons}}
+%https://observablehq.com/@daformat/union-polygon-and-area-of-rectangles-line-sweep-algorithm
 % Graphics gems vol 2. pdf page 63
 \skelpar%
 \chapter{Centroid of polygon}\index{centroid|see {polygon!centroid}}\index{polygon!centroid}\index{centroid!polygon}
@@ -1569,6 +1664,7 @@ Increasing $n$ in \texttt{src/bin/squircle.rs} makes the hyperellipse corners ap
 \skelpar%
 \chapter{Polygon clipping}\index{polygon!clipping}
 % https://github.com/jasonwebb/morphogenesis-resources#polygon-clipping
+\todo[inline]{Add \emph{Polygon clipping}}
 \skelpar%
 \chapter{Triangle filling}\index{triangle!filling}\index{flood filling!triangle filling}
 \todo[inline]{Add \emph{Triangle filling} explanation}
@@ -1639,8 +1735,97 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 % Graphics gems vol 1. pdf page 296 "SEED FILL"
 % Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
 \clearpage{}
-\myaddthumb{Curves other than circles}{curves}
-\part{Curves other than circles}
+\myaddthumb{Curves}{curves}
+\part{Curves}
+\chapter{Seamlessly joining lines and curves}
+\todo[inline]{Add \emph{Seamlessly joining lines and curves}}
+\skelpar%
+\section{Centre of arc which blends with two given line segments at right angles}
+\todo[inline]{Add \emph{Centre of arc which blends with two given line segments at right angles}}
+\skelpar%
+\section{Centre of arc which blends given line with given circle}
+\todo[inline]{Add \emph{Centre of arc which blends given line with given circle}}
+\skelpar%
+\section{Centre of arc which blends two given circles}
+\todo[inline]{Add \emph{Centre of arc which blends two given circles}}
+\skelpar%
+\section{Join segments with round corners}\label{sec:roundcorners}
+% Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \vspace{-60pt}
+  \begin{center}
+    \includegraphics[width=0.48\textwidth,keepaspectratio]{figures/fillet_main.pdf}
+  \end{center}
+\end{wrapfigure}
+Round corners are everywhere around us. It is useful to know at least one method of construction. This specific method constructs a circle that has a common point with each given line segment, and calculates the arc that when added to the line segments they are smoothly joined. The excess length, since those common points will be before the end of the line segments, must be erased. Therefore, it's best to begin with just the points of the two segments before starting to draw anything.
+
+Since the segments intercept, the round corner will end up beneath the intersection. We wish to find a circle
+that has a common point with each segment and the arc made up from those points and the circle is the round corner we are after.
+
+\begin{figure}[H]%
+  \centering{}%
+\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_1.pdf}%
+\end{figure}%
+%
+\noindent{}We are given 4 points, $P_{1}, P_{2}$ and $P_{3}, P_{4}$ that make up segments $S_1$ and $S_2$.
+Begin by finding the midpoints $m_1$ and $m_2$ of segments $S_1$ and $S_2$.\index{midpoint} These will be:
+
+$$m_1 = \frac{P_1 + P_2}{2}$$
+$$m_2 = \frac{P_3 + P_4}{2}$$
+
+\noindent{}Then, find the signed distances (i.e.\ don't use the absolute value of distance) $d_1$ of $m_1$ from $S_2$ and $d_2$ of $m_2$ from $S_1$.
+
+\noindent{}Construct parallel lines $l_1$ to $S_1$ that is $d_1$ pixels away. Repeat with $l_2$ for $S_2$ and $d_2$.
+
+\noindent{}Their intersection is the circle's center, $P_c$.%
+
+\noindent{}The intersection of $l_1$, $l_2$ with the two segments are the points where we should clip or extend the segments: $q_1$ and $q_2$.
+
+\begin{figure}[H]
+  \centering{}
+\includegraphics[width=0.8\textwidth,keepaspectratio]{figures/fillet_2.pdf}
+\end{figure}
+
+\noindent{}The starting angle is found by calculating the angle of $q_1P_c$ with the $x$-axis with the \texttt{atan2} math library procedure.
+
+\begin{figure}[H]
+  \centering{}
+  \includegraphics[width=0.8\textwidth,keepaspectratio]{figures/fillet_3.pdf}
+\end{figure}
+
+\noindent{}The \emph{subtended} angle\footnote{the \emph{subtended} angle of an arc $\archat{AC}$ to a point $P$ is the angle between $PA$ and $PC$: \raisebox{-1em}{\includegraphics[scale=4]{figures/subtended_angle.pdf}}} of the arc from the center $P_c$ is found by calculating the dot product of $q_1P_c$ and $q_2P_c$:
+
+\attachsource{src/bin/roundcorner.rs}\noindent{}The code:
+\begin{minted}{rust}
+\end{minted}
+%\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{ch:perpendicular}}, page \pageref{ch:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
+%
+%\begin{figure}[H]
+%  \centering{}
+%  \includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}
+%\end{figure}
+%
+%
+%\noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
+%
+%$$\hat{s} = 90^{\circ} + \hat{a}$$
+%$$\hat{a} = \arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
+%
+%\noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
+%
+%$$\hat{e} = \arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
+%
+%\noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
+
+\begin{figure}[H]
+  \centering{}
+  \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/roundcorner1.png}
+  \Caption{The \texttt{src/bin/roundcorner.rs} example has two interactive lines and computes the joining fillet.}
+\end{figure}
+%
+%
+%
+\clearpage{}
 \chapter{Parametric elliptical arcs}\index{curves!elliptical}
 \begin{figure}[H]
   \centering
@@ -1691,6 +1876,10 @@ fn parellarc(image: &mut Image, p: Point, q: Point, k: Point, t: f64) {
   \includegraphics[keepaspectratio]{figures/parellarc2.png}
   \Caption{Changing $n$ to $\frac{2\pi{}}{t}$ draws the entire ellipse.}
 \end{figure}
+\chapter{B-spline}\index{curves!Basis spline}
+\todo[inline]{Add \emph{B-spline}}
+\skelpar%
+\skelpar%
 \chapter{Bézier curves}\index{curves!Bézier}
 \begin{figure}[H]
 \centering
@@ -1761,9 +1950,49 @@ Of course, it requires effort to match the beginning and end of each curve that 
 \end{figure}
 \clearpage{}
 \section{Cubic Bézier curves}\index{curves!Bézier!cubic}
+\todo[inline]{Add \emph{Cubic Bézier curves}}
 \skelpar%
 \section{Weighted Béziers}\index{curves!Bézier!weighted}
+\todo[inline]{Add \emph{Weighted Béziers}}
 \skelpar%
+\chapter{Archimedean spiral}
+\todo[inline]{Add \emph{Archimedean spiral}}
+\begin{figure}[H]
+  \centering
+  \includegraphics[height=12\baselineskip,keepaspectratio]{figures/archspiral.pdf}
+\end{figure}
+\section*{The code}
+\skelpar
+\attachsource{src/bin/archimedeanspiral.rs}
+\begin{minted}{rust}
+pub fn arch(image: &mut Image, center: Point) {
+    let a = 1.0_f64;
+    let b = 9.0_f64;
+
+    // max_angle = number of spirals * 2pi.
+    let max_angle = 5.0_f64 * 2.0_f64 * std::f64::consts::PI;
+
+    let mut theta = 0.0_f64;
+    let (dx, dy) = center;
+    let mut prev_point = center;
+    while theta < max_angle {
+        theta = theta + 0.002_f64;
+
+        let r = a + b * theta;
+        let x = (r * theta.cos()) as i64 + dx;
+        let y = (r * theta.sin()) as i64 + dy;
+        image.plot_line_width(prev_point, (x, y), 1.0);
+        prev_point = (x, y);
+    }
+}
+\end{minted}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1,keepaspectratio]{figures/archspiral.png}
+\end{figure}
+%
+%
+%
 \clearpage{}
 \myaddthumb{Vectors, matrices and transformations}{trans\-for\-ma\-tions}
 \part{Vectors, matrices and trans\-for\-ma\-tions}
@@ -2099,6 +2328,9 @@ $$f = \frac{h}{\cot\theta{}}$$
 
 For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to the right, since rotations are always clockwise) we need $\cot(-30deg) = -\sqrt{3}$ and $f=-\frac{h}{\sqrt{3}}$.
 
+\chapter{Anamorphic transformations}
+\todo[inline]{Reproduce cover skull}
+\skelpar%
 \chapter{Projections}
 \todo[inline]{Add \emph{Projections}}
 % Geometric tools for computer graphics  pdf page 205, "Projections"
@@ -2106,7 +2338,16 @@ For example to shear by $-$30\textdegree{} (meaning the \bitmap{} will move to t
 \clearpage{}
 \myaddthumb{Patterns}{patterns}
 \part{Patterns}
-\chapter{Tilings}\index{tiling}
+\chapter{The 17 Wallpaper groups}\index{wallpaper groups}
+\todo[inline]{Add \emph{The 17 Wallpaper groups}}
+% https://observablehq.com/@esperanc/wallpaper-groups
+\skelpar%
+\skelpar%
+\skelpar%
+\clearpage{}
+\chapter{Tilings and Tessellations}\index{tiling}
+% On Periodic Tilings with Regular Polygons
+% https://chequesoto.info/thesis.html
 \clearpage{}
 \section{Truchet Tiling}\index{tiling!Truchet}\index{Truchet tiling}
 Truchet tiling is a repetition of four specific tiles in any specific order. It can be random or deterministic.
@@ -2260,6 +2501,10 @@ fn pythagorean(image: &mut Image, size_a: i64, size_b: i64) {
 \end{figure}
 \clearpage{}
 \section{Hexagon tiling}\index{tiling!hexagon}\index{hexagon tiling}
+\todo[inline]{Add \emph{Hexagon tiling}}
+% https://www.redblobgames.com/grids/hexagons/
+\skelpar%
+\skelpar%
 \clearpage{}
 \chapter{Space-filling Curves}\index{curves!space-filling}
 \todo[inline]{Add \emph{Space-filling Curves}}
@@ -2530,20 +2775,51 @@ B\mapsto{}&{+}A{-}BB{-}{-}B{-}A{+}{+}A{+}B
 \end{figure}
 \hfill
 \clearpage{}
+\chapter{Flow fields}
+\todo[inline]{Add \emph{Flow fields}}
+% https://tylerxhobbs.com/essays/2020/flow-fields
+\skelpar%
+\skelpar%
+\clearpage{}
+\skelpar%
+\myaddthumb{Interaction}{interaction}
+\part{Interaction}
+\skelpar%
+\chapter{Infinite panning and zooming}
+\todo[inline]{Add \emph{Infinite panning and zooming}}
+\skelpar%
+\skelpar%
+\chapter{Nearest neighbours}
+\todo[inline]{Add \emph{Nearest neighbours}}
+\skelpar%
+\skelpar%
+\chapter{Point in polygon}
+\todo[inline]{Add \emph{Point in polygon}}
+% https://observablehq.com/@tmcw/understanding-point-in-polygon
+\skelpar%
+\skelpar%
+\clearpage{}
+\clearpage{}
+\myaddthumb{Colors}{colors}
+\part{Colors}
+\skelpar%
+\skelpar%
+\chapter{Mixing colors}
+\todo[inline]{Add \emph{Mixing colors}}
+\skelpar%
+\chapter{Bilinear interpolation}
+\todo[inline]{Add \emph{Bilinear interpolation}}
+\skelpar%
+\chapter{Barycentric coordinate blending}
+\todo[inline]{Add \emph{Barycentric coordinate blending}}
+\skelpar%
+\clearpage{}
 \clearpage{}
 \myaddthumb{Addendum}{ad\-den\-dum}
 \part{Addendum}
 \chapter{Faster drawing a line segment from its two endpoints using symmetry}
 \todo[inline]{Add \emph{Faster drawing a line segment from its two endpoints using symmetry}}
 % From graphic gems vol 1 p 103 (pdf page 128)
-\skelpar%
-\chapter{Joining the ends of two wide line segments together}
-\todo[inline]{Add \emph{Joining the ends of two wide line segments together}}
-% Graphics gems vol 1. pdf page 132 "AN ALGORITHM FOR FILLING IN 2D WIDE LINE BEVEL JOINTS"
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=0.48\textwidth,keepaspectratio]{figures/join_beams.pdf}
-\end{figure}
 \skelpar%
 \chapter{Composing monochrome \bitmaps{} with separate alpha channel data}\index{alpha channel}
 \todo[inline]{Add \emph{Composing monochrome \bitmaps{} with separate alpha channel data}}
@@ -2553,123 +2829,10 @@ B\mapsto{}&{+}A{-}BB{-}{-}B{-}A{+}{+}A{+}B
 \todo[inline]{Add \emph{Orthogonal connection of two points}}
 % Graphics gems vol 3. pdf page 205 "SIMPLE CONNECTION ALGORITHM FOR 2D DRAWING"
 \skelpar%
-\chapter{Join segments with round corners}\label{ch:roundcorners}
-% Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
-\begin{wrapfigure}{r}{0.5\textwidth}
-    \vspace{-60pt}
-  \begin{center}
-    \includegraphics[width=0.48\textwidth,keepaspectratio]{figures/fillet_main.pdf}
-  \end{center}
-\end{wrapfigure}
-Round corners are everywhere around us. It is useful to know at least one method of construction. This specific method constructs a circle that has a common point with each given line segment, and calculates the arc that when added to the line segments they are smoothly joined. The excess length, since those common points will be before the end of the line segments, must be erased. Therefore, it's best to begin with just the points of the two segments before starting to draw anything.
-
-Since the segments intercept, the round corner will end up beneath the intersection. We wish to find a circle
-that has a common point with each segment and the arc made up from those points and the circle is the round corner we are after.
-
-\begin{figure}[H]%
-  \centering{}%
-\includegraphics[width=\textwidth,keepaspectratio]{figures/fillet_1.pdf}%
-\end{figure}%
-%
-\noindent{}We are given 4 points, $P_{1}, P_{2}$ and $P_{3}, P_{4}$ that make up segments $S_1$ and $S_2$.
-Begin by finding the midpoints $m_1$ and $m_2$ of segments $S_1$ and $S_2$.\index{midpoint} These will be:
-
-$$m_1 = \frac{P_1 + P_2}{2}$$
-$$m_2 = \frac{P_3 + P_4}{2}$$
-
-\noindent{}Then, find the signed distances (i.e.\ don't use the absolute value of distance) $d_1$ of $m_1$ from $S_2$ and $d_2$ of $m_2$ from $S_1$.
-
-\noindent{}Construct parallel lines $l_1$ to $S_1$ that is $d_1$ pixels away. Repeat with $l_2$ for $S_2$ and $d_2$.
-
-\noindent{}Their intersection is the circle's center, $P_c$.%
-
-\noindent{}The intersection of $l_1$, $l_2$ with the two segments are the points where we should clip or extend the segments: $q_1$ and $q_2$.
-
-\begin{figure}[H]
-  \centering{}
-\includegraphics[width=0.8\textwidth,keepaspectratio]{figures/fillet_2.pdf}
-\end{figure}
-
-\noindent{}The starting angle is found by calculating the angle of $q_1P_c$ with the $x$-axis with the \texttt{atan2} math library procedure.
-
-\begin{figure}[H]
-  \centering{}
-  \includegraphics[width=0.8\textwidth,keepaspectratio]{figures/fillet_3.pdf}
-\end{figure}
-
-\noindent{}The \emph{subtended} angle\footnote{the \emph{subtended} angle of an arc $\archat{AC}$ to a point $P$ is the angle between $PA$ and $PC$: \raisebox{-1em}{\includegraphics[scale=4]{figures/subtended_angle.pdf}}} of the arc from the center $P_c$ is found by calculating the dot product of $q_1P_c$ and $q_2P_c$:
-
-\attachsource{src/bin/roundcorner.rs}\noindent{}The code:
-\begin{minted}{rust}
-\end{minted}
-%\noindent{}Calculate perpendicular lines\footnote{See \emph{\nameref{ch:perpendicular}}, page \pageref{ch:perpendicular}} $S'_1$ and $S'_2$ passing through the midpoints of $S_1$ and $S_2$.
-%
-%\begin{figure}[H]
-%  \centering{}
-%  \includegraphics[width=\textwidth,keepaspectratio]{figures/fillet.pdf}
-%\end{figure}
-%
-%
-%\noindent{}At their intersection lies the center $P_c$ of the circle, and the radius is the distance of $P_c$ from either of the segments. Now, we have to find the angle the circle's arc starts from. It will be equal to:
-%
-%$$\hat{s} = 90^{\circ} + \hat{a}$$
-%$$\hat{a} = \arcsin\left(\frac{dist_x(P_c, q_1)}{r}\right)$$
-%
-%\noindent{}Similarly, the ending angle \textbf{\textcolor{white}{\cm{}\LARGE\contour{black}{ê}}} will be equal to:
-%
-%$$\hat{e} = \arccos\left(\frac{dist_x(P_c, q_2)}{r}\right)$$
-%
-%\noindent{}It's evident our solution applies to the example and is not general; to cover all cases, we have to find in which quadrants of the circle the wanted arc will reside in and that depends on how the two segments are layed out.
-
-\begin{figure}[H]
-  \centering{}
-  \includegraphics[width=0.5\textwidth,keepaspectratio]{figures/roundcorner1.png}
-  \Caption{The \texttt{src/bin/roundcorner.rs} example has two interactive lines and computes the joining fillet.}
-\end{figure}
-%
-%
-%
 \chapter{Faster line clipping}
 \todo[inline]{Add \emph{Faster line clipping}}
 % Graphics gems vol 5. pdf page 323 "FASTER PIXEL PERFECT LINE CLIPPING"
 \skelpar%
-%
-%
-%
-\chapter{Archimedean spiral}
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=12\baselineskip,keepaspectratio]{figures/archspiral.pdf}
-\end{figure}
-\section*{The code}
-\skelpar
-\attachsource{src/bin/archimedeanspiral.rs}
-\begin{minted}{rust}
-pub fn arch(image: &mut Image, center: Point) {
-    let a = 1.0_f64;
-    let b = 9.0_f64;
-
-    // max_angle = number of spirals * 2pi.
-    let max_angle = 5.0_f64 * 2.0_f64 * std::f64::consts::PI;
-
-    let mut theta = 0.0_f64;
-    let (dx, dy) = center;
-    let mut prev_point = center;
-    while theta < max_angle {
-        theta = theta + 0.002_f64;
-
-        let r = a + b * theta;
-        let x = (r * theta.cos()) as i64 + dx;
-        let y = (r * theta.sin()) as i64 + dy;
-        image.plot_line_width(prev_point, (x, y), 1.0);
-        prev_point = (x, y);
-    }
-}
-\end{minted}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=1,keepaspectratio]{figures/archspiral.png}
-\end{figure}
 %
 %
 %
