@@ -67,6 +67,7 @@
   \definecolor{blackoutline}{RGB}{14,14,14}
   \definecolor{bgcolor}{rgb}{0.95,0.95,0.95}
   \definecolor{red}{rgb}{1,0,0}
+  \definecolor{venetianred}{RGB}{200,8,21}
   \definecolor{gray}{RGB}{24,24,24}
    \definecolor{thered}    {rgb} {0.65,0.04,0.07}
  \definecolor{thegreen}  {rgb} {0.06,0.44,0.08}
@@ -140,7 +141,6 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 \title{\titletext{}}
 \newcommand\subtitle{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}
 \newcommand\coversubtitle{\TitleOutline{an introduction to basic \bitmap{} mathematics and algorithms with code samples in \Rust{}}}
-\newcommand\biblatex{\texttt{biblatex}\xspace}%
 \hypersetup{
   pdftitle={\titletext{}},
   pdfauthor={epilys},
@@ -202,6 +202,21 @@ This code is included in the distributed library file in the \emph{\nameref{ch:i
 \thispagestyle{empty}%
 {\vfill{}\noindent{}\centering{}\symbola{}⸎\par}%
 }
+
+\usepackage[
+  indexing=false,
+  bibstyle=numeric,
+  citestyle=numeric,
+  backref=true,
+  datecirca=true,
+  dateuncertain=true,
+  dateabbrev=false,
+  sorting=none,
+  datezeros=false,% pad date components with zeros?
+  dateera=secular,
+  defernumbers=true,
+]{biblatex}
+\addbibresource{cite.bib}
 
 \begin{document}
 \pagestyle{plain}
@@ -921,6 +936,42 @@ fn find_mirror(point: Point, l: Line) -> Point {
 %
 %
 %
+\section{Find perpendicular to line segment $AB$ that passes through its middle (perpendicular bisector of $AB$)}\label{sec:perp-bisector}
+
+Find midpoint $m_{AB}$ of $AB$:
+
+\begin{align*}
+  m_{AB} = (\frac{x_a+x_b}{2}, \frac{y_a+y+b}{2})
+\end{align*}
+
+Slope of $AB$ is $m_l = \frac{y_b-y_a}{x_b-x_a}$
+
+Slope of perpendicular will be $m_p \times{} m_l \implies{} m_p = \frac{-1}{m_l}$
+
+Perpendicular satisfies line equation $y = mx+c$ and passes through midpoint $m_{AB}$:
+$c = y_{AB} - m_p \times{} x_{AB}$.
+
+\begin{minted}{rust}
+fn perp_bisector((x_a, y_a): Point, (x_b, y_b): Point) -> (i64, i64, i64) {
+    let m_a = if x_b != y_b { (y_a - y_b) as f64 } else { -1.0 };
+    let m_b = (x_b - x_a) as f64;
+
+    let (x_m, y_m) = ((x_b + x_a) as f64 / 2.0, (y_b + y_a) as f64 / 2.0);
+    // slope form y=mx+b
+    // m_og = (y_m - y_n / x_m - x_n)
+    // m_og * m = -1 => m = (x_n - x_m) / (y_m - y_n) = m_b / m_a
+    //
+    // y = mx+b => y_m = m*x_m + b => b = y_m - m * x_m
+    //
+    // slope form y=mx+b -> implicit form αx+βy=γ
+    // y = m*x + y_m - m* x_m
+    (
+        m_b as i64,
+        -m_a as i64,
+        (((y_m * m_a) - (m_b * x_m)) as i64),
+    )
+}
+\end{minted}
 \chapter{Angle sectioning}
 \section{Bisection}\index{angle!bisectioning}
 \todo[inline]{Add \emph{angle bisectioning}}
@@ -942,7 +993,7 @@ amount of points contained in the segment. As shown in the following figure, a s
 \input{figures/fig2.pdf_tex}
 \end{figure}
 
-The algorithm presented here was first derived by Bresenham. In the \emph{Image} implementation, it is used in the \texttt{plot\_line\_width} method.
+The algorithm presented here was first derived by Bresenham.\cite{bresenham1996}In the \emph{Image} implementation, it is used in the \texttt{plot\_line\_width} method.
 % From graphic gems vol 1 p 99 (pdf page 124)
 \begin{minted}{rust}
 pub fn plot_line_width(&mut self, (x1, y1): (i64, i64), (x2, y2): (i64, i64)) {
@@ -1134,12 +1185,16 @@ At this point, $L_{12}$ and $L_{34}$ either intersect or are equivalent. Find th
 \clearpage{}
 \myaddthumb{Shapes}{shapes}
 \part{Shapes}
-\skelpar%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,keepaspectratio]{figures/shapes_concave_convex.pdf}
+  \par{\noindent{}In \emph{concave} shapes you cannot draw a \textcolor{venetianred}{line segment connecting any two of its points without going outside the shape}. In \emph{convex} shapes you can.}
+\end{figure}
 \chapter{Circles and Ellipses}
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5,keepaspectratio]{figures/circle_parts.pdf}
-\includegraphics[scale=0.5,keepaspectratio]{figures/circle_parts2.pdf}
+\includegraphics[scale=0.45,keepaspectratio]{figures/circle_parts.pdf}
+\includegraphics[scale=0.45,keepaspectratio]{figures/circle_parts2.pdf}
   {\par\scriptsize{}\textbf{Parts of a circle}. Figures reproduced from \emph{K. Morling - GEOMETRIC and ENGINEERING DRAWING, second edition, 1974}}
 \end{figure}
 \section{Equations of a circle and an ellipse}\label{sec:equations-circles}
@@ -1210,25 +1265,72 @@ fn plot_ellipse(
     }
 }
 \end{minted}
+%
+%
 \subsection{Circle from three given points}\index{circle!out of three points}
-The naive way: Calculate the lines defined by the line segments created by taking a point and one of each of the rest. The order and pairings don't matter. The intersection point of their perpendiculars that pass through the middle of those line segments is the circle's center.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5,keepaspectratio]{figures/circle3points.png}
+\end{figure}
+The naïve way: Calculate the lines defined by the line segments created by taking a point and one of each of the rest. The order and pairings don't matter. The intersection point of their perpendiculars that pass through the middle of those line segments is the circle's center.
+
+\noindent{}Find perpendicular bisector of line segment: See \emph{\nameref{sec:perp-bisector}} page \pageref{sec:perp-bisector}
+
+\noindent{}Find intersection point of lines: See \emph{\nameref{ch:intersection-lines}} page \pageref{ch:intersection-lines}
+
+\attachsource{src/bin/circle3points.rs}\noindent{}The code:
+\begin{minted}{rust}
+let mut p_a = (35, 35);
+let mut p_b = (128, 250);
+let mut p_c = (179, 220);
+let mut image = Image::new(WINDOW_WIDTH, WINDOW_WIDTH, 0, 0);
+image.plot_circle(p_a, 3, 0.);
+image.plot_circle(p_b, 3, 0.);
+image.plot_circle(p_c, 3, 0.);
+
+let perp1 = perp_bisector(p_a, p_b);
+let perp2 = perp_bisector(p_b, p_c);
+
+let centre = find_intersection(perp1, perp2);
+let radius = distance_between_two_points(centre, p_a);
+
+image.plot_line_width(p_a, p_b, 2.5);
+image.plot_line_width(p_b, p_c, 2.5);
+image.plot_line_width(p_c, p_a, 2.5);
+image.plot_circle(centre, radius as i64, 2.0);
+image.draw(&mut buffer, BLACK, None, WINDOW_WIDTH);
+\end{minted}
+%
+%
 \subsection{Circle inscribed in given polygon (e.g. a triangle) as list of vertices}
 Bisect any two angles and take the intersection point of the bisecting lines. This point, called the 
 \emph{incentre} is the centre of the circle and the distance of the centre from the line defined by any side is the radius.
+%
+%
 \subsection{Circumscribed circle of given regular polygon (e.g. a triangle) as list of vertices}
 Just like with three points, take the perpendicular lines through the middle point of any of two sides. Their intersection point, called the \emph{circumcentre} is the center of the circumscribed circle. The radius is the distance of the centre from any vertice.
+%
+%
 \subsection{Circle that passes through given point $Α$ and point $Β$ on line $L$}
 \todo[inline]{Add \emph{Circle that passes through given point $Α$ and point $Β$ on line $L$}}
 \skelpar%
+%
+%
 \subsection{Tangent line of given circle}
 \todo[inline]{Add \emph{Tangent line of given circle}}
 \skelpar%
+%
+%
 \subsection{Tangent line of given circle that passes through point $P$}
 \todo[inline]{Add \emph{Tangent line of given circle that passes through point $P$}}
 \skelpar%
+%
+%
 \subsection{Tangent line common to two given circles}
 \todo[inline]{Add \emph{Tangent line common to two given circles}}
 \skelpar%
+%
+%
 \clearpage{}
 \section{Bounding circle}
 \index{circle!bounding}%
@@ -1731,6 +1833,7 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 
 \chapter{Flood filling}\index{flood filling}\index{bucket filling|see {flood filling}}\index{area filling|see {flood filling}}
 \todo[inline]{Add \emph{Flood filling}}
+\cite{Shani-1980}
 \skelpar%
 % Graphics gems vol 1. pdf page 296 "SEED FILL"
 % Graphics gems vol 1. pdf page 299 "FILLING A REGION IN A FRAMEBUFFER"
@@ -1750,6 +1853,7 @@ pub fn fill_triangle(&mut self, q1: Point, q2: Point, q3: Point) {
 \todo[inline]{Add \emph{Centre of arc which blends two given circles}}
 \skelpar%
 \section{Join segments with round corners}\label{sec:roundcorners}
+\cite{gragevol3-225}
 % Graphics gems vol 3. pdf page 225 "JOINING TWO LINES WITH A CIRCULAR ARC FILLET"
 \begin{wrapfigure}{r}{0.5\textwidth}
     \vspace{-60pt}
@@ -2939,6 +3043,14 @@ fn atkinson(image: &mut Image) {
 \clearpage{}
 \stopthumb
 \backmatter
+\bookmarksetup{startatroot}
+\cleardoublepage
+\printbibheading[
+heading=bibintoc, % bibintoc adds the Bibliography to the table of contents
+]
+\phantomsection % Requires hyperref package
+\printbibliography[title={Bibliography}]
+\cleardoublepage
 \bookmarksetup{startatroot}
 \cleardoublepage
 \printindex
