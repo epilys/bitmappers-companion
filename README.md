@@ -148,7 +148,7 @@ metry
 
 ## Building
 
-Run `make`, output will be in the `./build` directory.
+Run `make` (might need to run it twice), output will be in the `./build` directory.
 
 To run the rust example binaries, first you can inspect them with `ls ./src/bin/`, for example:
 
